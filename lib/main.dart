@@ -1,4 +1,5 @@
 import 'package:bidding/constants/firebase_config.dart';
+import 'package:bidding/screens/auth/login.dart';
 import 'package:bidding/screens/seller/home.dart';
 import 'package:bidding/screens/seller/add_item_form.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AddItemForm(), //kini ilisan para ma test
+      home: LoginScreen(), //kini ilisan para ma test
     );
   }
 }
