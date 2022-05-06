@@ -1,40 +1,31 @@
-//User Model
 class UserModel {
   UserModel({
     required this.userID,
     required this.email,
     required this.firstName,
     required this.lastName,
-    required this.profileImage,
-    required this.validID,
-    required this.validSelfie,
+    required this.isAdmin,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        userID: json['userID'] as String,
+        userID: json['user_id'] as String,
         email: json['email'] as String,
-        firstName: json['firstName'] as String,
-        lastName: json['lastName'] as String,
-        profileImage: json['profileImage'] as String,
-        validID: json['validID'] as String,
-        validSelfie: json['validSelfie'] as String,
+        firstName: json['first_name'] as String,
+        lastName: json['last_name'] as String,
+        isAdmin: json['is_admin'] as bool,
       );
 
   Map<String, dynamic> toJson() => {
         'userID': userID,
         'email': email,
-        'firstName': firstName,
-        'lastName': lastName,
-        'profileImage': profileImage,
-        'validID': validID,
-        'validSelfie': validSelfie,
+        'first_name': firstName,
+        'last_name': lastName,
+        'is_admin': isAdmin,
       };
 
   final String? userID;
   final String? email;
   final String? firstName;
   final String? lastName;
-  final String? profileImage;
-  final String? validID;
-  final String? validSelfie;
+  final bool? isAdmin;
 }

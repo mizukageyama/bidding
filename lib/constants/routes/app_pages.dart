@@ -11,7 +11,7 @@ class AppPages {
   AppPages._();
 
   //Note: Set sa initial screen na atong gusto itest
-  static const INITIAL = Routes.SPLASH;
+  static const INITIAL = Routes.LOGIN;
 
   static final routes = [
     GetPage(

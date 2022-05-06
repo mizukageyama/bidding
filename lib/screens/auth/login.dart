@@ -1,9 +1,11 @@
+import 'package:bidding/controllers/auth_controller.dart';
 import 'package:bidding/layout/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+  final AuthController authController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -13,61 +15,60 @@ class LoginScreen extends StatelessWidget {
         width: 400,
         padding: const EdgeInsets.all(10.00),
         child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10)),
-            color: whiteColor,
-            elevation: 2,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-               const SizedBox(
-                  height: 5,
-                ),
-              const  ListTile(
-                  title: Text(
-                    'Welcome to Bidding Online!',
-                    style: TextStyle(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          color: whiteColor,
+          elevation: 2,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              const SizedBox(
+                height: 5,
+              ),
+              const ListTile(
+                title: Text(
+                  'Welcome to Bidding Online!',
+                  style: TextStyle(
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w700,
                       fontSize: 22),
-                  ), 
                 ),
-              const  Padding(  
-                  padding: EdgeInsets.all(15),  
-                  child: TextField(  
-                    decoration: InputDecoration(  
-                      border: OutlineInputBorder(),  
-                      labelText: 'User Name',    
-                    ),  
-                  ),  
+              ),
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: TextFormField(
+                  controller: authController.emailController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email',
+                  ),
                 ),
-              const  Padding(  
-                  padding: EdgeInsets.all(15),  
-                  child: TextField(  
-                    decoration: InputDecoration(  
-                      border: OutlineInputBorder(),  
-                      labelText: 'Password',    
-                    ),  
-                  ),  
-                ), 
-
-                  ButtonBar(
-                    alignment: MainAxisAlignment.center,
-                    buttonPadding:const EdgeInsets.symmetric(
-                   horizontal: 30,
-                   vertical: 10),
-                   children: <Widget>[
-                     ElevatedButton(
-                       child: const Text('Login'),
-                       onPressed: (){}),
-
-                       ElevatedButton(
-                       child: const Text('SignUp'),
-                       onPressed: (){}),
-                   ],
-                 )
-              ],
-            ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: TextFormField(
+                  controller: authController.passwordController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                  ),
+                ),
+              ),
+              ButtonBar(
+                alignment: MainAxisAlignment.center,
+                buttonPadding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                children: <Widget>[
+                  ElevatedButton(
+                      child: const Text('Login'),
+                      onPressed: () {
+                        authController.signInWithEmailAndPassword(context);
+                      }),
+                  ElevatedButton(child: const Text('SignUp'), onPressed: () {}),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

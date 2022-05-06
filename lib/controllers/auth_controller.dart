@@ -55,7 +55,7 @@ class AuthController extends GetxController {
     } else {
       userSignedOut = false;
       log.i('_setInitialScreen | User found. Data: ${_firebaseUser.email}');
-      await _initializeUser();
+      //await _initializeUser();
       await Get.offAll(SellerHome());
     }
   }
@@ -200,13 +200,6 @@ class AuthController extends GetxController {
     newPasswordController.clear();
     isObscureCurrentPW!.value = true;
     isObscureNewPW!.value = true;
-  }
-
-  Future<void> checkUserPlatform() async {
-    await _initializeUser();
-    //after init navigate
-    // await Future.delayed(const Duration(seconds: 3),
-    //             () => Get.offAllNamed(Routes.DOC_WEB_HOME));
   }
 
   Future<void> navigateWithDelay(dynamic route) async {
