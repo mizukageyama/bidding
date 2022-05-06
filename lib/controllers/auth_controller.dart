@@ -1,0 +1,225 @@
+import 'package:bidding/constants/firebase.dart';
+import 'package:bidding/models/user_model.dart';
+import 'package:bidding/screens/auth/login.dart';
+import 'package:bidding/screens/seller/home.dart';
+import 'package:bidding/services/dialogs.dart';
+import 'package:bidding/services/logger_service.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+class AuthController extends GetxController {
+  final log = getLogger('Auth Controller');
+  //final AppController appController = Get.put(AppController());
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController confirmPassController = TextEditingController();
+  TextEditingController currentPasswordController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
+
+  Rxn<UserModel> userModel = Rxn<UserModel>();
+
+  Rxn<User> firebaseUser = Rxn<User>();
+
+  String? userRole = 'Test';
+  RxBool isDisabled = false.obs;
+
+  bool? userSignedOut = false;
+  RxBool? isObscureText = true.obs;
+  RxBool? isObscureText2 = true.obs;
+  RxBool? isObscureCurrentPW = true.obs;
+  RxBool? isObscureNewPW = true.obs;
+  RxBool isCheckboxChecked = false.obs;
+
+  @override
+  void onInit() {
+    log.i('onInit | Auth Controller is ready');
+    //delay to give splash screen 5 sec
+    Future.delayed(const Duration(seconds: 5), () {
+      ever(firebaseUser, _setInitialScreen);
+      firebaseUser.bindStream(user);
+      super.onInit();
+    });
+  }
+
+  Stream<User?> get user => auth.authStateChanges();
+
+  Future<void> _setInitialScreen(_firebaseUser) async {
+    if (_firebaseUser == null) {
+      log.i('_setInitialScreen | User is null. Proceed Signin Screen');
+      await Get.offAll(() => LoginScreen());
+    } else {
+      userSignedOut = false;
+      log.i('_setInitialScreen | User found. Data: ${_firebaseUser.email}');
+      await _initializeUser();
+      await Get.offAll(SellerHome());
+    }
+  }
+
+  Future<void> signInWithEmailAndPassword(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+    try {
+      showLoading();
+      await auth.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      await clearControllers();
+    } catch (e) {
+      print(e);
+      dismissDialog();
+      Get.snackbar(
+        'Error logging in',
+        'Please check your email and password',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> registerPatient(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+    showLoading();
+    final app = await Firebase.initializeApp(
+        name: 'tempApp', options: Firebase.app().options);
+    await FirebaseAuth.instanceFor(app: app)
+        .createUserWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    )
+        .then((result) async {
+      await _createPatientUser(result.user!.uid, context);
+    }).onError((error, stackTrace) async {
+      dismissDialog();
+      Get.snackbar(
+        'Error creating account',
+        error.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    });
+    await app.delete();
+  }
+
+  Future<void> sendPasswordResetEmail(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+    try {
+      await auth.sendPasswordResetEmail(email: emailController.text);
+      log.i('Password link sent to: ${emailController.text}');
+      Get.snackbar('Password Reset Email Sent',
+          'Check your email for a password reset link.',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 5),
+          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
+          colorText: Get.theme.snackBarTheme.actionTextColor);
+    } on FirebaseAuthException catch (error) {
+      Get.snackbar('Password Reset Email Failed', error.message!,
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 10),
+          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
+          colorText: Get.theme.snackBarTheme.actionTextColor);
+    }
+  }
+
+  Future<void> changePassword(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+    final user = FirebaseAuth.instance.currentUser;
+    final cred = EmailAuthProvider.credential(
+        email: user!.email!, password: currentPasswordController.text);
+    showLoading();
+    await user.reauthenticateWithCredential(cred).then((value) {
+      user.updatePassword(newPasswordController.text).then((_) {
+        dismissDialog();
+        _changePasswordSuccess();
+        Get.back();
+        Get.snackbar('Password Changed Successfully',
+            'You may now use your new password.',
+            snackPosition: SnackPosition.BOTTOM,
+            duration: const Duration(seconds: 3),
+            backgroundColor: Get.theme.snackBarTheme.backgroundColor,
+            colorText: Get.theme.snackBarTheme.actionTextColor);
+      });
+    }).catchError((err) {
+      dismissDialog();
+      Get.snackbar('Password Change Failed',
+          'Your current password you have entered is not correct',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 3),
+          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
+          colorText: Get.theme.snackBarTheme.actionTextColor);
+    });
+  }
+
+  Future<void> _createPatientUser(String _userID, BuildContext context) async {
+    await firestore
+        .collection('users')
+        .doc(_userID)
+        .set(<String, dynamic>{'userType': 'patient', 'disabled': false});
+    await firestore.collection('patients').doc(_userID).set(<String, dynamic>{
+      'userID': _userID,
+      'email': emailController.text.trim(),
+      'firstName': firstNameController.text.trim(),
+      'lastName': lastNameController.text.trim(),
+      'profileImage': '',
+      'validID': '',
+      'validSelfie': '',
+    }).then((value) async {
+      dismissDialog();
+      signInWithEmailAndPassword(context);
+    });
+  }
+
+  Future<void> signOut() async {
+    try {
+      userSignedOut = true;
+      await auth.signOut();
+      log.i('signOut | User signs out successfully');
+    } catch (e) {
+      Get.snackbar(
+        'Error signing out',
+        e.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> clearControllers() async {
+    log.i('_clearControllers | User Input on authentication is cleared');
+    emailController.clear();
+    passwordController.clear();
+    firstNameController.clear();
+    lastNameController.clear();
+    confirmPassController.clear();
+  }
+
+  Future<void> _changePasswordSuccess() async {
+    log.i('_clearControllers | Change Password Success');
+    currentPasswordController.clear();
+    newPasswordController.clear();
+    isObscureCurrentPW!.value = true;
+    isObscureNewPW!.value = true;
+  }
+
+  Future<void> checkUserPlatform() async {
+    await _initializeUser();
+    //after init navigate
+    // await Future.delayed(const Duration(seconds: 3),
+    //             () => Get.offAllNamed(Routes.DOC_WEB_HOME));
+  }
+
+  Future<void> navigateWithDelay(dynamic route) async {
+    await Future.delayed(const Duration(seconds: 3), () => route);
+  }
+
+  //initialize user
+  Future<void> _initializeUser() async {
+    userModel.value = await firestore
+        .collection('users')
+        .doc(firebaseUser.value!.uid)
+        .get()
+        .then((doc) => UserModel.fromJson(doc.data()!));
+    log.i('_initializePatientModel | Initializing ${userModel.value}');
+  }
+}
