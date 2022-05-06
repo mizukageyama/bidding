@@ -1,8 +1,8 @@
-import 'package:bidding/layout/custom_widgets/dialog_button.dart';
-import 'package:bidding/layout/styles.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:bidding/layout/components/_components.dart';
+import 'package:bidding/layout/styles.dart';
 
 void showLoading() {
   Get.defaultDialog(

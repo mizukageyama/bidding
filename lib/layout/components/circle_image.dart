@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 
 class CircleImage extends StatelessWidget {
-  const CircleImage({Key? key, required this.imageUrl}) : super(key: key);
+  const CircleImage({
+    Key? key,
+    required this.imageUrl,
+    this.assetImage = 'assets/images/default_image.png',
+    this.height = 50.0,
+    this.width = 50.0,
+  }) : super(key: key);
+
   final String imageUrl;
+  final String assetImage;
+  final double height;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
@@ -11,17 +21,17 @@ class CircleImage extends StatelessWidget {
       child: Image.network(
         imageUrl,
         fit: BoxFit.cover,
-        height: 50,
-        width: 50,
+        height: height,
+        width: width,
         errorBuilder: (context, error, stackTrace) {
           return SizedBox(
-            height: 50,
-            width: 50,
+            height: height,
+            width: width,
             child: Image.asset(
-              'assets/images/profile.jpg', //default image
+              assetImage,
               fit: BoxFit.cover,
-              height: 35,
-              width: 35,
+              height: height,
+              width: width,
             ),
           );
         },

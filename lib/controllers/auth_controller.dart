@@ -1,13 +1,11 @@
-import 'package:bidding/constants/firebase.dart';
-import 'package:bidding/models/user_model.dart';
-import 'package:bidding/screens/auth/login.dart';
-import 'package:bidding/screens/seller/home.dart';
-import 'package:bidding/services/dialogs.dart';
-import 'package:bidding/services/logger_service.dart';
 import 'package:flutter/material.dart';
+import 'package:bidding/models/_models.dart';
+import 'package:bidding/screens/auth/_auth_screens.dart';
+import 'package:bidding/services/_services.dart';
 import 'package:get/get.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:bidding/constants/firebase.dart';
+import 'package:bidding/screens/seller/home.dart';
+import 'package:bidding/constants/_firebase_imports.dart';
 
 class AuthController extends GetxController {
   final log = getLogger('Auth Controller');

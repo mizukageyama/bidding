@@ -1,4 +1,4 @@
-import 'package:bidding/layout/custom_widgets/circle_image.dart';
+import 'package:bidding/layout/components/_components.dart';
 import 'package:bidding/layout/styles.dart';
 import 'package:bidding/models/menu_model.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class SideMenu extends StatelessWidget {
       child: Column(
         children: [
           const CircleImage(imageUrl: ''),
-          SizedBox(
+          const SizedBox(
             height: 45,
           ),
           ...displayItems()

@@ -1,4 +1,4 @@
-import 'package:bidding/constants/firebase_config.dart';
+import 'package:bidding/constants/firebase.dart';
 import 'package:bidding/constants/routes/app_pages.dart';
 import 'package:bidding/controllers/all_controller_binding.dart';
 import 'package:firebase_core/firebase_core.dart';
