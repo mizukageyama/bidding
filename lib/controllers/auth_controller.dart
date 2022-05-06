@@ -28,7 +28,6 @@ class AuthController extends GetxController {
   String? userRole = 'Test';
   RxBool isDisabled = false.obs;
 
-  bool? userSignedOut = false;
   RxBool? isObscureText = true.obs;
   RxBool? isObscureText2 = true.obs;
   RxBool? isObscureCurrentPW = true.obs;
@@ -53,9 +52,8 @@ class AuthController extends GetxController {
       log.i('_setInitialScreen | User is null. Proceed Signin Screen');
       await Get.offAll(() => LoginScreen());
     } else {
-      userSignedOut = false;
       log.i('_setInitialScreen | User found. Data: ${_firebaseUser.email}');
-      //await _initializeUser();
+      await _initializeUser();
       await Get.offAll(SellerHome());
     }
   }
@@ -173,7 +171,6 @@ class AuthController extends GetxController {
 
   Future<void> signOut() async {
     try {
-      userSignedOut = true;
       await auth.signOut();
       log.i('signOut | User signs out successfully');
     } catch (e) {
