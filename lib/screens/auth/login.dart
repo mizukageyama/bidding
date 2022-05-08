@@ -1,9 +1,9 @@
 import 'package:bidding/controllers/auth_controller.dart';
-import 'package:bidding/layout/styles.dart';
-import 'package:bidding/services/validator.dart';
-import 'package:bidding/layout/components/form_input_field_with_icon.dart';
+import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/components/_components.dart';
+import 'package:bidding/shared/layout/_layout.dart';
+import 'package:bidding/shared/services/_services.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);

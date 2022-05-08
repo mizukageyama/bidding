@@ -1,8 +1,8 @@
-import 'package:bidding/layout/components/_components.dart';
-import 'package:bidding/layout/styles.dart';
-import 'package:bidding/models/menu_model.dart';
+import 'package:bidding/models/_models.dart';
+import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/components/_components.dart';
+import 'package:bidding/shared/layout/_layout.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu(this.menuItems, {Key? key}) : super(key: key);

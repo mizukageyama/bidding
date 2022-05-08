@@ -1,8 +1,7 @@
-import 'package:bidding/constants/app_items.dart';
-import 'package:bidding/layout/responsive.dart';
-import 'package:bidding/layout/styles.dart';
+import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/constants/app_items.dart';
+import 'package:bidding/shared/layout/_layout.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class SellerHome extends StatelessWidget {
   const SellerHome({Key? key}) : super(key: key);

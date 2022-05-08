@@ -1,7 +1,7 @@
-import 'package:bidding/layout/side_menu.dart';
 import 'package:bidding/models/_models.dart';
+import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/layout/side_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ResponsiveView extends GetResponsiveView {
   ResponsiveView(this.content, this.menuItems, {Key? key})

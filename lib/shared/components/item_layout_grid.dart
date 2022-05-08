@@ -1,7 +1,7 @@
-import 'package:bidding/layout/components/_components.dart';
-import 'package:bidding/models/_models.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_layout_grid/flutter_layout_grid.dart';
+import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/models/_models.dart';
+import 'package:bidding/shared/components/_components.dart';
 
 class ItemLayoutGrid extends StatelessWidget {
   ItemLayoutGrid({Key? key, required this.perColumn, required this.item})

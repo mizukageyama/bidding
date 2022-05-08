@@ -1,15 +1,14 @@
+import 'package:bidding/screens/seller/home.dart';
+import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/constants/_firebase_imports.dart';
+import 'package:bidding/shared/constants/firebase.dart';
+import 'package:bidding/shared/services/_services.dart';
 import 'package:flutter/material.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/screens/auth/_auth_screens.dart';
-import 'package:bidding/services/_services.dart';
-import 'package:get/get.dart';
-import 'package:bidding/constants/firebase.dart';
-import 'package:bidding/screens/seller/home.dart';
-import 'package:bidding/constants/_firebase_imports.dart';
 
 class AuthController extends GetxController {
   final log = getLogger('Auth Controller');
-  //final AppController appController = Get.put(AppController());
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -52,7 +51,7 @@ class AuthController extends GetxController {
     } else {
       log.i('_setInitialScreen | User found. Data: ${_firebaseUser.email}');
       await _initializeUser();
-      await Get.offAll(SellerHome());
+      await Get.offAll(const SellerHome());
     }
   }
 

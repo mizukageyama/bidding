@@ -1,8 +1,8 @@
+import 'package:bidding/shared/_packages_imports.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
-import 'package:bidding/layout/components/_components.dart';
-import 'package:bidding/layout/styles.dart';
+import 'package:bidding/shared/components/_components.dart';
+import 'package:bidding/shared/layout/styles.dart';
 
 void showLoading() {
   Get.defaultDialog(
@@ -45,14 +45,14 @@ void showErrorDialog({
               padding: const EdgeInsets.all(10),
               child: Text(
                 errorDescription!,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                     color: neutralColor),
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             SizedBox(
@@ -103,14 +103,14 @@ void showSimpleErrorDialog({
               padding: const EdgeInsets.all(10),
               child: Text(
                 errorDescription!,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                     color: neutralColor),
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             SizedBox(
@@ -137,12 +137,12 @@ void showDefaultDialog({
   Get.defaultDialog(
     barrierDismissible: false,
     radius: 8,
-    titleStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    titleStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
     titlePadding: const EdgeInsets.all(10),
     title: dialogTitle!,
     content: Text(
       dialogCaption!,
-      style: TextStyle(
+      style: const TextStyle(
           fontSize: 16, fontWeight: FontWeight.w400, color: neutralColor),
       textAlign: TextAlign.center,
     ),
@@ -161,12 +161,12 @@ void showDefaultDialogWithText({
   Get.defaultDialog(
     barrierDismissible: false,
     radius: 8,
-    titleStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    titleStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
     titlePadding: const EdgeInsets.all(10),
     title: dialogTitle!,
     content: Text(
       dialogCaption!,
-      style: TextStyle(
+      style: const TextStyle(
           fontSize: 16, fontWeight: FontWeight.w400, color: neutralColor),
       textAlign: TextAlign.center,
     ),
@@ -177,10 +177,10 @@ void showDefaultDialogWithText({
 }
 
 void showConfirmationDialog({
-  String? dialogTitle,
-  String? dialogCaption,
-  Function()? onYesTap,
-  Function()? onNoTap,
+  required String dialogTitle,
+  required String dialogCaption,
+  required Function() onYesTap,
+  required Function() onNoTap,
 }) {
   Get.dialog(
     Dialog(
@@ -207,22 +207,23 @@ void showConfirmationDialog({
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Text(
-                  dialogTitle!,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  dialogTitle,
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Text(
-                    dialogCaption!,
-                    style: TextStyle(
+                    dialogCaption,
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         color: neutralColor),
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Padding(
@@ -236,7 +237,7 @@ void showConfirmationDialog({
                           onTap: onYesTap,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Expanded(

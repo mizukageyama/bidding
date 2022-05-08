@@ -1,14 +1,15 @@
-import 'package:bidding/layout/styles.dart';
+import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 
 class DialogButton extends StatelessWidget {
   const DialogButton({
+    Key? key,
     required this.buttonText,
-    this.onTap,
-  });
+    required this.onTap,
+  }) : super(key: key);
 
-  final String? buttonText;
-  final Function()? onTap;
+  final String buttonText;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {

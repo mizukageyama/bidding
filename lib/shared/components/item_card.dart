@@ -1,6 +1,5 @@
-import 'package:bidding/layout/styles.dart';
 import 'package:bidding/models/_models.dart';
-import 'package:flutter/foundation.dart';
+import 'package:bidding/shared/layout/_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

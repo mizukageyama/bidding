@@ -1,6 +1,5 @@
-import 'package:bidding/services/logger_service.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:get/get.dart';
+import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/services/logger_service.dart';
 
 class ImagePickerService {
   final log = getLogger('Image Picker Service');
