@@ -16,7 +16,7 @@ class SideMenu extends StatelessWidget {
       color: indigoColor,
       child: Column(
         children: [
-          const CircleImage(imageUrl: ''),
+          const CircleImage(),
           const SizedBox(
             height: 45,
           ),

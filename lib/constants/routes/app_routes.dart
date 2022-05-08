@@ -8,6 +8,7 @@ abstract class Routes {
   static const SIGNUP = _Paths.SIGNUP;
   static const SELLER_HOME = _Paths.SELLER_HOME;
   static const ADD_ITEM_FORM = _Paths.ADD_ITEM_FORM;
+  static const ITEM_LIST = _Paths.ITEM_LIST;
 }
 
 abstract class _Paths {
@@ -16,4 +17,5 @@ abstract class _Paths {
   static const SIGNUP = '/signup';
   static const SELLER_HOME = '/seller-home';
   static const ADD_ITEM_FORM = '/add-item';
+  static const ITEM_LIST = '/item-list';
 }

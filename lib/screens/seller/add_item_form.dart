@@ -10,13 +10,13 @@ class AddItemForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ResponsiveView(const Content(), sellerSideMenuItem),
+      body: ResponsiveView(const _Content(), sellerSideMenuItem),
     );
   }
 }
 
-class Content extends StatelessWidget {
-  const Content({Key? key}) : super(key: key);
+class _Content extends StatelessWidget {
+  const _Content({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class Content extends StatelessWidget {
               ],
             ),
           ),
-          Text('Mao na ni sulod')
+          const Text('Mao na ni sulod')
         ],
       ),
     );

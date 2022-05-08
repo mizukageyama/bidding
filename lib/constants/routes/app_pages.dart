@@ -2,6 +2,7 @@ import 'package:bidding/screens/auth/login.dart';
 import 'package:bidding/screens/auth/signup.dart';
 import 'package:bidding/screens/seller/add_item_form.dart';
 import 'package:bidding/screens/seller/home.dart';
+import 'package:bidding/screens/seller/item_list.dart';
 import 'package:bidding/screens/splash.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +12,7 @@ class AppPages {
   AppPages._();
 
   //Note: Set sa initial screen na atong gusto itest
-  static const INITIAL = Routes.LOGIN;
+  static const INITIAL = Routes.ITEM_LIST;
 
   static final routes = [
     GetPage(
@@ -35,6 +36,10 @@ class AppPages {
     GetPage(
       name: _Paths.ADD_ITEM_FORM,
       page: () => AddItemForm(),
+    ),
+    GetPage(
+      name: _Paths.ITEM_LIST,
+      page: () => ItemListScreen(),
     ),
   ];
 }

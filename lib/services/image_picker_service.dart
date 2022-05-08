@@ -31,13 +31,4 @@ class ImagePickerService {
       images.value = pickedFileList;
     }
   }
-
-  // Future<void> pickFromCamera(RxString image) async {
-  //   log.i('pickImageCamera called');
-  //   final pickedImage =
-  //       await ImagePicker().pickImage(source: ImageSource.camera);
-  //   if (pickedImage != null) {
-  //     image.value = pickedImage.path;
-  //   }
-  // }
 }

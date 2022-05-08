@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CircleImage extends StatelessWidget {
   const CircleImage({
     Key? key,
-    required this.imageUrl,
+    this.imageUrl = '',
     this.assetImage = 'assets/images/default_image.png',
     this.height = 50.0,
     this.width = 50.0,
@@ -17,7 +17,7 @@ class CircleImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(80),
+      borderRadius: BorderRadius.circular(height),
       child: Image.network(
         imageUrl,
         fit: BoxFit.cover,
@@ -30,8 +30,6 @@ class CircleImage extends StatelessWidget {
             child: Image.asset(
               assetImage,
               fit: BoxFit.cover,
-              height: height,
-              width: width,
             ),
           );
         },
