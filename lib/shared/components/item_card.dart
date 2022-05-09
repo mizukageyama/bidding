@@ -1,10 +1,11 @@
 import 'package:bidding/models/_models.dart';
+import 'package:bidding/shared/components/_components.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ItemCard extends StatelessWidget {
-  ItemCard({Key? key, required this.product}) : super(key: key);
+  const ItemCard({Key? key, required this.product}) : super(key: key);
 
   final Item product;
 
@@ -19,8 +20,11 @@ class ItemCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.max,
         children: [
-          Image.asset(product.imagePath,
-              fit: BoxFit.cover, height: Get.height / 4),
+          Expanded(
+              child: ImageView(
+            imageUrl: product.images[0],
+            height: Get.height / 4,
+          )),
           const SizedBox(
             height: 10,
           ),

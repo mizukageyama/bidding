@@ -1,11 +1,7 @@
-import 'package:bidding/screens/auth/login.dart';
-import 'package:bidding/screens/auth/signup.dart';
-import 'package:bidding/screens/seller/add_item_form.dart';
-import 'package:bidding/screens/seller/home.dart';
-import 'package:bidding/screens/seller/item_list.dart';
+import 'package:bidding/screens/auth/_auth_screens.dart';
+import 'package:bidding/screens/seller/_seller_screens.dart';
 import 'package:bidding/screens/splash.dart';
-import 'package:get/get.dart';
-
+import 'package:bidding/shared/_packages_imports.dart';
 part 'app_routes.dart';
 
 class AppPages {

@@ -1,3 +1,4 @@
+import 'package:bidding/controllers/_controllers.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/components/_components.dart';
@@ -19,119 +20,7 @@ class ItemListScreen extends StatelessWidget {
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
 
-  final List<Item> item = [
-    Item(
-      imagePath: 'assets/images/product_sample.png',
-      title: 'Raspberry Pi, and Arduino Sensors',
-      category: [
-        'Electronics',
-        'Hardware',
-        'Arduino',
-        'Electronics',
-        'Hardware',
-        'Arduino'
-      ],
-      description:
-          'TAKE ALL Electronic Parts Raspberry Pi, Arduino Sensors, Diodes, LED. These are the Electronic Parts: Raspberry Pi, Arduino Sensors, Diodes, LED, and etc.',
-    ),
-    Item(
-      imagePath: 'assets/images/product_sample.png',
-      title: 'Scientific Calculator',
-      category: [
-        'Electronics',
-        'Hardware',
-        'Arduino',
-      ],
-      description:
-          'TAKE ALL Electronic Parts Raspberry Pi, Arduino Sensors, Diodes, LED. These are the Electronic Parts: Raspberry Pi, Arduino Sensors, Diodes, LED, and etc.',
-    ),
-    Item(
-      imagePath: 'assets/images/product_sample.png',
-      title:
-          'EXTERNAL HARD DRIVE SLIM TYPE 100% Health and Battery Good for Life',
-      category: [
-        'Electronics',
-        'Hardware',
-        'Arduino',
-      ],
-      description:
-          'TAKE ALL Electronic Parts Raspberry Pi, Arduino Sensors, Diodes, LED. These are the Electronic Parts: Raspberry Pi, Arduino Sensors, Diodes, LED, and etc.',
-    ),
-    Item(
-      imagePath: 'assets/images/product_sample.png',
-      title: 'Raspberry Pi, and Arduino Sensors',
-      category: [
-        'Electronics',
-        'Hardware',
-        'Arduino',
-        'Electronics',
-        'Hardware',
-        'Arduino'
-      ],
-      description:
-          'TAKE ALL Electronic Parts Raspberry Pi, Arduino Sensors, Diodes, LED. These are the Electronic Parts: Raspberry Pi, Arduino Sensors, Diodes, LED, and etc.',
-    ),
-    Item(
-      imagePath: 'assets/images/product_sample.png',
-      title: 'Scientific Calculator',
-      category: [
-        'Electronics',
-        'Hardware',
-        'Arduino',
-      ],
-      description:
-          'TAKE ALL Electronic Parts Raspberry Pi, Arduino Sensors, Diodes, LED. These are the Electronic Parts: Raspberry Pi, Arduino Sensors, Diodes, LED, and etc.',
-    ),
-    Item(
-      imagePath: 'assets/images/product_sample.png',
-      title: 'Raspberry Pi, and Arduino Sensors',
-      category: [
-        'Electronics',
-        'Hardware',
-        'Arduino',
-        'Electronics',
-        'Hardware',
-        'Arduino'
-      ],
-      description:
-          'TAKE ALL Electronic Parts Raspberry Pi, Arduino Sensors, Diodes, LED. These are the Electronic Parts: Raspberry Pi, Arduino Sensors, Diodes, LED, and etc.',
-    ),
-    Item(
-      imagePath: 'assets/images/product_sample.png',
-      title: 'Scientific Calculator',
-      category: [
-        'Electronics',
-        'Hardware',
-        'Arduino',
-      ],
-      description:
-          'TAKE ALL Electronic Parts Raspberry Pi, Arduino Sensors, Diodes, LED. These are the Electronic Parts: Raspberry Pi, Arduino Sensors, Diodes, LED, and etc.',
-    ),
-    Item(
-      imagePath: 'assets/images/product_sample.png',
-      title:
-          'EXTERNAL HARD DRIVE SLIM TYPE 100% Health and Battery Good for Life',
-      category: [
-        'Electronics',
-        'Hardware',
-        'Arduino',
-      ],
-      description:
-          'TAKE ALL Electronic Parts Raspberry Pi, Arduino Sensors, Diodes, LED. These are the Electronic Parts: Raspberry Pi, Arduino Sensors, Diodes, LED, and etc.',
-    ),
-    Item(
-      imagePath: 'assets/images/product_sample.png',
-      title:
-          'EXTERNAL HARD DRIVE SLIM TYPE 100% Health and Battery Good for Life',
-      category: [
-        'Electronics',
-        'Hardware',
-        'Arduino',
-      ],
-      description:
-          'TAKE ALL Electronic Parts Raspberry Pi, Arduino Sensors, Diodes, LED. These are the Electronic Parts: Raspberry Pi, Arduino Sensors, Diodes, LED, and etc.',
-    ),
-  ];
+  final ItemListController itemListController = Get.put(ItemListController());
 
   @override
   Widget build(BuildContext context) {
@@ -162,13 +51,33 @@ class _Content extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
-              child: ListView(shrinkWrap: true, children: [
-            ResponsiveItemGrid(
-              item: item,
-            ),
-          ])),
+          Expanded(child: Obx(() => showItems())),
         ],
+      ),
+    );
+  }
+
+  Widget showItems() {
+    if (itemListController.isDoneLoading.value &&
+        itemListController.itemList.isNotEmpty) {
+      return ListView(
+          padding: const EdgeInsets.all(25),
+          shrinkWrap: true,
+          children: [
+            ResponsiveItemGrid(
+              item: itemListController.itemList,
+            ),
+          ]);
+    } else if (itemListController.isDoneLoading.value &&
+        itemListController.itemList.isEmpty) {
+      return const Center(
+          child: InfoDisplay(message: 'No items for auction at the moment'));
+    }
+    return const Center(
+      child: SizedBox(
+        width: 20,
+        height: 20,
+        child: CircularProgressIndicator(),
       ),
     );
   }
@@ -178,7 +87,7 @@ class ResponsiveItemGrid extends GetResponsiveView {
   ResponsiveItemGrid({Key? key, required this.item})
       : super(key: key, alwaysUseBuilder: false);
 
-  final List<Item> item;
+  final RxList<Item> item;
 
   @override
   Widget? phone() => ItemLayoutGrid(

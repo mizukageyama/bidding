@@ -10,7 +10,7 @@ const Color greyColor = Color(0xFF7C757D);
 const Color orangeColor = Color(0xFFDB5F05);
 const Color redColor = Color(0xFFAF2532);
 const Color blackColor = Color(0xFF252525);
-const Color infoColor = Color(0xFFA4DFB1);
+const Color infoColor = Color(0xFFCFEED6);
 const Color indigoColor = Color(0xFF232C3D);
 
 //Note:
