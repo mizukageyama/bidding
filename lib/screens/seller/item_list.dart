@@ -40,7 +40,7 @@ class _Content extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: const [
                 Text(
-                  'Ongoing Auctions',
+                  'Auctioned Items',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: whiteColor,
@@ -65,16 +65,16 @@ class _Content extends StatelessWidget {
           padding: const EdgeInsets.all(25),
           shrinkWrap: true,
           children: [
-            searchBar(),
-            const SizedBox(
-              height: 20,
-            ),
+            // searchBar(),
+            // const SizedBox(
+            //   height: 20,
+            // ),
             const Text(
-              'POSTED ITEMS',
+              'Your Listings',
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.w500,
-                fontSize: 20,
+                fontSize: 17,
               ),
             ),
             const SizedBox(
@@ -98,43 +98,44 @@ class _Content extends StatelessWidget {
     );
   }
 
-  Widget searchBar() {
-    return Row(
-      children: [
-        SizedBox(
-          width: 300,
-          child: TextFormField(
-            maxLines: 1,
-            decoration: InputDecoration(
-              isDense: true,
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              fillColor: whiteColor,
-              filled: true,
-              label: const Text(
-                'Search item here...',
-                style: TextStyle(fontSize: 15),
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(
-          width: 20,
-        ),
-        const Text('Dropdown (Temporary)'),
-        const SizedBox(
-          width: 20,
-        ),
-        ElevatedButton(
-            child: const Text('Search (Temporary)'),
-            onPressed: () {
-              print('Search button is pressed.');
-            }),
-      ],
-    );
-  }
+  //FOR BIDDER
+  // Widget searchBar() {
+  //   return Row(
+  //     children: [
+  //       SizedBox(
+  //         width: 300,
+  //         child: TextFormField(
+  //           maxLines: 1,
+  //           decoration: InputDecoration(
+  //             isDense: true,
+  //             floatingLabelBehavior: FloatingLabelBehavior.never,
+  //             fillColor: whiteColor,
+  //             filled: true,
+  //             label: const Text(
+  //               'Search item here...',
+  //               style: TextStyle(fontSize: 15),
+  //             ),
+  //             border: OutlineInputBorder(
+  //               borderRadius: BorderRadius.circular(8),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //       const SizedBox(
+  //         width: 20,
+  //       ),
+  //       const Text('Dropdown (Temporary)'),
+  //       const SizedBox(
+  //         width: 20,
+  //       ),
+  //       ElevatedButton(
+  //           child: const Text('Search (Temporary)'),
+  //           onPressed: () {
+  //             print('Search button is pressed.');
+  //           }),
+  //     ],
+  //   );
+  // }
 }
 
 class ResponsiveItemGrid extends GetResponsiveView {
