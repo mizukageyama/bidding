@@ -32,7 +32,7 @@ class _Content extends StatelessWidget {
         children: [
           Container(
             color: maroonColor,
-            height: 50,
+            height: 55,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             width: Get.width,
             child: Row(
@@ -48,6 +48,7 @@ class _Content extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       fontSize: 15),
                 ),
+                //searchBar()
               ],
             ),
           ),
@@ -64,6 +65,21 @@ class _Content extends StatelessWidget {
           padding: const EdgeInsets.all(25),
           shrinkWrap: true,
           children: [
+            searchBar(),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              'POSTED ITEMS',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.w500,
+                fontSize: 20,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
             ResponsiveItemGrid(
               item: itemListController.itemList,
             ),
@@ -79,6 +95,44 @@ class _Content extends StatelessWidget {
         height: 20,
         child: CircularProgressIndicator(),
       ),
+    );
+  }
+
+  Widget searchBar() {
+    return Row(
+      children: [
+        SizedBox(
+          width: 300,
+          child: TextFormField(
+            maxLines: 1,
+            decoration: InputDecoration(
+              isDense: true,
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              fillColor: whiteColor,
+              filled: true,
+              label: const Text(
+                'Search item here...',
+                style: TextStyle(fontSize: 15),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 20,
+        ),
+        const Text('Dropdown (Temporary)'),
+        const SizedBox(
+          width: 20,
+        ),
+        ElevatedButton(
+            child: const Text('Search (Temporary)'),
+            onPressed: () {
+              print('Search button is pressed.');
+            }),
+      ],
     );
   }
 }
