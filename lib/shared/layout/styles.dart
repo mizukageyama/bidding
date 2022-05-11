@@ -15,4 +15,30 @@ const Color indigoColor = Color(0xFF232C3D);
 
 //Note:
 //Add our textStyles here
+const fontFamily = 'Roboto';
 
+const robotoLight = TextStyle(
+  fontFamily: fontFamily,
+  fontWeight: FontWeight.w300,
+);
+
+const robotoRegular = TextStyle(
+  fontFamily: fontFamily,
+  fontWeight: FontWeight.w400,
+);
+
+const robotoMedium = TextStyle(
+  fontFamily: fontFamily,
+  fontWeight: FontWeight.w500,
+);
+
+const robotoBold = TextStyle(
+  fontFamily: fontFamily,
+  fontWeight: FontWeight.w700,
+);
+
+const robotoItalic = TextStyle(
+  fontFamily: fontFamily,
+  fontWeight: FontWeight.w400,
+  fontStyle: FontStyle.italic,
+);

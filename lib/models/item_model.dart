@@ -1,4 +1,5 @@
 import 'package:bidding/shared/constants/_firebase_imports.dart';
+import 'package:intl/intl.dart';
 
 class Item {
   final String itemId;
@@ -37,6 +38,24 @@ class Item {
         endDate: json['end_date'] as Timestamp,
         images: List<String>.from(json['images'] ?? []),
       );
+
+  Map<String, dynamic> toJson() => {
+        'item_id': itemId,
+        'seller_id': sellerId,
+        'title': title,
+        'description': description,
+        'asking_price': askingPrice,
+        'category': category,
+        'condition': condition,
+        'brand': brand,
+        'end_date': endDate,
+        'images': images,
+      };
+
+  get formattedDT {
+    final dt = endDate.toDate();
+    return '${DateFormat.yMMMd().format(dt)} (${DateFormat.jm().format(dt)})';
+  }
 
   @override
   String toString() {
