@@ -65,7 +65,7 @@ class Item {
   }
 
   get ftAmount {
-    NumberFormat f = NumberFormat("###,###,###,###.##");
+    NumberFormat f = NumberFormat("#,##0.00", "en_US");
     return f.format(askingPrice);
   }
 }
