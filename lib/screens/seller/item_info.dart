@@ -1,9 +1,7 @@
-import 'dart:js';
-
 import 'package:bidding/controllers/_controllers.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
-import 'package:bidding/shared/components/info_display.dart';
+import 'package:bidding/shared/components/_components.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
@@ -51,12 +49,12 @@ class _Content extends StatelessWidget {
   );
 
   final BidsController bidsController = Get.put(BidsController());
-  final RxList<Bid> itemList = RxList.empty(growable: true);
+  final RxList<Bid> bids = RxList.empty(growable: true);
   final RxBool isDoneLoading = false.obs;
 
   @override
   Widget build(BuildContext context) {
-    itemList.bindStream(bidsController.getBids(item.itemId));
+    bids.bindStream(bidsController.getBids(item.itemId));
     Future.delayed(const Duration(seconds: 5), () {
       isDoneLoading.value = true;
     });
@@ -111,8 +109,8 @@ class _Content extends StatelessWidget {
     return Container(
       color: neutralColor,
       height: Get.height - 55,
-      child: Column(
-        children: [],
+      child: GalleryView(
+        images: item.images,
       ),
     );
   }
@@ -171,10 +169,10 @@ class _Content extends StatelessWidget {
             'Item will be closed: ${item.formattedDT}',
             style: robotoRegular.copyWith(color: greyColor),
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          Obx(() => displayBids())
+          Obx(() => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: displayBids(),
+              ))
         ],
       ),
     );
@@ -205,20 +203,36 @@ class _Content extends StatelessWidget {
     );
   }
 
-  Widget displayBids() {
-    if (isDoneLoading.value && itemList.isNotEmpty) {
-      return ListView(
-          padding: const EdgeInsets.all(25), shrinkWrap: true, children: []);
-    } else if (isDoneLoading.value && itemList.isEmpty) {
-      return const Center(
-          child: InfoDisplay(message: 'No bids for this item at the moment'));
+  Widget displayPrice() {
+    if (isDoneLoading.value && bids.isNotEmpty) {
+      return displayInfo(
+        'Highest Approved Bid',
+        '₱ ${bids[0].amount.toStringAsFixed(2)}',
+      );
+    } else if (isDoneLoading.value && bids.isEmpty) {
+      return displayInfo(
+        'Asking Price',
+        '₱ ${item.askingPrice.toStringAsFixed(2)}',
+        true,
+      );
     }
-    return const Center(
-      child: SizedBox(
-        width: 20,
-        height: 20,
-        child: CircularProgressIndicator(),
-      ),
+    return const SizedBox(
+      width: 20,
+      height: 20,
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget displayBids() {
+    if (isDoneLoading.value && bids.isNotEmpty) {
+      return ListView(shrinkWrap: true, children: []);
+    } else if (isDoneLoading.value && bids.isEmpty) {
+      return const InfoDisplay(message: 'No bids for this item at the moment');
+    }
+    return const SizedBox(
+      width: 20,
+      height: 20,
+      child: CircularProgressIndicator(),
     );
   }
 

@@ -49,6 +49,7 @@ dev_dependencies:
   image_picker: ^0.8.5
   flutter_layout_grid: ^2.0.0
   flutter_countdown_timer: ^4.1.0
+  carousel_slider: ^4.1.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
