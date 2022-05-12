@@ -1,53 +1,35 @@
 import 'package:bidding/controllers/_controllers.dart';
 import 'package:bidding/models/_models.dart';
+import 'package:bidding/screens/seller/_seller_screens.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/components/_components.dart';
-import 'package:bidding/shared/constants/_firebase_imports.dart';
+import 'package:bidding/shared/components/bid_tile.dart';
 import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:flutter/material.dart';
 
 class ItemInfoScreen extends StatelessWidget {
-  const ItemInfoScreen({Key? key}) //, required Item item})
-      : //_item = item,
+  const ItemInfoScreen({Key? key, required Item item})
+      : _item = item,
         super(key: key);
-
-  //final Item _item;
+  final Item _item;
 
   @override
   Widget build(BuildContext context) {
-    //print(_item.toJson());
-
     return Scaffold(
-      body: ResponsiveView(_Content(), sellerSideMenuItem),
+      body: ResponsiveView(
+          _Content(
+            item: _item,
+          ),
+          sellerSideMenuItem),
     );
   }
 }
 
 class _Content extends StatelessWidget {
-  //const _Content({Key? key, required this.item}) : super(key: key);
+  _Content({Key? key, required this.item}) : super(key: key);
 
-  final Item item = Item(
-    itemId: "MsRyfhQOhK2IwiSaNT94",
-    sellerId: "iebjbHvazId6UbXVEcloCQ9bSXt1",
-    title: "RaspBerry Pi, and Arduino Sensors",
-    description:
-        "TAKE ALL Electronic Parts Raspberry Pi, Arduino Sensors, Diodes, LED. TAKE ALL Electronic Parts Raspberry Pi, Arduino Sensors, Diodes, LED",
-    askingPrice: 450,
-    category: ["Arduino", "Electronics"],
-    condition: "Used",
-    brand: "",
-    endDate: Timestamp(1652263200, 0),
-    images: [
-      "https://firebasestorage.googleapis.com/v0/b/bidding-4af0e.appspot.com/o/item_images%2FMsRyfhQOhK2IwiSaNT94%2F1.png?alt=media&token=7cf24a74-2e55-42b1-8d36-d6880bb438ef",
-      "https://firebasestorage.googleapis.com/v0/b/bidding-4af0e.appspot.com/o/item_images%2FMsRyfhQOhK2IwiSaNT94%2F4.jpg?alt=media&token=5cda5722-e54e-4539-805d-8cd646f1d27e",
-      "https://firebasestorage.googleapis.com/v0/b/bidding-4af0e.appspot.com/o/item_images%2FMsRyfhQOhK2IwiSaNT94%2F3.jpg?alt=media&token=fba1557f-149f-4ba0-9ea9-3639a2992e03",
-      "https://firebasestorage.googleapis.com/v0/b/bidding-4af0e.appspot.com/o/item_images%2FMsRyfhQOhK2IwiSaNT94%2F2.jpg?alt=media&token=19cf633e-68d8-4232-a862-7dffa8919532",
-      "https://firebasestorage.googleapis.com/v0/b/bidding-4af0e.appspot.com/o/item_images%2FMsRyfhQOhK2IwiSaNT94%2F6.jpg?alt=media&token=6b366f16-4be2-43d4-b553-9ef6a5deb24f",
-      "https://firebasestorage.googleapis.com/v0/b/bidding-4af0e.appspot.com/o/item_images%2FMsRyfhQOhK2IwiSaNT94%2F5.jpg?alt=media&token=aa2d034d-0ad1-4f51-a930-27b2ff6b01db"
-    ],
-  );
-
+  final Item item;
   final BidsController bidsController = Get.put(BidsController());
   final RxList<Bid> bids = RxList.empty(growable: true);
   final RxBool isDoneLoading = false.obs;
@@ -64,6 +46,7 @@ class _Content extends StatelessWidget {
       width: Get.width,
       color: whiteColor,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             color: maroonColor,
@@ -74,9 +57,12 @@ class _Content extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.arrow_back_outlined,
-                  color: whiteColor,
+                InkWell(
+                  onTap: () => Get.back(),
+                  child: const Icon(
+                    Icons.arrow_back_outlined,
+                    color: whiteColor,
+                  ),
                 ),
                 const SizedBox(
                   width: 15,
@@ -94,11 +80,20 @@ class _Content extends StatelessWidget {
               ],
             ),
           ),
-          Row(
-            children: [
-              Expanded(child: leftColumn()),
-              Expanded(child: rightColumn()),
-            ],
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              primary: true,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(child: leftColumn()),
+                    Expanded(child: rightColumn()),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -106,9 +101,8 @@ class _Content extends StatelessWidget {
   }
 
   Widget leftColumn() {
-    return Container(
-      color: neutralColor,
-      height: Get.height - 55,
+    return AspectRatio(
+      aspectRatio: 1 / 1,
       child: GalleryView(
         images: item.images,
       ),
@@ -117,10 +111,10 @@ class _Content extends StatelessWidget {
 
   Widget rightColumn() {
     return Container(
-      padding: const EdgeInsets.all(20),
-      height: Get.height - 55,
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             item.title.toUpperCase(),
@@ -150,18 +144,13 @@ class _Content extends StatelessWidget {
                     ),
                   ],
                 ),
-          Flexible(
-            child: Wrap(
-              spacing: 5,
-              runSpacing: 5,
-              children: [...categories()],
-            ),
+          CategoryChip(
+            items: item.category,
           ),
           const SizedBox(
             height: 15,
           ),
-          displayInfo(
-              'Asking Price', '₱ ${item.askingPrice.toStringAsFixed(2)}', true),
+          Obx(() => displayPrice()),
           const SizedBox(
             height: 15,
           ),
@@ -205,14 +194,66 @@ class _Content extends StatelessWidget {
 
   Widget displayPrice() {
     if (isDoneLoading.value && bids.isNotEmpty) {
-      return displayInfo(
-        'Highest Approved Bid',
-        '₱ ${bids[0].amount.toStringAsFixed(2)}',
+      if (bidsController.approvedBid(bids) != -1) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            displayInfo(
+              'Highest Approved Bid',
+              '₱ ${bids[0].ftAmount}',
+              true,
+            ),
+            const SizedBox(
+              width: 30,
+            ),
+            InkWell(
+              onTap: () {
+                Get.to(() => const BidListScreen(),
+                    transition: Transition.noTransition);
+              },
+              child: Text(
+                'View Bids',
+                style: robotoMedium.copyWith(
+                    color: maroonColor,
+                    decoration: TextDecoration.underline,
+                    fontSize: 16),
+              ),
+            )
+          ],
+        );
+      }
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          displayInfo(
+            'Asking Price',
+            '₱ ${item.ftAmount}',
+            true,
+          ),
+          const SizedBox(
+            width: 30,
+          ),
+          InkWell(
+            onTap: () {
+              Get.to(() => const BidListScreen(),
+                  transition: Transition.noTransition);
+            },
+            child: Text(
+              'View Bids',
+              style: robotoMedium.copyWith(
+                  color: maroonColor,
+                  decoration: TextDecoration.underline,
+                  fontSize: 16),
+            ),
+          )
+        ],
       );
     } else if (isDoneLoading.value && bids.isEmpty) {
       return displayInfo(
         'Asking Price',
-        '₱ ${item.askingPrice.toStringAsFixed(2)}',
+        '₱ ${item.ftAmount}',
         true,
       );
     }
@@ -225,7 +266,57 @@ class _Content extends StatelessWidget {
 
   Widget displayBids() {
     if (isDoneLoading.value && bids.isNotEmpty) {
-      return ListView(shrinkWrap: true, children: []);
+      return SizedBox(
+        width: Get.height * .65,
+        child: Stack(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(top: 45, bottom: 12),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                border: Border.all(color: neutralColor),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(15),
+                ),
+              ),
+              child: ListView.builder(
+                primary: false,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: bids.length > 5 ? 5 : bids.length,
+                itemBuilder: (context, index) {
+                  return BidTile(
+                    bid: bids[index],
+                  );
+                },
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: const BoxDecoration(
+                color: maroonColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
+                ),
+              ),
+              height: 40,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Highest Bids',
+                      style: robotoRegular.copyWith(color: whiteColor),
+                    ),
+                    Text(
+                      'Status',
+                      style: robotoRegular.copyWith(color: whiteColor),
+                    ),
+                  ]),
+            ),
+          ],
+        ),
+      );
     } else if (isDoneLoading.value && bids.isEmpty) {
       return const InfoDisplay(message: 'No bids for this item at the moment');
     }
@@ -234,19 +325,5 @@ class _Content extends StatelessWidget {
       height: 20,
       child: CircularProgressIndicator(),
     );
-  }
-
-  List<Chip> categories() {
-    return item.category
-        .map(
-          (data) => Chip(
-            backgroundColor: blackColor,
-            label: Text(
-              data,
-              style: const TextStyle(color: whiteColor, fontSize: 13),
-            ),
-          ),
-        )
-        .toList();
   }
 }

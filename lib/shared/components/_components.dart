@@ -7,3 +7,4 @@ export 'image_view.dart';
 export 'info_display.dart';
 export 'side_menu_card.dart';
 export 'gallery_view.dart';
+export 'category_chip.dart';

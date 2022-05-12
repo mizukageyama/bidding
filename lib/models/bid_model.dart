@@ -1,4 +1,5 @@
 import 'package:bidding/shared/constants/_firebase_imports.dart';
+import 'package:intl/intl.dart';
 
 class Bid {
   final String bidId;
@@ -38,5 +39,10 @@ class Bid {
   @override
   String toString() {
     return '{$toJson}';
+  }
+
+  get ftAmount {
+    NumberFormat f = NumberFormat("###,###,###,###.##");
+    return f.format(amount);
   }
 }

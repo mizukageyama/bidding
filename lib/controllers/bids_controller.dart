@@ -16,14 +16,20 @@ class BidsController extends GetxController {
     log.i('Streaming Item List');
     return firestore
         .collection('bids')
-        .orderBy('amount')
+        .orderBy('amount', descending: true)
         .where('item_id', isEqualTo: itemId)
-        .limit(5)
         .snapshots(includeMetadataChanges: true)
         .map((query) {
       return query.docs.map((item) {
         return Bid.fromJson(item.data());
       }).toList();
     });
+  }
+
+  int approvedBid(List<Bid> bids) {
+    for (int a = 0; a < bids.length; a++) {
+      if (bids[a].isApproved) return a;
+    }
+    return -1;
   }
 }

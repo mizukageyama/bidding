@@ -20,10 +20,12 @@ class InfoDisplay extends StatelessWidget {
           const SizedBox(
             width: 15,
           ),
-          Text(
-            message,
-            style: const TextStyle(
-              color: greyColor,
+          Flexible(
+            child: Text(
+              message,
+              style: const TextStyle(
+                color: greyColor,
+              ),
             ),
           ),
         ],

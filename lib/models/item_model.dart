@@ -63,4 +63,9 @@ class Item {
         '\naskingPrice: $askingPrice\ncategory: $category\ncondition: $condition'
         '\nbrand: $brand\nendDate: $endDate\nimages: $images}';
   }
+
+  get ftAmount {
+    NumberFormat f = NumberFormat("###,###,###,###.##");
+    return f.format(askingPrice);
+  }
 }

@@ -13,29 +13,17 @@ class GalleryView extends StatelessWidget {
   Widget build(BuildContext context) {
     apController.init(images);
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: IconButton(
-                onPressed: apController.prevPhoto,
-                icon: const Icon(
-                  Icons.arrow_back_ios_rounded,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 8,
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                height: Get.height * .7,
-                width: Get.width * .7,
-                color: Colors.transparent,
-                child: Obx(
-                  () => CarouselSlider.builder(
+    return Container(
+      padding: const EdgeInsets.all(15),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: Obx(
+              () => Stack(
+                children: [
+                  CarouselSlider.builder(
                     carouselController: apController.crslController,
                     itemCount: apController.fetchedImages.length - 1,
                     itemBuilder: (context, index, realIndex) {
@@ -50,71 +38,102 @@ class GalleryView extends StatelessWidget {
                         onPageChanged: (index, reason) =>
                             apController.selectedIndex.value = index),
                   ),
-                ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: blackColor.withOpacity(0.5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(30))),
+                        child: IconButton(
+                          onPressed: apController.prevPhoto,
+                          icon: const Icon(
+                            Icons.arrow_back_ios_rounded,
+                            color: whiteColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: blackColor.withOpacity(0.5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(30))),
+                        child: IconButton(
+                          onPressed: apController.nextPhoto,
+                          icon: const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: whiteColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            Expanded(
-              child: IconButton(
-                onPressed: apController.nextPhoto,
-                icon: const Icon(
-                  Icons.arrow_forward_ios_rounded,
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 110,
-          width: Get.width,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Center(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: apController.fetchedImages.length - 1,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return Center(
-                          child: Obx(
-                            () => Container(
-                              padding: const EdgeInsets.all(4),
-                              color: index == apController.selectedIndex.value
-                                  ? maroonColor
-                                  : Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  apController.selectedIndex.value = index;
-                                  apController.animateToSlide(index);
-                                },
-                                child: Image.network(
-                                  apController.fetchedImages[index],
-                                  height: 100,
-                                  width: 100,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Image.asset(
-                                        'assets/images/default_image.png',
-                                        fit: BoxFit.cover);
+          ),
+          SizedBox(
+            height: 60,
+            width: Get.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Center(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: apController.fetchedImages.length - 1,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Center(
+                            child: Obx(
+                              () => Container(
+                                padding: const EdgeInsets.all(4),
+                                color: index == apController.selectedIndex.value
+                                    ? maroonColor
+                                    : Colors.transparent,
+                                child: InkWell(
+                                  onTap: () {
+                                    apController.selectedIndex.value = index;
+                                    apController.animateToSlide(index);
                                   },
+                                  child: Image.network(
+                                    apController.fetchedImages[index],
+                                    height: 50,
+                                    width: 50,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset(
+                                          'assets/images/default_image.png',
+                                          fit: BoxFit.cover);
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      }),
+                          );
+                        }),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget buildImage(int index) {
     return Container(
+      width: double.infinity,
       color: Colors.grey,
       child: Image.network(
         apController.fetchedImages[index],

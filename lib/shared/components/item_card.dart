@@ -17,9 +17,9 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      // onTap: () => Get.to(
-      //   () => ItemInfoScreen(item: product),
-      // ),
+      onTap: () => Get.to(
+        () => ItemInfoScreen(item: product),
+      ),
       child: Stack(children: [
         Container(
           padding: const EdgeInsets.all(10),
