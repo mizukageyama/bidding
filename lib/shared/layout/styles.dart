@@ -12,6 +12,9 @@ const Color redColor = Color(0xFFAF2532);
 const Color blackColor = Color(0xFF252525);
 const Color infoColor = Color(0xFFCFEED6);
 const Color indigoColor = Color(0xFF232C3D);
+const Color lightgreyColor = Color(0xFDE7E4E7);
+const Color lightblueColor = Color(0xFF4D82F3);
+
 
 //Note:
 //Add our textStyles here

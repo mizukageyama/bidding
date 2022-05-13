@@ -1,3 +1,4 @@
+import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 
 class FormInputFieldWithIcon extends StatelessWidget {
@@ -30,22 +31,38 @@ class FormInputFieldWithIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(
+    return Theme(
+      data: Theme.of(context).copyWith(
+        colorScheme: ThemeData().colorScheme.copyWith(
+              primary: maroonColor,
+            ),
+      ),
+      child: TextFormField(
+        decoration: InputDecoration(
           filled: true,
           prefixIcon: Icon(iconPrefix),
           suffixIcon: suffixIcon,
           labelText: labelText,
-          border: InputBorder.none),
-      textInputAction: textInputAction,
-      controller: controller,
-      onSaved: onSaved,
-      onChanged: onChanged,
-      keyboardType: keyboardType,
-      obscureText: obscureText,
-      maxLines: maxLines,
-      minLines: minLines,
-      validator: validator,
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(width: 1, color: maroonColor),
+              borderRadius: BorderRadius.circular(10)),
+        ),
+        textInputAction: textInputAction,
+        controller: controller,
+        onSaved: onSaved,
+        onChanged: onChanged,
+        keyboardType: keyboardType,
+        obscureText: obscureText,
+        maxLines: maxLines,
+        minLines: minLines,
+        validator: validator,
+      ),
     );
   }
 }
