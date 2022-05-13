@@ -8,3 +8,5 @@ export 'info_display.dart';
 export 'side_menu_card.dart';
 export 'custom_button.dart';
 export 'custom_dropdown.dart';
+export 'gallery_view.dart';
+export 'category_chip.dart';

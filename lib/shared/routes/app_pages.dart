@@ -37,5 +37,9 @@ class AppPages {
       name: _Paths.ITEM_LIST,
       page: () => ItemListScreen(),
     ),
+    // GetPage(
+    //   name: _Paths.ITEM_INFO,
+    //   page: () => ItemInfoScreen(),
+    // ),
   ];
 }

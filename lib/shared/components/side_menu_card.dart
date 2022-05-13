@@ -13,11 +13,17 @@ class SideMenuCard extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            menu.icon,
-            color: whiteColor,
-            size: 16,
-          ),
+          menu.iconPath == ''
+              ? Icon(
+                  menu.icon,
+                  color: whiteColor,
+                  size: 16,
+                )
+              : Image.asset(
+                  menu.iconPath,
+                  height: 16,
+                  width: 16,
+                ),
           const SizedBox(
             width: 10,
           ),

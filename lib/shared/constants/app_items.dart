@@ -9,28 +9,28 @@ List<MenuItem> sellerSideMenuItem = [
     screen: SellerHome(),
   ),
   MenuItem(
-    name: 'Actioned Items',
-    icon: Icons.dashboard,
+    name: 'Auctioned Items',
+    iconPath: 'icons/icon_raise.png',
     screen: SellerHome(),
   ),
   MenuItem(
     name: 'Add Item for Sale',
-    icon: Icons.dashboard,
+    icon: Icons.add_rounded,
     screen: AddItemForm(),
   ),
   MenuItem(
     name: 'Sold Items',
-    icon: Icons.dashboard,
+    iconPath: 'icons/icon_auction.png',
     screen: SellerHome(),
   ),
   MenuItem(
     name: 'Settings',
-    icon: Icons.dashboard,
+    icon: Icons.settings,
     screen: SellerHome(),
   ),
   MenuItem(
     name: 'Logout',
-    icon: Icons.dashboard,
+    icon: Icons.logout,
     screen: SellerHome(),
   ),
 ];
