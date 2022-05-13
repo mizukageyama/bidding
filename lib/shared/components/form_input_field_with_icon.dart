@@ -13,6 +13,7 @@ class FormInputFieldWithIcon extends StatelessWidget {
       this.minLines = 1,
       this.maxLines,
       this.suffixIcon,
+      this.hideLabelTyping = false,
       required this.onChanged,
       required this.onSaved});
 
@@ -28,6 +29,7 @@ class FormInputFieldWithIcon extends StatelessWidget {
   final int? maxLines;
   final void Function(String) onChanged;
   final void Function(String?)? onSaved;
+  final bool hideLabelTyping;
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +42,15 @@ class FormInputFieldWithIcon extends StatelessWidget {
       child: TextFormField(
         decoration: InputDecoration(
           filled: true,
+          fillColor: whiteColor,
           prefixIcon: Icon(iconPrefix),
           suffixIcon: suffixIcon,
           labelText: labelText,
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              width: 1,
-            ),
+          floatingLabelBehavior: hideLabelTyping
+              ? FloatingLabelBehavior.never
+              : FloatingLabelBehavior.auto,
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(width: 1, color: Colors.grey),
             borderRadius: BorderRadius.circular(10),
           ),
           focusedBorder: OutlineInputBorder(

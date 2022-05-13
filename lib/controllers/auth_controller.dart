@@ -25,6 +25,8 @@ class AuthController extends GetxController {
   String? userRole = 'Test';
   RxBool isDisabled = false.obs;
 
+  RxString userMode = 'Seller'.obs;
+
   RxBool? isObscureText = true.obs;
   RxBool? isObscureText2 = true.obs;
   RxBool? isObscureCurrentPW = true.obs;
@@ -34,8 +36,8 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     log.i('onInit | Auth Controller is ready');
-    //delay to give splash screen 5 sec
-    Future.delayed(const Duration(seconds: 5), () {
+    //delay to give splash screen 3 sec
+    Future.delayed(const Duration(seconds: 3), () {
       ever(firebaseUser, _setInitialScreen);
       firebaseUser.bindStream(user);
       super.onInit();
@@ -51,7 +53,7 @@ class AuthController extends GetxController {
     } else {
       log.i('_setInitialScreen | User found. Data: ${_firebaseUser.email}');
       await _initializeUser();
-      await Get.offAll(const SellerHome());
+      await Get.offAll(() => const SellerHome());
     }
   }
 
@@ -64,8 +66,9 @@ class AuthController extends GetxController {
         password: passwordController.text.trim(),
       );
       await clearControllers();
+      dismissDialog();
     } catch (e) {
-      print(e);
+      log.i(e);
       dismissDialog();
       Get.snackbar(
         'Error logging in',
@@ -103,18 +106,21 @@ class AuthController extends GetxController {
     try {
       await auth.sendPasswordResetEmail(email: emailController.text);
       log.i('Password link sent to: ${emailController.text}');
-      Get.snackbar('Password Reset Email Sent',
-          'Check your email for a password reset link.',
-          snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(seconds: 5),
-          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-          colorText: Get.theme.snackBarTheme.actionTextColor);
+      dismissDialog();
+      showSimpleDialog(
+        title: 'Password Reset Email Sent',
+        description: 'Check your email for a password reset link.',
+        onTapFunc: () => dismissDialog(),
+      );
     } on FirebaseAuthException catch (error) {
-      Get.snackbar('Password Reset Email Failed', error.message!,
-          snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(seconds: 10),
-          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-          colorText: Get.theme.snackBarTheme.actionTextColor);
+      dismissDialog();
+      log.i('Forgot pw function: $error');
+      showSimpleDialog(
+        title: 'Password Reset Email Failed',
+        description: 'An error ocurred. The email you'
+            ' entered might not exist in our server.',
+        onTapFunc: () => dismissDialog(),
+      );
     }
   }
 
@@ -167,10 +173,13 @@ class AuthController extends GetxController {
   }
 
   Future<void> signOut() async {
+    showLoading();
     try {
       await auth.signOut();
+      dismissDialog();
       log.i('signOut | User signs out successfully');
     } catch (e) {
+      dismissDialog();
       Get.snackbar(
         'Error signing out',
         e.toString(),
@@ -194,10 +203,6 @@ class AuthController extends GetxController {
     newPasswordController.clear();
     isObscureCurrentPW!.value = true;
     isObscureNewPW!.value = true;
-  }
-
-  Future<void> navigateWithDelay(dynamic route) async {
-    await Future.delayed(const Duration(seconds: 3), () => route);
   }
 
   //initialize user

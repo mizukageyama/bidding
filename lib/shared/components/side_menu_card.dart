@@ -8,34 +8,37 @@ class SideMenuCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          menu.iconPath == ''
-              ? Icon(
-                  menu.icon,
+    return InkWell(
+      onTap: () => menu.function(),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            menu.iconPath == ''
+                ? Icon(
+                    menu.icon,
+                    color: whiteColor,
+                    size: 16,
+                  )
+                : Image.asset(
+                    menu.iconPath,
+                    height: 16,
+                    width: 16,
+                  ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              menu.name,
+              style: const TextStyle(
                   color: whiteColor,
-                  size: 16,
-                )
-              : Image.asset(
-                  menu.iconPath,
-                  height: 16,
-                  width: 16,
-                ),
-          const SizedBox(
-            width: 10,
-          ),
-          Text(
-            menu.name,
-            style: const TextStyle(
-                color: whiteColor,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w400,
-                fontSize: 13),
-          ),
-        ],
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 13),
+            ),
+          ],
+        ),
       ),
     );
   }

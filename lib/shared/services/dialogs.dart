@@ -59,7 +59,7 @@ void showErrorDialog({
               width: 130,
               child: ErrorDialogButton(
                 buttonText: 'Got it!',
-                onTap: Get.back,
+                onTap: () => Get.back(),
               ),
             ),
           ],
@@ -74,8 +74,9 @@ void getBack() {
   Get.back();
 }
 
-void showSimpleErrorDialog({
-  String? errorDescription,
+void showSimpleDialog({
+  String? title,
+  String? description = '',
   void Function()? onTapFunc = getBack,
 }) {
   Get.dialog(
@@ -100,23 +101,36 @@ void showSimpleErrorDialog({
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: Text(
-                errorDescription!,
-                style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: neutralColor),
+                title!,
+                style: robotoBold.copyWith(
+                  fontSize: 15,
+                  color: brownColor,
+                ),
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            description == ''
+                ? const SizedBox(
+                    height: 10,
+                    width: 0,
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text(
+                      description!,
+                      style: robotoRegular.copyWith(
+                        fontSize: 14,
+                        color: greyColor,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
             SizedBox(
               width: 130,
               child: ErrorDialogButton(
-                buttonText: 'btnTextError'.tr,
+                buttonText: 'Got it',
                 onTap: onTapFunc,
               ),
             ),
