@@ -40,8 +40,8 @@ class AuthController extends GetxController {
     Future.delayed(const Duration(seconds: 3), () {
       ever(firebaseUser, _setInitialScreen);
       firebaseUser.bindStream(user);
-      super.onInit();
     });
+    super.onInit();
   }
 
   Stream<User?> get user => auth.authStateChanges();

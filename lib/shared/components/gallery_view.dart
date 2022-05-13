@@ -63,9 +63,11 @@ class GalleryView extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 10),
                       child: Container(
                         decoration: BoxDecoration(
-                            color: blackColor.withOpacity(0.5),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(30))),
+                          color: blackColor.withOpacity(0.5),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(30),
+                          ),
+                        ),
                         child: IconButton(
                           onPressed: apController.nextPhoto,
                           icon: const Icon(
