@@ -42,7 +42,7 @@ List<MenuItem> sellerSideMenuItem = [
 //Note:
 //List<String> for dp items
 //readable and easy to understand variable names
-final List<String> usertype = [
+final List<String> userType = [
   'Seller',
   'Bidder',
 ];
