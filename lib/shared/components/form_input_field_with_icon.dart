@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class FormInputFieldWithIcon extends StatelessWidget {
   const FormInputFieldWithIcon(
-      {required this.controller,
+      {Key? key,
+      this.controller,
       required this.iconPrefix,
       required this.labelText,
       required this.validator,
@@ -15,9 +16,10 @@ class FormInputFieldWithIcon extends StatelessWidget {
       this.suffixIcon,
       this.hideLabelTyping = true,
       required this.onChanged,
-      required this.onSaved});
+      this.onSaved})
+      : super(key: key);
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final IconData iconPrefix;
   final Widget? suffixIcon;
   final String labelText;
@@ -41,6 +43,7 @@ class FormInputFieldWithIcon extends StatelessWidget {
       ),
       child: TextFormField(
         decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(10),
           filled: true,
           fillColor: whiteColor,
           prefixIcon: Icon(iconPrefix),

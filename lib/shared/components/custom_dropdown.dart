@@ -24,38 +24,43 @@ class CustomDropdownState extends State<CustomDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-      decoration: BoxDecoration(
-        color: whiteColor,
-        border: Border.all(color: greyColor),
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-      ),
-      child: SizedBox(
-        width: 240,
-        child: DropdownButtonFormField<String>(
-          decoration: const InputDecoration(enabledBorder: InputBorder.none),
-          isExpanded: true,
-          value: selectedItem,
-          hint: Text(widget.hintText!),
-          onChanged: widget.onChanged,
-          onSaved: widget.onSaved,
-          items: widget.dropdownItems!.map((user) {
-            return DropdownMenuItem<String>(
-              value: user,
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    user,
-                    style: robotoRegular,
-                  ),
-                ],
-              ),
-            );
-          }).toList(),
+    return DropdownButtonFormField<String>(
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(10),
+        filled: true,
+        fillColor: whiteColor,
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(width: 1, color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
         ),
+        focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(width: 1, color: maroonColor),
+            borderRadius: BorderRadius.circular(10)),
       ),
-    ));
+      isExpanded: true,
+      value: selectedItem,
+      hint: Text(widget.hintText!),
+      onChanged: widget.onChanged,
+      onSaved: widget.onSaved,
+      items: widget.dropdownItems!.map((user) {
+        return DropdownMenuItem<String>(
+          value: user,
+          child: Row(
+            children: <Widget>[
+              Text(
+                user,
+                style: robotoRegular,
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+      validator: (value) {
+        if (value == null) {
+          return 'This is a required field';
+        }
+        return null;
+      },
+    );
   }
 }

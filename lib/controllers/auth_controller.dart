@@ -1,8 +1,11 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:bidding/screens/seller/home.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
 import 'package:bidding/shared/services/_services.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/screens/auth/_auth_screens.dart';
@@ -10,30 +13,31 @@ import 'package:bidding/screens/auth/_auth_screens.dart';
 class AuthController extends GetxController {
   final log = getLogger('Auth Controller');
 
+  //Login Screen
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  Rxn<UserModel> userModel = Rxn<UserModel>();
+  Rxn<User> firebaseUser = Rxn<User>();
+  //String? userRole = 'Test';
+
+  //Sign Up Screen
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
-  TextEditingController confirmPassController = TextEditingController();
-  TextEditingController currentPasswordController = TextEditingController();
-  TextEditingController newPasswordController = TextEditingController();
-  TextEditingController idnumberController = TextEditingController();
-
-  final RxString usertype = ''.obs;
-  XFile? imgOfValidIDFile;
-  XFile? imgOfForm1File;
-  final RxString validIDImage = ''.obs;
-  final RxString form1Image = ''.obs;
+  TextEditingController confirmPwController = TextEditingController();
+  TextEditingController idNumberController = TextEditingController();
+  TextEditingController regPwController = TextEditingController();
   final ImagePickerService picker = ImagePickerService();
+  final RxString userType = ''.obs;
+  final RxString idImage = ''.obs;
+  final RxString form1Image = ''.obs;
+  final RxString form1Url = ''.obs;
+  final RxString umIdUrl = ''.obs;
+  XFile? imgIdFile;
+  XFile? imgForm1File;
 
-  Rxn<UserModel> userModel = Rxn<UserModel>();
-
-  Rxn<User> firebaseUser = Rxn<User>();
-
-  String? userRole = 'Test';
-  RxBool isDisabled = false.obs;
-
-  RxString userMode = 'Seller'.obs;
+  //Change pw
+  TextEditingController currentPwController = TextEditingController();
+  TextEditingController newPwController = TextEditingController();
 
   RxBool? isObscureText = true.obs;
   RxBool? isObscureText2 = true.obs;
@@ -86,6 +90,42 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<void> _initializeUser() async {
+    userModel.value = await firestore
+        .collection('users')
+        .doc(firebaseUser.value!.uid)
+        .get()
+        .then((doc) => UserModel.fromJson(doc.data()!));
+    log.i('_initializePatientModel | Initializing ${userModel.value}');
+  }
+
+  Future<void> signOut() async {
+    showLoading();
+    try {
+      await auth.signOut();
+      dismissDialog();
+      log.i('signOut | User signs out successfully');
+    } catch (e) {
+      dismissDialog();
+      Get.snackbar(
+        'Error signing out',
+        e.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  //For Registration ---------------------------------
+  Future<void> submitRegistration(BuildContext context) async {
+    //check if nakapick ug photos, then
+    if (form1Image.value != '' && idImage.value != '') {
+      log.i('Proceed to register');
+      //await registerUser(context);
+    } else {
+      log.i('Please select ID');
+    }
+  }
+
   Future<void> registerUser(BuildContext context) async {
     FocusScope.of(context).unfocus();
     showLoading();
@@ -109,6 +149,80 @@ class AuthController extends GetxController {
     await app.delete();
   }
 
+  Future<void> _createUser(String _userID, BuildContext context) async {
+    await uploadPhotos(_userID);
+
+    await firestore.collection('users').doc(_userID).set(<String, dynamic>{
+      'user_id': _userID,
+      'email': emailController.text.trim(),
+      'first_name': firstNameController.text.trim(),
+      'last_name': lastNameController.text.trim(),
+      'user_role': userType.value,
+      'id_number': idNumberController.text.trim(),
+      'form_1': form1Url,
+      'um_id': umIdUrl,
+    }).then((value) async {
+      dismissDialog();
+      signInWithEmailAndPassword(context);
+    });
+  }
+
+  Future<void> uploadPhotos(String id) async {
+    if (kIsWeb) {
+      form1Url.value =
+          await uploadSinglePhotoOnWeb(imgForm1File!, 'Form-1', id);
+      umIdUrl.value = await uploadSinglePhotoOnWeb(imgIdFile!, 'UM-ID', id);
+    } else {
+      form1Url.value = await uploadSinglePhoto(form1Image.value, 'Form-1', id);
+      umIdUrl.value = await uploadSinglePhoto(idImage.value, 'UM-ID', id);
+    }
+  }
+
+  void pickImageID() async {
+    imgIdFile = await picker.pickImageOnWeb(idImage);
+  }
+
+  void pickImageForm1() async {
+    imgForm1File = await picker.pickImageOnWeb(form1Image);
+  }
+
+  Future<String> uploadSinglePhoto(
+      String filePathID, String fileName, String id) async {
+    String downloadUrl = '';
+    final ref = storageRef.child('user/$id/$fileName');
+    final uploadTask = ref.putFile(File(filePathID));
+    await uploadTask.then((res) async {
+      downloadUrl = await res.ref.getDownloadURL();
+    });
+    return downloadUrl;
+  }
+
+  Future<String> uploadSinglePhotoOnWeb(
+      XFile image, String fileName, String id) async {
+    String downloadUrl = '';
+    final fileBytes = image.readAsBytes();
+    final metadata = firebase_storage.SettableMetadata(
+        contentType: 'image/jpeg',
+        customMetadata: {'picked-file-path': image.path});
+    final ref = storageRef.child('user/$id/$fileName');
+    final uploadTask = ref.putData(await fileBytes, metadata);
+    await uploadTask.then((res) async {
+      downloadUrl = await res.ref.getDownloadURL();
+    });
+    return downloadUrl;
+  }
+
+  Future<void> clearControllers() async {
+    log.i('_clearControllers | User Input on authentication is cleared');
+    emailController.clear();
+    passwordController.clear();
+    firstNameController.clear();
+    lastNameController.clear();
+    confirmPwController.clear();
+    idNumberController.clear();
+  }
+
+  //Change Password and Forgot Password ---------------------------------
   Future<void> sendPasswordResetEmail(BuildContext context) async {
     FocusScope.of(context).unfocus();
     try {
@@ -136,10 +250,10 @@ class AuthController extends GetxController {
     FocusScope.of(context).unfocus();
     final user = FirebaseAuth.instance.currentUser;
     final cred = EmailAuthProvider.credential(
-        email: user!.email!, password: currentPasswordController.text);
+        email: user!.email!, password: currentPwController.text);
     showLoading();
     await user.reauthenticateWithCredential(cred).then((value) {
-      user.updatePassword(newPasswordController.text).then((_) {
+      user.updatePassword(newPwController.text).then((_) {
         dismissDialog();
         _changePasswordSuccess();
         Get.back();
@@ -161,76 +275,11 @@ class AuthController extends GetxController {
     });
   }
 
-  Future<void> _createUser(String _userID, BuildContext context) async {
-    await firestore.collection('users').doc(_userID).set(<String, dynamic>{
-      'userType': usertype.value == 'seller',
-      'bidder': false
-    });
-    await firestore.collection('patients').doc(_userID).set(<String, dynamic>{
-      'userID': _userID,
-      'email': emailController.text.trim(),
-      'firstName': firstNameController.text.trim(),
-      'lastName': lastNameController.text.trim(),
-      'userType': usertype.value,
-      'profileImage': '',
-      'validID': '',
-      'validSelfie': '',
-      'idnumber': '',
-    }).then((value) async {
-      dismissDialog();
-      signInWithEmailAndPassword(context);
-    });
-  }
-
-  Future<void> signOut() async {
-    showLoading();
-    try {
-      await auth.signOut();
-      dismissDialog();
-      log.i('signOut | User signs out successfully');
-    } catch (e) {
-      dismissDialog();
-      Get.snackbar(
-        'Error signing out',
-        e.toString(),
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    }
-  }
-
-  Future<void> clearControllers() async {
-    log.i('_clearControllers | User Input on authentication is cleared');
-    emailController.clear();
-    passwordController.clear();
-    firstNameController.clear();
-    lastNameController.clear();
-    confirmPassController.clear();
-    idnumberController.clear();
-  }
-
   Future<void> _changePasswordSuccess() async {
     log.i('_clearControllers | Change Password Success');
-    currentPasswordController.clear();
-    newPasswordController.clear();
+    currentPwController.clear();
+    newPwController.clear();
     isObscureCurrentPW!.value = true;
     isObscureNewPW!.value = true;
-  }
-
-  //initialize user
-  Future<void> _initializeUser() async {
-    userModel.value = await firestore
-        .collection('users')
-        .doc(firebaseUser.value!.uid)
-        .get()
-        .then((doc) => UserModel.fromJson(doc.data()!));
-    log.i('_initializePatientModel | Initializing ${userModel.value}');
-  }
-
-  void pickForValidID() async {
-    imgOfValidIDFile = await picker.pickImageOnWeb(validIDImage);
-  }
-
-  void pickForForm() async {
-    imgOfForm1File = await picker.pickImageOnWeb(form1Image);
   }
 }
