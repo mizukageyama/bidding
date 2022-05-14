@@ -5,7 +5,8 @@ class Validator {
   Validator();
 
   String? email(String? value) {
-    const pattern = r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
+    const pattern =
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
     final regex = RegExp(pattern);
     if (!regex.hasMatch(value!)) {
       return 'Please enter a valid email address';

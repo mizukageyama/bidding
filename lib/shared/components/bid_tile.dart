@@ -1,4 +1,5 @@
 import 'package:bidding/models/_models.dart';
+import 'package:bidding/shared/constants/firebase.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 
@@ -8,9 +9,27 @@ class BidTile extends StatelessWidget {
   final Bid bid;
   final bool showAll;
 
+  Future<void> _getBidder() async {
+    bid.bidderInfo = await firestore
+        .collection('users')
+        .doc(bid.bidderId)
+        .get()
+        .then((doc) => UserModel.fromJson(doc.data()!));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return showAll ? longTile(bid) : shortTile(bid);
+    return FutureBuilder(
+        future: _getBidder(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return showAll ? longTile(bid) : shortTile(bid);
+          }
+          return const SizedBox(
+            width: 0,
+            height: 0,
+          );
+        });
   }
 
   Widget shortTile(Bid bid) {
@@ -23,7 +42,7 @@ class BidTile extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Text(
-              bid.bidderId,
+              bid.bidderInfo!.firstName,
               style: robotoRegular.copyWith(color: greyColor),
             ),
           ),

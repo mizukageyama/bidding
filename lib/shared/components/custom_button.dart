@@ -5,7 +5,8 @@ class CustomButton extends Container {
     Key? key,
     required this.onTap,
     required this.text,
-    this.buttonPadding = const EdgeInsets.all(10),
+    this.buttonPadding =
+        const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
     this.splashColor = Colors.transparent,
     this.buttonColor,
     this.fontSize,
@@ -31,7 +32,7 @@ class CustomButton extends Container {
       child: Text(
         text!,
         style: const TextStyle(
-                fontFamily: 'Roboto', fontWeight: FontWeight.w600, fontSize: 20)
+                fontFamily: 'Roboto', fontWeight: FontWeight.w600, fontSize: 15)
             .copyWith(
           //fontSize: fontSize,
           color: Colors.white,
