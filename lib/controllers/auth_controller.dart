@@ -17,6 +17,14 @@ class AuthController extends GetxController {
   TextEditingController confirmPassController = TextEditingController();
   TextEditingController currentPasswordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
+  TextEditingController idnumberController = TextEditingController();
+
+  final RxString usertype = ''.obs;
+  XFile? imgOfValidIDFile;
+  XFile? imgOfForm1File;
+  final RxString validIDImage = ''.obs;
+  final RxString form1Image = ''.obs;
+  final ImagePickerService picker = ImagePickerService();
 
   Rxn<UserModel> userModel = Rxn<UserModel>();
 
@@ -75,7 +83,7 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> registerPatient(BuildContext context) async {
+  Future<void> registerUser(BuildContext context) async {
     FocusScope.of(context).unfocus();
     showLoading();
     final app = await Firebase.initializeApp(
@@ -86,7 +94,7 @@ class AuthController extends GetxController {
       password: passwordController.text.trim(),
     )
         .then((result) async {
-      await _createPatientUser(result.user!.uid, context);
+      await _createUser(result.user!.uid, context);
     }).onError((error, stackTrace) async {
       dismissDialog();
       Get.snackbar(
@@ -147,19 +155,21 @@ class AuthController extends GetxController {
     });
   }
 
-  Future<void> _createPatientUser(String _userID, BuildContext context) async {
-    await firestore
-        .collection('users')
-        .doc(_userID)
-        .set(<String, dynamic>{'userType': 'patient', 'disabled': false});
+  Future<void> _createUser(String _userID, BuildContext context) async {
+    await firestore.collection('users').doc(_userID).set(<String, dynamic>{
+      'userType': usertype.value == 'seller',
+      'bidder': false
+    });
     await firestore.collection('patients').doc(_userID).set(<String, dynamic>{
       'userID': _userID,
       'email': emailController.text.trim(),
       'firstName': firstNameController.text.trim(),
       'lastName': lastNameController.text.trim(),
+      'userType': usertype.value,
       'profileImage': '',
       'validID': '',
       'validSelfie': '',
+      'idnumber': '',
     }).then((value) async {
       dismissDialog();
       signInWithEmailAndPassword(context);
@@ -186,6 +196,7 @@ class AuthController extends GetxController {
     firstNameController.clear();
     lastNameController.clear();
     confirmPassController.clear();
+    idnumberController.clear();
   }
 
   Future<void> _changePasswordSuccess() async {
@@ -208,5 +219,13 @@ class AuthController extends GetxController {
         .get()
         .then((doc) => UserModel.fromJson(doc.data()!));
     log.i('_initializePatientModel | Initializing ${userModel.value}');
+  }
+
+  void pickForValidID() async {
+    imgOfValidIDFile = await picker.pickImageOnWeb(validIDImage);
+  }
+
+  void pickForForm() async {
+    imgOfForm1File = await picker.pickImageOnWeb(form1Image);
   }
 }
