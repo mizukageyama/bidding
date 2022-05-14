@@ -42,7 +42,19 @@ List<MenuItem> sellerSideMenuItem = [
 //Note:
 //List<String> for dp items
 //readable and easy to understand variable names
-final List<String> rbutton = [
+final List<String> usertype = [
   'Seller',
   'Bidder',
+];
+
+final List<String> category = [
+  'Electronics',
+  'Things',
+];
+
+final List<String> condition = [
+  'New',
+  'Used - Like New',
+  'Used - Good',
+  'Used - Fair'
 ];

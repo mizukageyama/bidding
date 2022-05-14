@@ -157,7 +157,7 @@ class LoginScreen extends StatelessWidget {
                                 height: 40,
                                 child: CustomButton(
                                   onTap: () {
-                                    Get.to(() => const SignupScreen());
+                                    Get.to(() => SignupScreen());
                                   },
                                   text: 'Sign Up',
                                   buttonColor: maroonColor,
