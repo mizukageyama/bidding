@@ -13,7 +13,7 @@ class FormInputFieldWithIcon extends StatelessWidget {
       this.minLines = 1,
       this.maxLines,
       this.suffixIcon,
-      this.hideLabelTyping = false,
+      this.hideLabelTyping = true,
       required this.onChanged,
       required this.onSaved});
 
@@ -63,7 +63,7 @@ class FormInputFieldWithIcon extends StatelessWidget {
         onChanged: onChanged,
         keyboardType: keyboardType,
         obscureText: obscureText,
-        maxLines: maxLines,
+        maxLines: 1,
         minLines: minLines,
         validator: validator,
       ),

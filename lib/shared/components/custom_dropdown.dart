@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 
 class CustomDropdown extends StatefulWidget {
   const CustomDropdown({
+    Key? key,
     required this.hintText,
     required this.dropdownItems,
     required this.onChanged,
     required this.onSaved,
-  });
+  }) : super(key: key);
   final String? hintText;
+
   final List<String>? dropdownItems;
   final void Function(String?)? onChanged;
   final void Function(String?)? onSaved;
@@ -26,9 +28,8 @@ class CustomDropdownState extends State<CustomDropdown> {
         child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       decoration: BoxDecoration(
-        border: Border.all(
-          color: blackColor,
-        ),
+        color: whiteColor,
+        border: Border.all(color: greyColor),
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: SizedBox(
@@ -47,7 +48,7 @@ class CustomDropdownState extends State<CustomDropdown> {
                 children: <Widget>[
                   Text(
                     user,
-                    style: const TextStyle(color: Colors.black),
+                    style: robotoRegular,
                   ),
                 ],
               ),
