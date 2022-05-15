@@ -1,7 +1,6 @@
 import 'package:bidding/controllers/auth_controller.dart';
 import 'package:bidding/screens/auth/_auth_screens.dart';
 import 'package:bidding/shared/components/_components.dart';
-import 'package:bidding/shared/components/custom_radiobutton.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/services/_services.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +55,7 @@ class LoginScreen extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
+                            children: [
                               FormInputFieldWithIcon(
                                 controller: authController.emailController,
                                 iconPrefix: Icons.email,
