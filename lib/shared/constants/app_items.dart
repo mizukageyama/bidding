@@ -46,3 +46,15 @@ final List<String> userType = [
   'Seller',
   'Bidder',
 ];
+
+final List<String> category = [
+  'Electronics',
+  'Things',
+];
+
+final List<String> condition = [
+  'New',
+  'Used - Like New',
+  'Used - Good',
+  'Used - Fair'
+];

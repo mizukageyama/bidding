@@ -8,7 +8,7 @@ class AppPages {
   AppPages._();
 
   //Note: Set sa initial screen na atong gusto itest
-  static const INITIAL = Routes.LOGIN;
+  static const INITIAL = Routes.ADD_ITEM_FORM;
 
   static final routes = [
     GetPage(
@@ -25,6 +25,8 @@ class AppPages {
       name: _Paths.SIGNUP,
       page: () => SignupScreen(),
     ),
+
+    //Seller
     GetPage(
       name: _Paths.SELLER_HOME,
       page: () => SellerHome(),
@@ -40,6 +42,10 @@ class AppPages {
     // GetPage(
     //   name: _Paths.ITEM_INFO,
     //   page: () => ItemInfoScreen(),
+    // ),
+    // GetPage(
+    //   name: _Paths.ITEM_LIST,
+    //   page: () => ItemForSaleScreen(),
     // ),
   ];
 }

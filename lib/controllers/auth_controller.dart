@@ -24,12 +24,21 @@ class AuthController extends GetxController {
   //Sign Up Screen
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
+  TextEditingController confirmPassController = TextEditingController();
+  TextEditingController currentPasswordController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController idnumberController = TextEditingController();
+  final RxString usertype = ''.obs;
+
+  XFile? imgOfValidIDFile;
+  XFile? imgOfForm1File;
+  final RxString validIDImage = ''.obs;
+  final RxString form1Image = ''.obs;
   TextEditingController confirmPwController = TextEditingController();
   TextEditingController idNumberController = TextEditingController();
   final ImagePickerService picker = ImagePickerService();
   final RxString userType = ''.obs;
   final RxString idImage = ''.obs;
-  final RxString form1Image = ''.obs;
   final RxString form1Url = ''.obs;
   final RxString umIdUrl = ''.obs;
   XFile? imgIdFile;
@@ -49,10 +58,10 @@ class AuthController extends GetxController {
   void onInit() {
     log.i('onInit | Auth Controller is ready');
     //delay to give splash screen 3 sec
-    Future.delayed(const Duration(seconds: 3), () {
-      ever(firebaseUser, _setInitialScreen);
-      firebaseUser.bindStream(user);
-    });
+    // Future.delayed(const Duration(seconds: 3), () {
+    //   ever(firebaseUser, _setInitialScreen);
+    //   firebaseUser.bindStream(user);
+    // });
     super.onInit();
   }
 
