@@ -37,7 +37,7 @@ class AddItemFormController extends GetxController {
 
     await firestore.collection('items').doc(generatedItemId).set({
       'item_id': generatedItemId,
-      //'seller_id':
+      'seller_id': '',
       'title': titleNameController.text.trim(),
       'description': descriptionController.text.trim(),
       'asking_price': askingPriceController.text,

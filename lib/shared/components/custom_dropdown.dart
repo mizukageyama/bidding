@@ -33,7 +33,6 @@ class CustomDropdownState extends State<CustomDropdown> {
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: SizedBox(
-        width: 240,
         child: DropdownButtonFormField<String>(
           decoration: const InputDecoration(enabledBorder: InputBorder.none),
           isExpanded: true,

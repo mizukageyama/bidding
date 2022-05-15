@@ -28,103 +28,90 @@ class _Content extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.height,
-      width: Get.width,
-      color: whiteColor,
-      child: ListView(children: [
-        Container(
-          color: maroonColor,
-          height: 50,
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          width: Get.width,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              Text(
-                'Add Item',
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                    color: whiteColor,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15),
-              ),
-            ],
-          ),
-        ),
-        Wrap(children: [
+        height: Get.height,
+        width: Get.width,
+        color: whiteColor,
+        child: ListView(children: [
           Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              width: 600,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      'Item For Sale',
-                      style:
-                          robotoBold.copyWith(color: blackColor, fontSize: 22),
-                      textAlign: TextAlign.right,
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Text(
-                      'Photos 0/10 - You can add up to 10 photos.',
-                      style: robotoRegular.copyWith(
-                          color: greyColor, fontSize: 14),
-                      textAlign: TextAlign.right,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      height: 340,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(color: blackColor),
-                            color: whiteColor,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(10),
-                            )),
-                        child: ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12)),
-                          child: LayoutBuilder(builder: (BuildContext context,
-                              BoxConstraints constraints) {
-                            return Container(
-                              width: Get.width,
-                              color: whiteColor,
-                              child: Obx(getPhotos),
-                            );
-                          }),
-                        ),
-                      ),
-                    ),
-                  ])),
-          const SizedBox(
-            width: 10,
+            color: maroonColor,
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            width: Get.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Text(
+                  'Add Item',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: whiteColor,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),
+                ),
+              ],
+            ),
           ),
-          Expanded(
-              child: Container(
-                  width: 600,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 50,
-                          child: ItemFormInputFieldWithIcon(
+          Wrap(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Item Sale',
+                    style: robotoBold.copyWith(color: blackColor, fontSize: 20),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Text(
+                    'Photo 0/10 - You can add up to 10 photos.',
+                    style:
+                        robotoMedium.copyWith(color: greyColor, fontSize: 15),
+                    textAlign: TextAlign.right,
+                  ),
+                  Wrap(children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      width: 550,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 350,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: greyColor),
+                                  color: whiteColor,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(10),
+                                  )),
+                              child: ClipRRect(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(12)),
+                                  child: Container(
+                                    width: Get.width,
+                                    color: whiteColor,
+                                    child: Obx(getPhotos),
+                                  )),
+                            ),
+                          ]),
+                    ),
+                    const SizedBox(
+                      width: 50,
+                    ),
+                    Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        width: 550,
+                        child: Column(children: <Widget>[
+                          ItemFormInputField(
                             controller:
                                 itemForSaleController.titleNameController,
                             labelText: 'Title',
-                            keyboardType: TextInputType.name,
+                            keyboardType: TextInputType.multiline,
                             onChanged: (value) {
                               return;
                             },
@@ -132,105 +119,112 @@ class _Content extends StatelessWidget {
                                 .titleNameController.text = value!,
                             validator: Validator().notEmpty,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        SizedBox(
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          ItemFormInputField(
+                            controller:
+                                itemForSaleController.descriptionController,
+                            labelText: 'Description',
+                            keyboardType: TextInputType.multiline,
+                            onChanged: (value) {
+                              return;
+                            },
+                            onSaved: (value) => itemForSaleController
+                                .descriptionController.text = value!,
+                            validator: Validator().notEmpty,
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          ItemFormInputField(
+                            controller:
+                                itemForSaleController.askingPriceController,
+                            labelText: 'Asking Price',
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              return;
+                            },
+                            onSaved: (value) => itemForSaleController
+                                .titleNameController.text = value!,
+                            validator: Validator().notEmpty,
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          SizedBox(
+                              child: CustomDropdown(
+                            hintText: 'Category',
+                            dropdownItems: category,
+                            onChanged: (item) =>
+                                itemForSaleController.category.value = item!,
+                            onSaved: (item) =>
+                                itemForSaleController.category.value = item!,
+                          )),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          SizedBox(
+                              child: CustomDropdown(
+                            hintText: 'Condition',
+                            dropdownItems: condition,
+                            onChanged: (item) =>
+                                itemForSaleController.condition.value = item!,
+                            onSaved: (item) =>
+                                itemForSaleController.condition.value = item!,
+                          )),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          ItemFormInputField(
+                            controller: itemForSaleController.brandController,
+                            labelText: 'Brand (Optional)',
+                            keyboardType: TextInputType.name,
+                            onChanged: (value) {
+                              return;
+                            },
+                            onSaved: (value) => itemForSaleController
+                                .brandController.text = value!,
+                            validator: Validator().notEmpty,
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          ItemFormInputField(
+                            controller: itemForSaleController
+                                .enddateofauctionController,
+                            labelText: 'End Date of Auction',
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              return;
+                            },
+                            onSaved: (value) => itemForSaleController
+                                .enddateofauctionController.text = value!,
+                            validator: Validator().notEmpty,
+                          ),
+                          const SizedBox(
                             height: 50,
-                            child: ItemFormInputFieldWithIcon(
-                              controller:
-                                  itemForSaleController.descriptionController,
-                              labelText: 'Description',
-                              keyboardType: TextInputType.name,
-                              onChanged: (value) {
-                                return;
-                              },
-                              onSaved: (value) => itemForSaleController
-                                  .descriptionController.text = value!,
-                              validator: Validator().notEmpty,
-                            )),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        SizedBox(
-                            height: 50,
-                            child: ItemFormInputFieldWithIcon(
-                              controller:
-                                  itemForSaleController.askingPriceController,
-                              labelText: 'Asking Price',
-                              keyboardType: TextInputType.name,
-                              onChanged: (value) {
-                                return;
-                              },
-                              onSaved: (value) => itemForSaleController
-                                  .askingPriceController.text = value!,
-                              validator: Validator().email,
-                            )),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Expanded(
-                            child: CustomDropdown(
-                          hintText: 'Category',
-                          dropdownItems: category,
-                          onChanged: (item) =>
-                              itemForSaleController.category.value = item!,
-                          onSaved: (item) =>
-                              itemForSaleController.category.value = item!,
-                        )),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Expanded(
-                            child: CustomDropdown(
-                          hintText: 'Condition',
-                          dropdownItems: condition,
-                          onChanged: (item) =>
-                              itemForSaleController.condition.value = item!,
-                          onSaved: (item) =>
-                              itemForSaleController.condition.value = item!,
-                        )),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        SizedBox(
-                            height: 50,
-                            child: ItemFormInputFieldWithIcon(
-                              controller: itemForSaleController.brandController,
-                              labelText: 'Brand (Optional)',
-                              keyboardType: TextInputType.name,
-                              onChanged: (value) {
-                                return;
-                              },
-                              onSaved: (value) => itemForSaleController
-                                  .brandController.text = value!,
-                              validator: Validator().email,
-                            )),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        SizedBox(
-                            height: 50,
-                            child: ItemFormInputFieldWithIcon(
-                              controller: itemForSaleController
-                                  .enddateofauctionController,
-                              labelText: 'End Date',
-                              keyboardType: TextInputType.name,
-                              onChanged: (value) {
-                                return;
-                              },
-                              onSaved: (value) => itemForSaleController
-                                  .enddateofauctionController.text = value!,
-                              validator: Validator().email,
-                            )),
-                        const SizedBox(
-                          height: 15,
-                        )
-                      ])))
-        ])
-      ]),
-    );
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: SizedBox(
+                              height: 40,
+                              width: 110,
+                              child: CustomButton(
+                                onTap: () {},
+                                text: 'Post Item',
+                                buttonColor: maroonColor,
+                                fontSize: 16,
+                              ),
+                            ),
+                          )
+                        ])),
+                  ]),
+                ],
+              ),
+            ),
+          ]),
+        ]));
   }
 
   Widget getPhotos() {
