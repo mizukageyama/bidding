@@ -21,6 +21,10 @@ class SideMenucontroller extends GetxController {
   //   return user.;
   // }
 
+  void reset() {
+    activeMenu.value = 'Dashboard';
+  }
+
   void changeActiveItem(String item) {
     activeMenu.value = item;
   }

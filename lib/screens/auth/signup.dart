@@ -145,6 +145,7 @@ class SignupScreen extends StatelessWidget {
                                           height: 15,
                                         ),
                                         FormInputFieldWithIcon(
+                                          capitalizedFirst: true,
                                           controller: authController
                                               .firstNameController,
                                           iconPrefix: Icons.person,
@@ -162,6 +163,7 @@ class SignupScreen extends StatelessWidget {
                                           height: 10,
                                         ),
                                         FormInputFieldWithIcon(
+                                          capitalizedFirst: true,
                                           controller:
                                               authController.lastNameController,
                                           iconPrefix: Icons.person,
@@ -195,8 +197,8 @@ class SignupScreen extends StatelessWidget {
                                         ),
                                         Obx(
                                           () => FormInputFieldWithIcon(
-                                            controller:
-                                                authController.regPwController,
+                                            controller: authController
+                                                .passwordController,
                                             iconPrefix: Icons.lock,
                                             suffixIcon: IconButton(
                                               onPressed: () {
@@ -216,7 +218,8 @@ class SignupScreen extends StatelessWidget {
                                               return;
                                             },
                                             onSaved: (value) => authController
-                                                .regPwController.text = value!,
+                                                .passwordController
+                                                .text = value!,
                                             maxLines: 1,
                                             textInputAction:
                                                 TextInputAction.done,
@@ -247,7 +250,8 @@ class SignupScreen extends StatelessWidget {
                                               }
                                               if (value !=
                                                   authController
-                                                      .regPwController.text) {
+                                                      .passwordController
+                                                      .text) {
                                                 return 'Password does not match';
                                               } else {
                                                 return null;
@@ -335,6 +339,10 @@ class SignupScreen extends StatelessWidget {
                                               onTap: () {
                                                 _registerFormKey.currentState!
                                                     .reset();
+                                                authController.idImage.value =
+                                                    '';
+                                                authController
+                                                    .form1Image.value = '';
                                               },
                                               text: 'Clear Form',
                                               buttonColor: maroonColor,

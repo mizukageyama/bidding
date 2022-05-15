@@ -8,6 +8,7 @@ class SideMenuCard extends StatelessWidget {
   SideMenuCard({Key? key, required this.menu}) : super(key: key);
   final MenuItem menu;
   final RxBool onHover = false.obs;
+
   final SideMenucontroller menucontroller = Get.find();
 
   @override
@@ -16,6 +17,9 @@ class SideMenuCard extends StatelessWidget {
       onTap: () {
         menucontroller.changeActiveItem(menu.name);
         menu.function();
+        if (menu.name == 'Logout') {
+          menucontroller.reset();
+        }
       },
       onHover: (value) => onHover.value = value,
       child: Obx(
