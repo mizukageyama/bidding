@@ -108,15 +108,14 @@ class _Content extends StatelessWidget {
                         width: 550,
                         child: Column(children: <Widget>[
                           ItemFormInputField(
-                            controller:
-                                itemForSaleController.titleNameController,
+                            controller: itemForSaleController.titleController,
                             labelText: 'Title',
                             keyboardType: TextInputType.multiline,
                             onChanged: (value) {
                               return;
                             },
                             onSaved: (value) => itemForSaleController
-                                .titleNameController.text = value!,
+                                .titleController.text = value!,
                             validator: Validator().notEmpty,
                           ),
                           const SizedBox(
@@ -146,7 +145,7 @@ class _Content extends StatelessWidget {
                               return;
                             },
                             onSaved: (value) => itemForSaleController
-                                .titleNameController.text = value!,
+                                .askingPriceController.text = value!,
                             validator: Validator().notEmpty,
                           ),
                           const SizedBox(
