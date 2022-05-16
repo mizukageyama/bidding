@@ -47,5 +47,9 @@ class AppPages {
     //   name: _Paths.ITEM_LIST,
     //   page: () => ItemForSaleScreen(),
     // ),
+    GetPage(
+      name: _Paths.TERMS_AND_CONDITION,
+      page: () => TermsAndCondition(),
+    ),
   ];
 }
