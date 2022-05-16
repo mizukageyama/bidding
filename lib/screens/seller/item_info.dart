@@ -189,14 +189,15 @@ class _Content extends StatelessWidget {
 
   Widget displayPrice() {
     if (bidsController.isDoneLoading.value && bidsController.bids.isNotEmpty) {
-      if (bidsController.approvedBid(bidsController.bids) != -1) {
+      int index = bidsController.approvedBid(bidsController.bids);
+      if (index != -1) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             displayInfo(
               'Highest Approved Bid',
-              '₱ ${bidsController.bids[0].ftAmount}',
+              '₱ ${bidsController.bids[index].ftAmount}',
               true,
             ),
             const SizedBox(

@@ -1,10 +1,14 @@
+import 'package:bidding/controllers/bids_controller.dart';
 import 'package:bidding/models/_models.dart';
+import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 
 class BidTile extends StatelessWidget {
-  const BidTile({Key? key, required this.bid, this.showAll = false})
+  BidTile({Key? key, required this.bid, this.showAll = false})
       : super(key: key);
+
+  final BidsController bidsController = Get.find();
   final Bid bid;
   final bool showAll;
 
@@ -99,8 +103,8 @@ class BidTile extends StatelessWidget {
                     size: 18,
                   )
                 : InkWell(
-                    onTap: () {
-                      //update isApproved = true
+                    onTap: () async {
+                      await bidsController.approveBid(bid.bidId);
                     },
                     child: Text(
                       'Approve',

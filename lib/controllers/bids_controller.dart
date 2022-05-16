@@ -41,4 +41,8 @@ class BidsController extends GetxController {
     }
     return -1;
   }
+
+  Future<void> approveBid(String bidId) async {
+    await firestore.collection('bids').doc(bidId).update({'is_approved': true});
+  }
 }

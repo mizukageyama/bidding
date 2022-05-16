@@ -1,6 +1,7 @@
 import 'package:bidding/controllers/_controllers.dart';
 import 'package:bidding/models/menu_model.dart';
 import 'package:bidding/screens/seller/_seller_screens.dart';
+import 'package:bidding/screens/seller/sold_item_list.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:flutter/material.dart';
 
@@ -25,13 +26,13 @@ List<MenuItem> sellerSideMenuItem = [
   MenuItem(
     name: 'Sold Items',
     iconPath: 'icons/icon_auction.png',
-    function: () => Get.to(() => const SellerHome()),
+    function: () => Get.to(() => const SoldItemList()),
   ),
-  MenuItem(
-    name: 'Settings',
-    icon: Icons.settings,
-    function: () => Get.to(() => const SellerHome()),
-  ),
+  // MenuItem(
+  //   name: 'Settings',
+  //   icon: Icons.settings,
+  //   function: () => Get.to(() => const SellerHome()),
+  // ),
   MenuItem(
     name: 'Logout',
     icon: Icons.logout,
