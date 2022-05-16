@@ -18,7 +18,7 @@ List<MenuItem> sellerSideMenuItem = [
     function: () => Get.to(() => const ItemListScreen()),
   ),
   MenuItem(
-    name: 'Add Item for Sale',
+    name: 'Add Item for Auction',
     icon: Icons.add_rounded,
     function: () => Get.to(() => const AddItemForm()),
   ),

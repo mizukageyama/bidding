@@ -61,4 +61,12 @@ class AddItemFormController extends GetxController {
   void pickForItemSale() {
     itemPicker.pickMultiImage(itemImages);
   }
+
+  void addOnImages() async {
+    final RxList<XFile> addOn = RxList<XFile>();
+    await itemPicker.pickMultiImage(addOn);
+    final int leftCount = 10 - itemImages.length;
+    final addOnLimited = RxList<XFile>.from(addOn.getRange(0, leftCount));
+    itemImages.addAll(addOnLimited);
+  }
 }
