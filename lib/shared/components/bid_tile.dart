@@ -1,5 +1,4 @@
 import 'package:bidding/models/_models.dart';
-import 'package:bidding/shared/constants/firebase.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 
@@ -9,25 +8,17 @@ class BidTile extends StatelessWidget {
   final Bid bid;
   final bool showAll;
 
-  Future<void> _getBidder() async {
-    bid.bidderInfo = await firestore
-        .collection('users')
-        .doc(bid.bidderId)
-        .get()
-        .then((doc) => UserModel.fromJson(doc.data()!));
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _getBidder(),
+        future: bid.getBidderInfo(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return showAll ? longTile(bid) : shortTile(bid);
           }
           return const SizedBox(
-            width: 0,
             height: 0,
+            width: 0,
           );
         });
   }
@@ -72,6 +63,55 @@ class BidTile extends StatelessWidget {
   }
 
   Widget longTile(Bid bid) {
-    return Row();
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              '${bid.bidderInfo!.firstName} ${bid.bidderInfo!.lastName}',
+              style: robotoRegular.copyWith(color: greyColor),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Text(
+              '₱  ${bid.ftAmount}',
+              style: robotoRegular.copyWith(color: greyColor),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              bid.formattedDT,
+              style: robotoRegular.copyWith(color: greyColor),
+            ),
+          ),
+          SizedBox(
+            width: 70,
+            child: bid.isApproved
+                ? const Icon(
+                    Icons.check_circle_rounded,
+                    color: orangeColor,
+                    size: 18,
+                  )
+                : InkWell(
+                    onTap: () {
+                      //update isApproved = true
+                    },
+                    child: Text(
+                      'Approve',
+                      style: robotoRegular.copyWith(
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+          )
+        ],
+      ),
+    );
   }
 }

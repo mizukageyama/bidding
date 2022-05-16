@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bidding/shared/services/image_upload.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:bidding/screens/seller/home.dart';
 import 'package:bidding/shared/_packages_imports.dart';
@@ -35,7 +36,6 @@ class AuthController extends GetxController {
   final RxString form1Image = ''.obs;
   TextEditingController confirmPwController = TextEditingController();
   TextEditingController idNumberController = TextEditingController();
-  TextEditingController regPwController = TextEditingController();
   final ImagePickerService picker = ImagePickerService();
   final RxString userType = ''.obs;
   final RxString idImage = ''.obs;
@@ -124,14 +124,22 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<void> clearControllers() async {
+    log.i('_clearControllers | User Input after auth is cleared');
+    emailController.clear();
+    passwordController.clear();
+  }
+
   //For Registration ---------------------------------
   Future<void> submitRegistration(BuildContext context) async {
-    //check if nakapick ug photos, then
     if (form1Image.value != '' && idImage.value != '') {
-      log.i('Proceed to register');
-      //await registerUser(context);
+      await registerUser(context);
     } else {
-      log.i('Please select ID');
+      showSimpleDialog(
+        title: 'All fields are required',
+        description: 'Please provide your ID and Form 1.',
+        onTapFunc: () => dismissDialog(),
+      );
     }
   }
 
@@ -146,6 +154,7 @@ class AuthController extends GetxController {
       password: passwordController.text.trim(),
     )
         .then((result) async {
+      log.i('goind to create user');
       await _createUser(result.user!.uid, context);
     }).onError((error, stackTrace) async {
       dismissDialog();
@@ -160,7 +169,7 @@ class AuthController extends GetxController {
 
   Future<void> _createUser(String _userID, BuildContext context) async {
     await uploadPhotos(_userID);
-
+    log.i('done upload');
     await firestore.collection('users').doc(_userID).set(<String, dynamic>{
       'user_id': _userID,
       'email': emailController.text.trim(),
@@ -168,22 +177,35 @@ class AuthController extends GetxController {
       'last_name': lastNameController.text.trim(),
       'user_role': userType.value,
       'id_number': idNumberController.text.trim(),
-      'form_1': form1Url,
-      'um_id': umIdUrl,
+      'form_1': form1Url.value,
+      'um_id': umIdUrl.value,
     }).then((value) async {
       dismissDialog();
-      signInWithEmailAndPassword(context);
+      await signInWithEmailAndPassword(context);
+      registrationSuccess();
     });
   }
 
   Future<void> uploadPhotos(String id) async {
+    log.i('uploading photos');
     if (kIsWeb) {
-      form1Url.value =
-          await uploadSinglePhotoOnWeb(imgForm1File!, 'Form-1', id);
-      umIdUrl.value = await uploadSinglePhotoOnWeb(imgIdFile!, 'UM-ID', id);
+      form1Url.value = await Upload.photoToWeb(
+        image: imgForm1File!,
+        saveAs: 'user/$id/Form-1',
+      );
+      umIdUrl.value = await Upload.photoToWeb(
+        image: imgIdFile!,
+        saveAs: 'user/$id/UM-ID',
+      );
     } else {
-      form1Url.value = await uploadSinglePhoto(form1Image.value, 'Form-1', id);
-      umIdUrl.value = await uploadSinglePhoto(idImage.value, 'UM-ID', id);
+      form1Url.value = await Upload.photo(
+        filePathID: form1Image.value,
+        saveAs: 'user/$id/Form-1',
+      );
+      umIdUrl.value = await Upload.photo(
+        filePathID: idImage.value,
+        saveAs: 'user/$id/UM-ID',
+      );
     }
   }
 
@@ -195,40 +217,17 @@ class AuthController extends GetxController {
     imgForm1File = await picker.pickImageOnWeb(form1Image);
   }
 
-  Future<String> uploadSinglePhoto(
-      String filePathID, String fileName, String id) async {
-    String downloadUrl = '';
-    final ref = storageRef.child('user/$id/$fileName');
-    final uploadTask = ref.putFile(File(filePathID));
-    await uploadTask.then((res) async {
-      downloadUrl = await res.ref.getDownloadURL();
-    });
-    return downloadUrl;
-  }
-
-  Future<String> uploadSinglePhotoOnWeb(
-      XFile image, String fileName, String id) async {
-    String downloadUrl = '';
-    final fileBytes = image.readAsBytes();
-    final metadata = firebase_storage.SettableMetadata(
-        contentType: 'image/jpeg',
-        customMetadata: {'picked-file-path': image.path});
-    final ref = storageRef.child('user/$id/$fileName');
-    final uploadTask = ref.putData(await fileBytes, metadata);
-    await uploadTask.then((res) async {
-      downloadUrl = await res.ref.getDownloadURL();
-    });
-    return downloadUrl;
-  }
-
-  Future<void> clearControllers() async {
-    log.i('_clearControllers | User Input on authentication is cleared');
-    emailController.clear();
-    passwordController.clear();
+  Future<void> registrationSuccess() async {
+    log.i('_clearControllers | User Input after registration');
     firstNameController.clear();
     lastNameController.clear();
     confirmPwController.clear();
     idNumberController.clear();
+    userType.value = '';
+    idImage.value = '';
+    form1Image.value = '';
+    form1Url.value = '';
+    umIdUrl.value = '';
   }
 
   //Change Password and Forgot Password ---------------------------------

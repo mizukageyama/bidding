@@ -31,15 +31,10 @@ class _Content extends StatelessWidget {
 
   final Item item;
   final BidsController bidsController = Get.put(BidsController());
-  final RxList<Bid> bids = RxList.empty(growable: true);
-  final RxBool isDoneLoading = false.obs;
 
   @override
   Widget build(BuildContext context) {
-    bids.bindStream(bidsController.getBids(item.itemId));
-    Future.delayed(const Duration(seconds: 5), () {
-      isDoneLoading.value = true;
-    });
+    bidsController.bindBidList(item.itemId);
 
     return Container(
       height: Get.height,
@@ -193,15 +188,15 @@ class _Content extends StatelessWidget {
   }
 
   Widget displayPrice() {
-    if (isDoneLoading.value && bids.isNotEmpty) {
-      if (bidsController.approvedBid(bids) != -1) {
+    if (bidsController.isDoneLoading.value && bidsController.bids.isNotEmpty) {
+      if (bidsController.approvedBid(bidsController.bids) != -1) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             displayInfo(
               'Highest Approved Bid',
-              '₱ ${bids[0].ftAmount}',
+              '₱ ${bidsController.bids[0].ftAmount}',
               true,
             ),
             const SizedBox(
@@ -250,7 +245,8 @@ class _Content extends StatelessWidget {
           )
         ],
       );
-    } else if (isDoneLoading.value && bids.isEmpty) {
+    } else if (bidsController.isDoneLoading.value &&
+        bidsController.bids.isEmpty) {
       return displayInfo(
         'Asking Price',
         '₱ ${item.ftAmount}',
@@ -265,7 +261,7 @@ class _Content extends StatelessWidget {
   }
 
   Widget displayBids() {
-    if (isDoneLoading.value && bids.isNotEmpty) {
+    if (bidsController.isDoneLoading.value && bidsController.bids.isNotEmpty) {
       return SizedBox(
         width: Get.height * .65,
         child: Stack(
@@ -283,10 +279,12 @@ class _Content extends StatelessWidget {
                 primary: false,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: bids.length > 5 ? 5 : bids.length,
+                itemCount: bidsController.bids.length > 5
+                    ? 5
+                    : bidsController.bids.length,
                 itemBuilder: (context, index) {
                   return BidTile(
-                    bid: bids[index],
+                    bid: bidsController.bids[index],
                   );
                 },
               ),
@@ -317,7 +315,8 @@ class _Content extends StatelessWidget {
           ],
         ),
       );
-    } else if (isDoneLoading.value && bids.isEmpty) {
+    } else if (bidsController.isDoneLoading.value &&
+        bidsController.bids.isEmpty) {
       return const InfoDisplay(message: 'No bids for this item at the moment');
     }
     return const SizedBox(

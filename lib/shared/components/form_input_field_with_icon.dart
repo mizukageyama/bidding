@@ -15,6 +15,7 @@ class FormInputFieldWithIcon extends StatelessWidget {
       this.maxLines,
       this.suffixIcon,
       this.hideLabelTyping = true,
+      this.capitalizedFirst = false,
       required this.onChanged,
       this.onSaved})
       : super(key: key);
@@ -32,6 +33,7 @@ class FormInputFieldWithIcon extends StatelessWidget {
   final void Function(String) onChanged;
   final void Function(String?)? onSaved;
   final bool hideLabelTyping;
+  final bool capitalizedFirst;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +70,9 @@ class FormInputFieldWithIcon extends StatelessWidget {
         obscureText: obscureText,
         maxLines: 1,
         minLines: minLines,
+        textCapitalization: capitalizedFirst
+            ? TextCapitalization.words
+            : TextCapitalization.none,
         validator: validator,
       ),
     );

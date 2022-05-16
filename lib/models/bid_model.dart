@@ -1,5 +1,6 @@
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
+import 'package:bidding/shared/constants/firebase.dart';
 import 'package:intl/intl.dart';
 
 class Bid {
@@ -18,17 +19,17 @@ class Bid {
     required this.amount,
     required this.isApproved,
     required this.bidDate,
+    this.bidderInfo,
   });
 
   factory Bid.fromJson(Map<String, dynamic> json) {
     return Bid(
-      bidId: json['bid_id'] as String,
-      itemId: json['item_id'] as String,
-      bidderId: json['bidder_id'] as String,
-      amount: json['amount'] as double,
-      bidDate: json['bid_date'] as Timestamp,
-      isApproved: json['is_approved'] as bool,
-    );
+        bidId: json['bid_id'] as String,
+        itemId: json['item_id'] as String,
+        bidderId: json['bidder_id'] as String,
+        amount: json['amount'] as double,
+        bidDate: json['bid_date'] as Timestamp,
+        isApproved: json['is_approved'] as bool);
   }
 
   Map<String, dynamic> toJson() => {
@@ -48,6 +49,19 @@ class Bid {
   get ftAmount {
     NumberFormat f = NumberFormat("#,##0.00", "en_US");
     return f.format(amount);
+  }
+
+  get formattedDT {
+    final dt = bidDate.toDate();
+    return '${DateFormat.yMMMd().format(dt)} (${DateFormat.jm().format(dt)})';
+  }
+
+  Future<void> getBidderInfo() async {
+    bidderInfo = await firestore
+        .collection('users')
+        .doc(bidderId)
+        .get()
+        .then((doc) => UserModel.fromJson(doc.data()!));
   }
 }
 
@@ -89,5 +103,10 @@ class MyBid {
   get ftAmount {
     NumberFormat f = NumberFormat("#,##0.00", "en_US");
     return f.format(amount);
+  }
+
+  get formattedDT {
+    final dt = bidDate.toDate();
+    return '${DateFormat.yMMMd().format(dt)} (${DateFormat.jm().format(dt)})';
   }
 }

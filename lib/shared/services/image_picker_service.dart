@@ -21,13 +21,19 @@ class ImagePickerService {
       path.value = pickedImage.path;
       return pickedImage;
     }
+    return null;
   }
 
   Future<void> pickMultiImage(RxList<XFile> images) async {
-    log.i('pickMultiImage called here');
+    log.i('pickMultiImage called here | limits 10 images');
     final pickedFileList = await ImagePicker().pickMultiImage();
     if (pickedFileList != null) {
-      images.value = pickedFileList;
+      if (pickedFileList.length > 10) {
+        final newList = List<XFile>.from(pickedFileList.getRange(0, 10));
+        images.value = newList;
+      } else {
+        images.value = pickedFileList;
+      }
     }
   }
 }

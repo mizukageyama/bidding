@@ -1,4 +1,6 @@
+import 'package:bidding/controllers/_controllers.dart';
 import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/components/bid_tile.dart';
 import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:flutter/material.dart';
@@ -9,21 +11,24 @@ class BidListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ResponsiveView(const _Content(), sellerSideMenuItem),
+      body: ResponsiveView(_Content(), sellerSideMenuItem),
     );
   }
 }
 
 class _Content extends StatelessWidget {
-  const _Content({Key? key}) : super(key: key);
+  _Content({Key? key}) : super(key: key);
+  final BidsController bidsController = Get.put(BidsController());
 
   @override
   Widget build(BuildContext context) {
+    bidsController.bindBidList('MsRyfhQOhK2IwiSaNT94');
     return Container(
       height: Get.height,
       width: Get.width,
-      color: whiteColor,
-      child: ListView(
+      color: const Color(0xFFF5F5F5),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             color: maroonColor,
@@ -45,7 +50,7 @@ class _Content extends StatelessWidget {
                   width: 15,
                 ),
                 const Text(
-                  'Bids',
+                  'Bid History',
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.start,
                   style: TextStyle(
@@ -57,7 +62,73 @@ class _Content extends StatelessWidget {
               ],
             ),
           ),
-          //diria ang sulod
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                color: whiteColor,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              'Bidder',
+                              style: robotoRegular.copyWith(color: greyColor),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              'Amount',
+                              style: robotoRegular.copyWith(color: greyColor),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Text(
+                              'Bid Date',
+                              style: robotoRegular.copyWith(color: greyColor),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 70,
+                            child: Text(
+                              'Action',
+                              style: robotoRegular.copyWith(color: greyColor),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Obx(
+                        () => ListView.separated(
+                          padding: const EdgeInsets.only(top: 10),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return BidTile(
+                              bid: bidsController.bids[index],
+                              showAll: true,
+                            );
+                          },
+                          separatorBuilder: (context, index) => const Divider(),
+                          itemCount: bidsController.bids.length,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

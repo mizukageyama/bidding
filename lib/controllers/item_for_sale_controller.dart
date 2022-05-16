@@ -118,4 +118,12 @@ class AddItemFormController extends GetxController {
     category.value = '';
     condition.value = '';
   }
+
+  void addOnImages() async {
+    final RxList<XFile> addOn = RxList<XFile>();
+    await itemPicker.pickMultiImage(addOn);
+    final int leftCount = 10 - itemImages.length;
+    final addOnLimited = RxList<XFile>.from(addOn.getRange(0, leftCount));
+    itemImages.addAll(addOnLimited);
+  }
 }

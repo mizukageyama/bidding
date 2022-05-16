@@ -5,11 +5,20 @@ import 'package:bidding/shared/services/_services.dart';
 
 class BidsController extends GetxController {
   final log = getLogger('Bids Controller');
+  final RxList<Bid> bids = RxList.empty(growable: true);
+  final RxBool isDoneLoading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     log.i('onInit | Bids Controller');
+  }
+
+  void bindBidList(String itemId) {
+    bids.bindStream(getBids(itemId));
+    Future.delayed(const Duration(seconds: 3), () {
+      isDoneLoading.value = true;
+    });
   }
 
   Stream<List<Bid>> getBids(String itemId) {
