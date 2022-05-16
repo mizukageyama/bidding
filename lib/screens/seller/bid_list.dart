@@ -18,11 +18,10 @@ class BidListScreen extends StatelessWidget {
 
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
-  final BidsController bidsController = Get.put(BidsController());
+  final BidsController bidsController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    bidsController.bindBidList('MsRyfhQOhK2IwiSaNT94');
     return Container(
       height: Get.height,
       width: Get.width,
