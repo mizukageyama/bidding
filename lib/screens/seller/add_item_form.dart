@@ -7,6 +7,7 @@ import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/services/_services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AddItemForm extends StatelessWidget {
   const AddItemForm({Key? key}) : super(key: key);
@@ -25,6 +26,9 @@ class _Content extends StatelessWidget {
   final AddItemFormController itemForSaleController =
       Get.put(AddItemFormController());
   final _addItemFormkey = GlobalKey<FormState>();
+  Rx<DateTime> selectedDate = DateTime.now().obs;
+  Rx<TimeOfDay> selectedTime = TimeOfDay.now().obs;
+  RxString time = ''.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -244,6 +248,80 @@ class _Content extends StatelessWidget {
                                           validator: Validator().notEmpty,
                                         ),
                                         const SizedBox(
+                                          height: 15,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height: 65,
+                                              width: 200,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: greyColor),
+                                                color: whiteColor,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(12)),
+                                                child: Container(
+                                                    width: Get.width,
+                                                    color: whiteColor,
+                                                    child: getDate(context)),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 30,
+                                            ),
+                                            Obx(() => Text(DateFormat.yMMMd()
+                                                .format(selectedDate.value))),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 15),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 10),
+                                              height: 65,
+                                              width: 200,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: greyColor),
+                                                color: whiteColor,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(12)),
+                                                child: Container(
+                                                  width: Get.width,
+                                                  color: whiteColor,
+                                                  child: getTime(context),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 30,
+                                            ),
+                                            Obx(() => Text(time.value)),
+                                          ],
+                                        ),
+                                        const SizedBox(
                                           height: 50,
                                         ),
                                         Align(
@@ -278,6 +356,79 @@ class _Content extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget getDate(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        DateTime? selected = await showDatePicker(
+          context: context,
+          initialDate: selectedDate.value,
+          firstDate: DateTime(2010),
+          lastDate: DateTime(2025),
+        );
+
+        if (selected != null) {
+          selectedDate.value = selected;
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Icon(
+              Icons.calendar_month,
+              size: 35,
+              color: blackColor,
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              'End Date of Auction',
+              style: robotoBold.copyWith(color: blackColor, fontSize: 14),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getTime(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        final TimeOfDay? timeOfDay = await showTimePicker(
+          context: context,
+          initialTime: selectedTime.value,
+          initialEntryMode: TimePickerEntryMode.dial,
+        );
+        if (timeOfDay != null) {
+          time.value = timeOfDay.format(context);
+          selectedTime.value = timeOfDay;
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Icon(
+              Icons.schedule,
+              size: 35,
+              color: blackColor,
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              'Time',
+              style: robotoBold.copyWith(color: blackColor, fontSize: 14),
+            )
+          ],
+        ),
       ),
     );
   }

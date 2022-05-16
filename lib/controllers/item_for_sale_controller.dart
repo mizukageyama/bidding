@@ -1,18 +1,13 @@
-import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:bidding/controllers/auth_controller.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
 import 'package:bidding/shared/services/_services.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AddItemFormController extends GetxController {
   final log = getLogger('Add Item Form Controller');
 
   static AuthController authController = Get.find();
-  final fetchedData = authController.userModel.value;
-  final String userID = auth.currentUser!.uid;
 
   //Input Data From Item Form
   TextEditingController titleController = TextEditingController();
@@ -33,7 +28,6 @@ class AddItemFormController extends GetxController {
   final uuid = const Uuid();
 
   // Future<void> postItem(BuildContext context) async {
-  //   //check if nakapick ug photos, then
   //   if (hasitemImagesSelected()) {
   //     log.i('Post Item');
   //     await uploadItemImgs();
@@ -44,7 +38,7 @@ class AddItemFormController extends GetxController {
   // }
 
   Future<void> addItemSale() async {
-    log.i('Saving item sale data on id: $userID');
+    // log.i('Saving item sale data on id: $_userID');
 
     final String generatedItemId = uuid.v4();
 
@@ -61,49 +55,6 @@ class AddItemFormController extends GetxController {
       'images': itemImageUrl.value,
     });
   }
-
-  // Future<void> uploadItemImgs() async {
-  //   if (kIsWeb) {
-  //     await uploadMultiImageWeb();
-  //   } else {
-  //     await uploadMultiImage();
-  //   }
-  // }
-
-  // bool hasitemImagesSelected() {
-  //   if (itemImages.isNotEmpty) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
-  // Future<void> uploadMultiImage() async {
-  //   for (var i = 0; i < itemImages.length; i++) {
-  //     final ref = storageRef.child('user/$userID');
-  //     await ref.putFile(File(itemImages[i].path)).whenComplete(() async {
-  //       await ref.getDownloadURL().then((value) {
-  //         listitemImgURL.value += '$value>>>';
-  //       });
-  //     });
-  //     //log.i('$i -> fileName: $i-Presc$fileName');
-  //   }
-  // }
-
-  // Future<void> uploadMultiImageWeb() async {
-  //   for (var i = 0; i < itemImages.length; i++) {
-  //     final fileBytes = itemImages[i].readAsBytes();
-  //     final ref = storageRef.child('user/$userID');
-  //     final metadata = firebase_storage.SettableMetadata(
-  //         contentType: 'image/jpeg',
-  //         customMetadata: {'picked-file-path': itemImages[i].path});
-
-  //     await ref.putData(await fileBytes, metadata).whenComplete(() async {
-  //       await ref.getDownloadURL().then((value) {
-  //         listitemImgURL.value += '$value>>>';
-  //       });
-  //     });
-  //   }
-  // }
 
   void pickForItemSale() {
     itemPicker.pickMultiImage(itemImages);
