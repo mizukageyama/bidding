@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 
 class ItemFormInputField extends StatelessWidget {
   const ItemFormInputField(
-      {required this.controller,
+      {Key? key,
+      required this.controller,
       required this.labelText,
-      required this.validator,
+      this.validator,
       this.textInputAction = TextInputAction.next,
       this.keyboardType = TextInputType.text,
       this.obscureText = false,
@@ -13,7 +14,8 @@ class ItemFormInputField extends StatelessWidget {
       this.maxLines,
       this.hideLabelTyping = false,
       required this.onChanged,
-      required this.onSaved});
+      required this.onSaved})
+      : super(key: key);
 
   final TextEditingController controller;
   final String labelText;
@@ -43,6 +45,7 @@ class ItemFormInputField extends StatelessWidget {
           floatingLabelBehavior: hideLabelTyping
               ? FloatingLabelBehavior.never
               : FloatingLabelBehavior.auto,
+          contentPadding: const EdgeInsets.all(10),
           border: OutlineInputBorder(
             borderSide: const BorderSide(width: 1, color: Colors.black),
             borderRadius: BorderRadius.circular(10),

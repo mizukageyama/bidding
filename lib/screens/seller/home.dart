@@ -23,7 +23,7 @@ class Content extends StatelessWidget {
       height: Get.height,
       width: Get.width,
       color: whiteColor,
-      child: ListView(
+      child: Column(
         children: [
           Container(
             color: maroonColor,

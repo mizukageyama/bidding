@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:bidding/controllers/auth_controller.dart';
-import 'package:bidding/screens/auth/_auth_screens.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/components/_components.dart';
+import 'package:bidding/shared/components/terms_and_condition.dart';
 import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:bidding/shared/services/_services.dart';
@@ -85,14 +85,14 @@ class SignupScreen extends StatelessWidget {
                                 textAlign: TextAlign.right,
                               ),
                             ),
-                            Wrap(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 12, horizontal: 20),
-                                  width: 510,
-                                  child: Form(
-                                    key: _registerFormKey,
+                            Form(
+                              key: _registerFormKey,
+                              child: Wrap(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12, horizontal: 20),
+                                    width: 510,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
@@ -117,6 +117,14 @@ class SignupScreen extends StatelessWidget {
                                                 onSaved: (item) =>
                                                     authController
                                                         .userType.value = item!,
+                                                validator: (value) {
+                                                  if (authController
+                                                          .userType.value ==
+                                                      '') {
+                                                    return 'This is a required field';
+                                                  }
+                                                  return null;
+                                                },
                                               ),
                                             ),
                                             const SizedBox(
@@ -238,8 +246,7 @@ class SignupScreen extends StatelessWidget {
                                                     !confirmPwObscure.value;
                                               },
                                               icon: Icon(
-                                                authController
-                                                        .isObscureText2!.value
+                                                confirmPwObscure!.value
                                                     ? Icons.visibility
                                                     : Icons.visibility_off,
                                               ),
@@ -270,135 +277,152 @@ class SignupScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 12, horizontal: 20),
-                                  width: 520,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: Container(
-                                              height: 310,
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Colors.grey),
-                                                  color: whiteColor,
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                    Radius.circular(12),
-                                                  )),
-                                              child: ClipRRect(
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(12)),
-                                                  child: Obx(getUMID)),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12, horizontal: 20),
+                                    width: 520,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: Container(
+                                                height: 310,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.grey),
+                                                    color: whiteColor,
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                      Radius.circular(12),
+                                                    )),
+                                                child: ClipRRect(
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(
+                                                                12)),
+                                                    child: Obx(getUMID)),
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            width: 30,
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              height: 310,
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    color: Colors.grey,
-                                                  ),
-                                                  color: whiteColor,
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                    Radius.circular(12),
-                                                  )),
-                                              child: ClipRRect(
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(12)),
-                                                  child: Obx(getForm1)),
+                                            const SizedBox(
+                                              width: 30,
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      CheckboxFormField(
-                                        title: BottomTextWidget(
-                                            onTap: () {
-                                              if (kIsWeb) {
-                                                showDialog(
+                                            Expanded(
+                                              child: Container(
+                                                height: 310,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      color: Colors.grey,
+                                                    ),
+                                                    color: whiteColor,
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                      Radius.circular(12),
+                                                    )),
+                                                child: ClipRRect(
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(
+                                                                12)),
+                                                    child: Obx(getForm1)),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        CheckboxFormField(
+                                          title: Row(
+                                            children: [
+                                              Text(
+                                                'I agree to ',
+                                                style: robotoRegular.copyWith(
+                                                    fontSize: 13,
+                                                    color: blackColor),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  showDialog(
                                                     context: context,
                                                     builder: (context) =>
-                                                        termsAndCondition(
-                                                            context));
-                                              } else {
-                                                Get.to(
-                                                    () => TermsAndCondition());
-                                              }
-                                            },
-                                            text1: 'I agree to',
-                                            text2: 'Terms & Condition'),
-                                        validator: (value) {
-                                          if (value == false) {
-                                            return 'Please check';
-                                          }
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          SizedBox(
-                                            height: 40,
-                                            width: 110,
-                                            child: CustomButton(
-                                              onTap: () {
-                                                _registerFormKey.currentState!
-                                                    .reset();
-                                                authController.idImage.value =
-                                                    '';
-                                                authController
-                                                    .form1Image.value = '';
-                                              },
-                                              text: 'Clear Form',
-                                              buttonColor: maroonColor,
-                                              fontSize: 16,
-                                            ),
+                                                        tACDialog(context),
+                                                  );
+                                                },
+                                                child: Text(
+                                                  'Terms & Condition',
+                                                  style: robotoMedium.copyWith(
+                                                      fontSize: 13,
+                                                      color: lightblueColor),
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          SizedBox(
-                                            height: 40,
-                                            width: 110,
-                                            child: CustomButton(
-                                              onTap: () {
-                                                if (_registerFormKey
-                                                    .currentState!
-                                                    .validate()) {
+                                          validator: (value) {
+                                            if (!value!) {
+                                              return 'This is a required field';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            SizedBox(
+                                              height: 40,
+                                              width: 110,
+                                              child: CustomButton(
+                                                onTap: () {
+                                                  _registerFormKey.currentState!
+                                                      .reset();
                                                   authController
-                                                      .submitRegistration(
-                                                          context);
-                                                }
-                                              },
-                                              text: 'Register',
-                                              buttonColor: maroonColor,
-                                              fontSize: 16,
+                                                      .userType.value = '';
+                                                  authController.idImage.value =
+                                                      '';
+                                                  authController
+                                                      .form1Image.value = '';
+                                                },
+                                                text: 'Clear Form',
+                                                buttonColor: maroonColor,
+                                                fontSize: 16,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            SizedBox(
+                                              height: 40,
+                                              width: 110,
+                                              child: CustomButton(
+                                                onTap: () {
+                                                  if (_registerFormKey
+                                                      .currentState!
+                                                      .validate()) {
+                                                    authController
+                                                        .submitRegistration(
+                                                            context);
+                                                  }
+                                                },
+                                                text: 'Register',
+                                                buttonColor: maroonColor,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -414,72 +438,15 @@ class SignupScreen extends StatelessWidget {
     );
   }
 
-  Widget termsAndCondition(BuildContext context) {
+  Widget tACDialog(BuildContext context) {
     return SimpleDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 20,
-          horizontal: 40,
-        ),
-        children: [
-          SizedBox(
-            width: Get.width * .4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(height: 10),
-                Text(
-                  'Terms & Conditions',
-                  style: robotoBold.copyWith(color: blackColor, fontSize: 24),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'These terms and conditions outline the rules and regulators for the use of Bidding Online Application. By accessing this application, we assume you accept these terms and conditions. Do not continue to use this application if you do not agree to take all of the terms and conditions stated on this page. The following terminology applies to these Terms & Conditions, Privacy Policy and Disclaimer Notice and all Agreements: Bidding Online (“us”, “we”, or “our”) operates http://www.BiddingOnline.com. This page informs you of our terms & condition regarding the collection, use and disclosure of Personal Information we receive from users of the application.',
-                  textAlign: TextAlign.justify,
-                  style:
-                      robotoRegular.copyWith(color: blackColor, fontSize: 20),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'Privacy Policy',
-                  style: robotoBold.copyWith(color: blackColor, fontSize: 24),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'We use your Personal Information only for providing and improving the application. By using this application, you agree to the collection and use of information in accordance with this policy.',
-                  textAlign: TextAlign.justify,
-                  style:
-                      robotoRegular.copyWith(color: blackColor, fontSize: 20),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'Information Collection and Use',
-                  style: robotoBold.copyWith(color: blackColor, fontSize: 24),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'While using our application, we may ask you to provide us with certain personally identifiable information that can be used to contact or identified you. Personally identifiable information may include, but is not limited to your name ("Personal Information").',
-                  textAlign: TextAlign.justify,
-                  style:
-                      robotoRegular.copyWith(color: blackColor, fontSize: 20),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'Termination',
-                  style: robotoBold.copyWith(color: blackColor, fontSize: 24),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'We may terminate or suspend access to our Service Immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.',
-                  textAlign: TextAlign.justify,
-                  style:
-                      robotoRegular.copyWith(color: blackColor, fontSize: 20),
-                ),
-                const SizedBox(height: 8)
-              ],
-            ),
-          )
-        ]);
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      contentPadding: const EdgeInsets.symmetric(
+        vertical: 20,
+        horizontal: 40,
+      ),
+      children: const [TermsAndCondition()],
+    );
   }
 
   Widget getUMID() {

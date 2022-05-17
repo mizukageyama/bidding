@@ -1,59 +1,128 @@
 import 'package:bidding/controllers/auth_controller.dart';
+import 'package:bidding/models/user_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
 import 'package:bidding/shared/services/_services.dart';
+import 'package:bidding/shared/services/image_upload.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AddItemFormController extends GetxController {
   final log = getLogger('Add Item Form Controller');
 
-  static AuthController authController = Get.find();
+  static final AuthController authController = Get.find();
+  //final UserModel user = authController.userModel.value!;
+  final ImagePickerService itemPicker = ImagePickerService();
+  final uuid = const Uuid();
 
   //Input Data From Item Form
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController askingPriceController = TextEditingController();
   TextEditingController brandController = TextEditingController();
-  TextEditingController enddateofauctionController = TextEditingController();
-  final RxList<XFile> itemImages = RxList<XFile>();
-  final RxString category = ''.obs;
+  final RxSet<String> category = <String>{}.obs;
   final RxString condition = ''.obs;
 
-  //images
-  XFile? imgItemFile;
-  final RxString itemImageUrl = ''.obs;
-  final RxString listitemImgURL = ''.obs;
-  final ImagePickerService itemPicker = ImagePickerService();
+  //Date and Time Input
+  final Rx<DateTime> selectedDate = DateTime.now().obs;
+  final Rx<TimeOfDay> selectedTime = TimeOfDay.now().obs;
+  final RxString time = ''.obs;
+  final RxString date = ''.obs;
 
-  final uuid = const Uuid();
+  //Images
+  final RxList<XFile> itemImages = RxList<XFile>();
+  final RxList<String> itemImageUrls = RxList.empty(growable: true);
 
-  // Future<void> postItem(BuildContext context) async {
-  //   if (hasitemImagesSelected()) {
-  //     log.i('Post Item');
-  //     await uploadItemImgs();
-  //     await addItemSale();
-  //   } else {
-  //     log.i('Please select Image');
-  //   }
-  // }
+  Future<void> postItem(GlobalKey<FormState> key) async {
+    if (itemImages.isNotEmpty) {
+      if (date.isEmpty || time.isEmpty) {
+        showSimpleDialog(
+          title: 'All fields are required',
+          description:
+              'Please provide end date and time for your item to auction.',
+          onTapFunc: () => dismissDialog(),
+        );
+      } else {
+        final bool result = await addItemSale();
+        if (result) {
+          key.currentState!.reset();
+          clearControllers();
+          //Go to auction list
+        } else {
+          showSimpleDialog(
+            title: 'Add Item for Auction Failed',
+            description: 'An error occurred. Please try again later.',
+            onTapFunc: () => dismissDialog(),
+          );
+        }
+      }
+    } else {
+      showSimpleDialog(
+        title: 'All fields are required',
+        description: 'Please provide photos of your item.',
+        onTapFunc: () => dismissDialog(),
+      );
+    }
+  }
 
-  Future<void> addItemSale() async {
-    // log.i('Saving item sale data on id: $_userID');
+  DateTime endDateValue() {
+    final TimeOfDay t = selectedTime.value;
+    final DateTime d = selectedDate.value;
+    return DateTime(d.year, d.month, d.day, t.hour, t.minute);
+  }
 
+  Future<bool> addItemSale() async {
+    //log.i('Saving item sale data on id: ${user.userID}');
+
+    final RxBool successWrite = true.obs;
+
+    showLoading();
     final String generatedItemId = uuid.v4();
+    final bool uploadingSuccess = await uploadImages(generatedItemId);
+    if (uploadingSuccess) {
+      Timestamp endTimeStamp = Timestamp.fromDate(endDateValue());
 
-    await firestore.collection('items').doc(generatedItemId).set({
-      'item_id': generatedItemId,
-      'seller_id': '',
-      'title': titleController.text.trim(),
-      'description': descriptionController.text.trim(),
-      'asking_price': askingPriceController.text,
-      'brand': brandController.text,
-      'end_date': enddateofauctionController.text,
-      'category': category.value,
-      'condition': condition.value,
-      'images': itemImageUrl.value,
-    });
+      await firestore.collection('items').doc(generatedItemId).set({
+        'item_id': generatedItemId,
+        'seller_id': 'iebjbHvazId6UbXVEcloCQ9bSXt1', //user.userID,
+        'title': titleController.text.trim(),
+        'description': descriptionController.text.trim(),
+        'asking_price': double.parse(askingPriceController.text),
+        'brand': brandController.text,
+        'end_date': endTimeStamp,
+        'category': category,
+        'condition': condition.value,
+        'images': itemImageUrls,
+      }).catchError((error) {
+        dismissDialog();
+        successWrite.value = false;
+      });
+    } else {
+      dismissDialog();
+      return false;
+    }
+    dismissDialog();
+    return successWrite.value;
+  }
+
+  Future<bool> uploadImages(String id) async {
+    final String directory = 'item_images/$id/';
+    if (kIsWeb) {
+      itemImageUrls.addAll(await Upload.multiImageWeb(
+        images: itemImages,
+        saveAs: directory,
+      ));
+    } else {
+      itemImageUrls.addAll(await Upload.multiImage(
+        images: itemImages,
+        saveAs: directory,
+      ));
+    }
+    if (itemImageUrls.isNotEmpty) {
+      return true;
+    }
+    return false;
   }
 
   void pickForItemSale() {
@@ -66,15 +135,20 @@ class AddItemFormController extends GetxController {
     descriptionController.clear();
     askingPriceController.clear();
     brandController.clear();
-    category.value = '';
+    category.clear();
     condition.value = '';
+    time.value = '';
+    date.value = '';
+    itemImageUrls.clear();
+    itemImages.clear();
   }
 
   void addOnImages() async {
     final RxList<XFile> addOn = RxList<XFile>();
     await itemPicker.pickMultiImage(addOn);
     final int leftCount = 10 - itemImages.length;
-    final addOnLimited = RxList<XFile>.from(addOn.getRange(0, leftCount));
+    final addOnLimited = RxList<XFile>.from(
+        addOn.getRange(0, addOn.length > leftCount ? leftCount : addOn.length));
     itemImages.addAll(addOnLimited);
   }
 }

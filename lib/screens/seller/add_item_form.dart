@@ -23,12 +23,9 @@ class AddItemForm extends StatelessWidget {
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
 
-  final AddItemFormController itemForSaleController =
+  final AddItemFormController addItemController =
       Get.put(AddItemFormController());
   final _addItemFormkey = GlobalKey<FormState>();
-  Rx<DateTime> selectedDate = DateTime.now().obs;
-  Rx<TimeOfDay> selectedTime = TimeOfDay.now().obs;
-  RxString time = ''.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +34,6 @@ class _Content extends StatelessWidget {
       width: Get.width,
       color: whiteColor,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             color: maroonColor,
@@ -61,9 +57,8 @@ class _Content extends StatelessWidget {
               ],
             ),
           ),
-          Center(
-            child: SizedBox(
-              height: Get.height - 55,
+          Expanded(
+            child: Center(
               child: ListView(
                 shrinkWrap: true,
                 children: [
@@ -71,181 +66,204 @@ class _Content extends StatelessWidget {
                     alignment: WrapAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 30, horizontal: 30),
+                        padding: const EdgeInsets.symmetric(vertical: 30),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Item for Auction',
-                              style: robotoBold.copyWith(
-                                  color: blackColor, fontSize: 20),
-                              textAlign: TextAlign.center,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 30),
+                              child: Text(
+                                'Item for Auction',
+                                style: robotoBold.copyWith(
+                                    color: blackColor, fontSize: 20),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                             const SizedBox(
                               height: 25,
                             ),
-                            Text(
-                              'Photo 0/10 - You can add up to 10 photos.',
-                              style: robotoMedium.copyWith(
-                                  color: greyColor, fontSize: 15),
-                              textAlign: TextAlign.right,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 30),
+                              child: Text(
+                                'Photo 0/10 - You can add up to 10 photos.',
+                                style: robotoMedium.copyWith(
+                                    color: greyColor, fontSize: 15),
+                                textAlign: TextAlign.right,
+                              ),
                             ),
                             Form(
                               key: _addItemFormkey,
                               child: Wrap(
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12),
-                                    width: 550,
+                                    padding: const EdgeInsets.only(
+                                        top: 15, right: 30, left: 30),
+                                    width: 500,
                                     child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              border:
-                                                  Border.all(color: greyColor),
-                                              color: whiteColor,
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                            ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(12)),
-                                              child: Container(
-                                                width: Get.width,
-                                                color: whiteColor,
-                                                child: Obx(getPhotos),
-                                              ),
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            border:
+                                                Border.all(color: greyColor),
+                                            color: whiteColor,
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                              Radius.circular(10),
                                             ),
                                           ),
-                                        ]),
-                                  ),
-                                  const SizedBox(
-                                    width: 50,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(12)),
+                                            child: Container(
+                                              width: Get.width,
+                                              color: whiteColor,
+                                              child: Obx(getPhotos),
+                                            ),
+                                          ),
+                                        ),
+                                        Obx(
+                                          () =>
+                                              addItemController.category.isEmpty
+                                                  ? const SizedBox(
+                                                      height: 0,
+                                                      width: 0,
+                                                    )
+                                                  : Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 15),
+                                                      child: DeletableCategoryChip(
+                                                          controller:
+                                                              addItemController),
+                                                    ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12),
-                                    width: 550,
+                                    width: 500,
+                                    padding: const EdgeInsets.only(
+                                        top: 15, right: 30, left: 30),
                                     child: Column(
-                                      children: <Widget>[
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
                                         ItemFormInputField(
-                                          controller: itemForSaleController
-                                              .titleController,
+                                          controller:
+                                              addItemController.titleController,
                                           labelText: 'Title',
                                           keyboardType: TextInputType.multiline,
                                           onChanged: (value) {
                                             return;
                                           },
-                                          onSaved: (value) =>
-                                              itemForSaleController
-                                                  .titleController
-                                                  .text = value!,
+                                          onSaved: (value) => addItemController
+                                              .titleController.text = value!,
                                           validator: Validator().notEmpty,
                                         ),
                                         const SizedBox(
                                           height: 15,
                                         ),
                                         ItemFormInputField(
-                                          controller: itemForSaleController
+                                          controller: addItemController
                                               .descriptionController,
                                           labelText: 'Description',
                                           keyboardType: TextInputType.multiline,
                                           onChanged: (value) {
                                             return;
                                           },
-                                          onSaved: (value) =>
-                                              itemForSaleController
-                                                  .descriptionController
-                                                  .text = value!,
+                                          onSaved: (value) => addItemController
+                                              .descriptionController
+                                              .text = value!,
                                           validator: Validator().notEmpty,
                                         ),
                                         const SizedBox(
                                           height: 15,
                                         ),
-                                        ItemFormInputField(
-                                          controller: itemForSaleController
-                                              .askingPriceController,
-                                          labelText: 'Asking Price',
-                                          keyboardType: TextInputType.number,
-                                          onChanged: (value) {
-                                            return;
-                                          },
-                                          onSaved: (value) =>
-                                              itemForSaleController
-                                                  .titleController
-                                                  .text = value!,
-                                          validator: Validator().notEmpty,
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: ItemFormInputField(
+                                                controller: addItemController
+                                                    .askingPriceController,
+                                                labelText: 'Asking Price',
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                onChanged: (value) {
+                                                  return;
+                                                },
+                                                onSaved: (value) =>
+                                                    addItemController
+                                                        .titleController
+                                                        .text = value!,
+                                                validator: Validator().number,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Expanded(
+                                              child: CustomDropdown(
+                                                hintText: 'Condition',
+                                                dropdownItems: condition,
+                                                onChanged: (item) =>
+                                                    addItemController.condition
+                                                        .value = item!,
+                                                onSaved: (item) =>
+                                                    addItemController.condition
+                                                        .value = item!,
+                                                validator: (value) {
+                                                  if (addItemController
+                                                          .condition.value ==
+                                                      '') {
+                                                    return 'This is a required field';
+                                                  }
+                                                  return null;
+                                                },
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         const SizedBox(
                                           height: 15,
                                         ),
                                         SizedBox(
-                                            child: CustomDropdown(
-                                          hintText: 'Category',
-                                          dropdownItems: category,
-                                          onChanged: (item) =>
-                                              itemForSaleController
-                                                  .category.value = item!,
-                                          onSaved: (item) =>
-                                              itemForSaleController
-                                                  .category.value = item!,
-                                        )),
-                                        const SizedBox(
-                                          height: 15,
+                                          child: CustomDropdown(
+                                            hintText: 'Category',
+                                            dropdownItems: category,
+                                            onChanged: (item) =>
+                                                addItemController.category
+                                                    .add(item!),
+                                            onSaved: (item) => addItemController
+                                                .category
+                                                .add(item!),
+                                            validator: (value) {
+                                              if (addItemController
+                                                  .category.isEmpty) {
+                                                return 'Please select a category';
+                                              }
+                                            },
+                                          ),
                                         ),
-                                        SizedBox(
-                                            child: CustomDropdown(
-                                          hintText: 'Condition',
-                                          dropdownItems: condition,
-                                          onChanged: (item) =>
-                                              itemForSaleController
-                                                  .condition.value = item!,
-                                          onSaved: (item) =>
-                                              itemForSaleController
-                                                  .condition.value = item!,
-                                        )),
                                         const SizedBox(
                                           height: 15,
                                         ),
                                         ItemFormInputField(
-                                          controller: itemForSaleController
-                                              .brandController,
+                                          controller:
+                                              addItemController.brandController,
                                           labelText: 'Brand (Optional)',
                                           keyboardType: TextInputType.name,
                                           onChanged: (value) {
                                             return;
                                           },
-                                          onSaved: (value) =>
-                                              itemForSaleController
-                                                  .brandController
-                                                  .text = value!,
-                                          validator: Validator().notEmpty,
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        ItemFormInputField(
-                                          controller: itemForSaleController
-                                              .enddateofauctionController,
-                                          labelText: 'End Date of Auction',
-                                          keyboardType: TextInputType.number,
-                                          onChanged: (value) {
-                                            return;
-                                          },
-                                          onSaved: (value) =>
-                                              itemForSaleController
-                                                  .enddateofauctionController
-                                                  .text = value!,
-                                          validator: Validator().notEmpty,
+                                          onSaved: (value) => addItemController
+                                              .brandController.text = value!,
                                         ),
                                         const SizedBox(
                                           height: 15,
@@ -255,7 +273,7 @@ class _Content extends StatelessWidget {
                                               MainAxisAlignment.start,
                                           children: [
                                             Container(
-                                              height: 65,
+                                              height: 50,
                                               width: 200,
                                               decoration: BoxDecoration(
                                                 border: Border.all(
@@ -270,17 +288,14 @@ class _Content extends StatelessWidget {
                                                 borderRadius:
                                                     const BorderRadius.all(
                                                         Radius.circular(12)),
-                                                child: Container(
-                                                    width: Get.width,
-                                                    color: whiteColor,
-                                                    child: getDate(context)),
+                                                child: getDate(context),
                                               ),
                                             ),
                                             const SizedBox(
                                               width: 30,
                                             ),
-                                            Obx(() => Text(DateFormat.yMMMd()
-                                                .format(selectedDate.value))),
+                                            Obx(() => Text(
+                                                addItemController.date.value)),
                                           ],
                                         ),
                                         const SizedBox(height: 15),
@@ -289,11 +304,7 @@ class _Content extends StatelessWidget {
                                               MainAxisAlignment.start,
                                           children: [
                                             Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 10),
-                                              height: 65,
+                                              height: 50,
                                               width: 200,
                                               decoration: BoxDecoration(
                                                 border: Border.all(
@@ -308,36 +319,33 @@ class _Content extends StatelessWidget {
                                                 borderRadius:
                                                     const BorderRadius.all(
                                                         Radius.circular(12)),
-                                                child: Container(
-                                                  width: Get.width,
-                                                  color: whiteColor,
-                                                  child: getTime(context),
-                                                ),
+                                                child: getTime(context),
                                               ),
                                             ),
                                             const SizedBox(
                                               width: 30,
                                             ),
-                                            Obx(() => Text(time.value)),
+                                            Obx(() => Text(
+                                                addItemController.time.value)),
                                           ],
                                         ),
                                         const SizedBox(
-                                          height: 50,
+                                          height: 30,
                                         ),
-                                        Align(
-                                          alignment: Alignment.bottomRight,
-                                          child: SizedBox(
-                                            height: 40,
-                                            width: 110,
-                                            child: CustomButton(
-                                              onTap: () {
-                                                _addItemFormkey.currentState!
-                                                    .validate();
-                                              },
-                                              text: 'Post Item',
-                                              buttonColor: maroonColor,
-                                              fontSize: 16,
-                                            ),
+                                        SizedBox(
+                                          height: 40,
+                                          width: 110,
+                                          child: CustomButton(
+                                            onTap: () async {
+                                              if (_addItemFormkey.currentState!
+                                                  .validate()) {
+                                                await addItemController
+                                                    .postItem(_addItemFormkey);
+                                              }
+                                            },
+                                            text: 'Post Item',
+                                            buttonColor: maroonColor,
+                                            fontSize: 16,
                                           ),
                                         )
                                       ],
@@ -365,27 +373,28 @@ class _Content extends StatelessWidget {
       onTap: () async {
         DateTime? selected = await showDatePicker(
           context: context,
-          initialDate: selectedDate.value,
+          initialDate: addItemController.selectedDate.value,
           firstDate: DateTime(2010),
           lastDate: DateTime(2025),
         );
 
         if (selected != null) {
-          selectedDate.value = selected;
+          addItemController.date.value = DateFormat.yMMMd().format(selected);
+          addItemController.selectedDate.value = selected;
         }
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
             const Icon(
               Icons.calendar_month,
-              size: 35,
+              size: 20,
               color: blackColor,
             ),
             const SizedBox(
-              height: 5,
+              width: 10,
             ),
             Text(
               'End Date of Auction',
@@ -402,29 +411,29 @@ class _Content extends StatelessWidget {
       onTap: () async {
         final TimeOfDay? timeOfDay = await showTimePicker(
           context: context,
-          initialTime: selectedTime.value,
+          initialTime: addItemController.selectedTime.value,
           initialEntryMode: TimePickerEntryMode.dial,
         );
         if (timeOfDay != null) {
-          time.value = timeOfDay.format(context);
-          selectedTime.value = timeOfDay;
+          addItemController.time.value = timeOfDay.format(context);
+          addItemController.selectedTime.value = timeOfDay;
         }
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
             const Icon(
               Icons.schedule,
-              size: 35,
+              size: 20,
               color: blackColor,
             ),
             const SizedBox(
-              height: 5,
+              width: 10,
             ),
             Text(
-              'Time',
+              'End Time of Auction',
               style: robotoBold.copyWith(color: blackColor, fontSize: 14),
             )
           ],
@@ -434,17 +443,17 @@ class _Content extends StatelessWidget {
   }
 
   Widget getPhotos() {
-    final images = itemForSaleController.itemImages;
+    final images = addItemController.itemImages;
     if (images.isEmpty) {
       return InkWell(
-        onTap: itemForSaleController.pickForItemSale,
+        onTap: addItemController.pickForItemSale,
         child: SizedBox(
-          height: 350,
+          height: 330,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+              children: [
                 const Icon(
                   Icons.add_to_photos_outlined,
                   size: 67,
@@ -463,62 +472,107 @@ class _Content extends StatelessWidget {
         ),
       );
     }
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: GridView.count(
-        shrinkWrap: true,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        crossAxisCount: 3,
-        children: List.generate(images.length + 1, (index) {
-          if (index == itemForSaleController.itemImages.length) {
-            if (itemForSaleController.itemImages.length == 10) {
-              return const SizedBox(
-                height: 0,
-                width: 0,
+    return SizedBox(
+      height: 330,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: GridView.count(
+          shrinkWrap: true,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          crossAxisCount: 4,
+          children: List.generate(images.length + 1, (index) {
+            if (index == addItemController.itemImages.length) {
+              if (addItemController.itemImages.length == 10) {
+                return const SizedBox(
+                  height: 0,
+                  width: 0,
+                );
+              }
+              return Center(
+                child: IconButton(
+                  icon: const Icon(Icons.add_to_photos_outlined),
+                  color: blackColor,
+                  iconSize: 45,
+                  onPressed: addItemController.addOnImages,
+                ),
               );
             }
-            return Center(
-              child: IconButton(
-                icon: const Icon(Icons.add_to_photos_outlined),
-                color: blackColor,
-                iconSize: 45,
-                onPressed: itemForSaleController.addOnImages,
-              ),
-            );
-          }
-          return Stack(
-            children: [
-              kIsWeb
-                  ? Image.network(images[index].path)
-                  : Image.file(
-                      File(images[index].path),
-                      width: 140,
-                      height: 140,
-                      fit: BoxFit.fill,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Image.asset('assests/image/default_image.png',
-                            fit: BoxFit.cover);
-                      },
+            return Stack(
+              children: [
+                kIsWeb
+                    ? Image.network(
+                        images[index].path,
+                        width: 140,
+                        height: 140,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.file(
+                        File(images[index].path),
+                        width: 140,
+                        height: 140,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset('assests/image/default_image.png',
+                              fit: BoxFit.cover);
+                        },
+                      ),
+                Positioned(
+                  right: 5,
+                  top: 5,
+                  child: InkWell(
+                    onTap: () {
+                      addItemController.itemImages.remove(images[index]);
+                    },
+                    child: const Icon(
+                      Icons.remove_circle,
+                      size: 25,
+                      color: Colors.red,
                     ),
-              Positioned(
-                right: 5,
-                top: 5,
-                child: InkWell(
-                  onTap: () {
-                    itemForSaleController.itemImages.remove(images[index]);
-                  },
-                  child: const Icon(
-                    Icons.remove_circle,
-                    size: 25,
-                    color: Colors.red,
                   ),
                 ),
-              ),
-            ],
-          );
-        }),
+              ],
+            );
+          }),
+        ),
       ),
     );
+  }
+}
+
+class DeletableCategoryChip extends StatelessWidget {
+  const DeletableCategoryChip({Key? key, required this.controller})
+      : super(key: key);
+  final AddItemFormController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 5,
+      runSpacing: 5,
+      children: [...categories(controller.category)],
+    );
+  }
+
+  List<Chip> categories(Set<String> items) {
+    return items
+        .map(
+          (data) => Chip(
+            deleteIcon: const Icon(
+              Icons.highlight_off,
+              color: orangeColor,
+            ),
+            onDeleted: () {
+              controller.category.remove(data);
+            },
+            useDeleteButtonTooltip: true,
+            backgroundColor: blackColor,
+            label: Text(
+              data,
+              style: const TextStyle(color: whiteColor, fontSize: 13),
+            ),
+          ),
+        )
+        .toList();
   }
 }

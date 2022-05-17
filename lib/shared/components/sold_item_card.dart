@@ -30,11 +30,10 @@ class SoldItemCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.max,
             children: [
-              Expanded(
-                  child: ImageView(
+              ImageView(
                 imageUrl: product.images[0],
                 height: Get.height / 4,
-              )),
+              ),
               const SizedBox(
                 height: 10,
               ),

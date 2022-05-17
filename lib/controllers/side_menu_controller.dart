@@ -14,7 +14,7 @@ class SideMenucontroller extends GetxController {
   // }
 
   // String userRole() {
-  //   return user.userRole!;
+  //   return user.userRole;
   // }
 
   // String userProfile(){

@@ -4,6 +4,7 @@ import 'package:bidding/screens/seller/_seller_screens.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/components/_components.dart';
 import 'package:bidding/shared/components/bid_tile.dart';
+import 'package:bidding/shared/components/display_info_section.dart';
 import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:flutter/material.dart';
@@ -121,7 +122,7 @@ class _Content extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          displayInfo('Description', item.description),
+          DisplayInfo(title: 'Description', content: item.description),
           const SizedBox(
             height: 15,
           ),
@@ -133,7 +134,7 @@ class _Content extends StatelessWidget {
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    displayInfo('Brand', item.brand),
+                    DisplayInfo(title: 'Brand', content: item.brand),
                     const SizedBox(
                       height: 15,
                     ),
@@ -162,31 +163,6 @@ class _Content extends StatelessWidget {
     );
   }
 
-  Widget displayInfo(String title, String content, [bool isPrice = false]) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title,
-            style: robotoMedium.copyWith(
-              color: blackColor,
-              fontSize: 14,
-            )),
-        const SizedBox(
-          height: 5,
-        ),
-        Text(
-          content,
-          style: isPrice
-              ? robotoMedium.copyWith(color: orangeColor, fontSize: 25)
-              : robotoRegular.copyWith(
-                  color: greyColor,
-                  fontSize: 14,
-                ),
-        )
-      ],
-    );
-  }
-
   Widget displayPrice() {
     if (bidsController.isDoneLoading.value && bidsController.bids.isNotEmpty) {
       int index = bidsController.approvedBid(bidsController.bids);
@@ -195,10 +171,10 @@ class _Content extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            displayInfo(
-              'Highest Approved Bid',
-              '₱ ${bidsController.bids[index].ftAmount}',
-              true,
+            DisplayInfo(
+              title: 'Highest Approved Bid',
+              content: '₱ ${bidsController.bids[index].ftAmount}',
+              isPrice: true,
             ),
             const SizedBox(
               width: 30,
@@ -223,10 +199,10 @@ class _Content extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          displayInfo(
-            'Asking Price',
-            '₱ ${item.ftAmount}',
-            true,
+          DisplayInfo(
+            title: 'Asking Price',
+            content: '₱ ${item.ftAmount}',
+            isPrice: true,
           ),
           const SizedBox(
             width: 30,
@@ -248,10 +224,10 @@ class _Content extends StatelessWidget {
       );
     } else if (bidsController.isDoneLoading.value &&
         bidsController.bids.isEmpty) {
-      return displayInfo(
-        'Asking Price',
-        '₱ ${item.ftAmount}',
-        true,
+      return DisplayInfo(
+        title: 'Asking Price',
+        content: '₱ ${item.ftAmount}',
+        isPrice: true,
       );
     }
     return const SizedBox(

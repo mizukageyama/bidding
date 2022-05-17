@@ -8,12 +8,14 @@ class CustomDropdown extends StatefulWidget {
     required this.dropdownItems,
     required this.onChanged,
     required this.onSaved,
+    required this.validator,
   }) : super(key: key);
   final String? hintText;
 
   final List<String>? dropdownItems;
   final void Function(String?)? onChanged;
   final void Function(String?)? onSaved;
+  final String? Function(String?)? validator;
 
   @override
   State createState() => CustomDropdownState();
@@ -55,12 +57,7 @@ class CustomDropdownState extends State<CustomDropdown> {
           ),
         );
       }).toList(),
-      validator: (value) {
-        if (value == null) {
-          return 'This is a required field';
-        }
-        return null;
-      },
+      validator: widget.validator,
     );
   }
 }

@@ -12,4 +12,3 @@ export 'gallery_view.dart';
 export 'category_chip.dart';
 export 'item_sale_form_input_field.dart';
 export 'custom_checkbox.dart';
-export 'bottom_text.dart';
