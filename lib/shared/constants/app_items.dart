@@ -50,7 +50,12 @@ final List<String> userType = [
 
 final List<Category> category = [
   Category(value: 'Electronics'),
-  Category(value: 'Things'),
+  Category(value: 'IT'),
+  Category(value: 'Tools'),
+  Category(value: 'Books'),
+  Category(value: 'Supplies'),
+  Category(value: 'Apparel'),
+  Category(value: 'Others'),
   Category(value: 'Add Custom Category', isAdd: true),
 ];
 
