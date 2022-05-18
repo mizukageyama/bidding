@@ -31,10 +31,10 @@ class CustomButton extends Container {
       padding: buttonPadding,
       child: Text(
         text!,
-        style: const TextStyle(
-                fontFamily: 'Roboto', fontWeight: FontWeight.w600, fontSize: 15)
-            .copyWith(
-          //fontSize: fontSize,
+        style: TextStyle(
+          fontFamily: 'Roboto',
+          fontWeight: FontWeight.w600,
+          fontSize: fontSize,
           color: Colors.white,
         ),
       ),

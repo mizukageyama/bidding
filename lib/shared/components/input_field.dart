@@ -1,8 +1,8 @@
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 
-class ItemFormInputField extends StatelessWidget {
-  const ItemFormInputField(
+class InputField extends StatelessWidget {
+  const InputField(
       {Key? key,
       required this.controller,
       required this.labelText,

@@ -48,9 +48,10 @@ final List<String> userType = [
   'Bidder',
 ];
 
-final List<String> category = [
-  'Electronics',
-  'Things',
+final List<Category> category = [
+  Category(value: 'Electronics'),
+  Category(value: 'Things'),
+  Category(value: 'Add Custom Category', isAdd: true),
 ];
 
 final List<String> condition = [
@@ -59,3 +60,10 @@ final List<String> condition = [
   'Used - Good',
   'Used - Fair'
 ];
+
+class Category {
+  bool isAdd;
+  final String value;
+
+  Category({required this.value, this.isAdd = false});
+}

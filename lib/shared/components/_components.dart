@@ -10,5 +10,5 @@ export 'custom_button.dart';
 export 'custom_dropdown.dart';
 export 'gallery_view.dart';
 export 'category_chip.dart';
-export 'item_sale_form_input_field.dart';
+export 'input_field.dart';
 export 'custom_checkbox.dart';

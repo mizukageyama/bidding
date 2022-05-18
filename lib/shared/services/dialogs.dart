@@ -38,7 +38,7 @@ void showErrorDialog({
           children: <Widget>[
             Text(
               errorTitle!,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             Padding(

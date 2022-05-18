@@ -1,14 +1,17 @@
 import 'package:bidding/controllers/auth_controller.dart';
 import 'package:bidding/models/user_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/components/custom_button.dart';
+import 'package:bidding/shared/components/input_field.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
+import 'package:bidding/shared/layout/styles.dart';
 import 'package:bidding/shared/services/_services.dart';
 import 'package:bidding/shared/services/image_upload.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class AddItemFormController extends GetxController {
+class AddItemController extends GetxController {
   final log = getLogger('Add Item Form Controller');
 
   static final AuthController authController = Get.find();
@@ -21,6 +24,7 @@ class AddItemFormController extends GetxController {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController askingPriceController = TextEditingController();
   TextEditingController brandController = TextEditingController();
+  TextEditingController addOnCategory = TextEditingController();
   final RxSet<String> category = <String>{}.obs;
   final RxString condition = ''.obs;
 
@@ -150,5 +154,55 @@ class AddItemFormController extends GetxController {
     final addOnLimited = RxList<XFile>.from(
         addOn.getRange(0, addOn.length > leftCount ? leftCount : addOn.length));
     itemImages.addAll(addOnLimited);
+  }
+
+  Widget inputDialog() {
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    return SimpleDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+        children: [
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Text(
+                  'Please enter a category',
+                  textAlign: TextAlign.center,
+                  style: robotoRegular.copyWith(fontSize: 15),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                InputField(
+                  controller: addOnCategory,
+                  validator: Validator().notEmpty,
+                  maxLines: 1,
+                  labelText: 'Category',
+                  onChanged: (value) {},
+                  onSaved: (value) {},
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                SizedBox(
+                  width: 120,
+                  height: 40,
+                  child: CustomButton(
+                      buttonColor: maroonColor,
+                      onTap: () async {
+                        if (_formKey.currentState!.validate()) {
+                          category.add(addOnCategory.text.trim());
+                          _formKey.currentState!.reset();
+                          dismissDialog();
+                        }
+                      },
+                      text: 'Add'),
+                ),
+              ],
+            ),
+          )
+        ]);
   }
 }

@@ -2,7 +2,6 @@ import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/components/sold_item_card.dart';
 import 'package:flutter/material.dart';
 import 'package:bidding/shared/_packages_imports.dart';
-import 'package:bidding/shared/components/_components.dart';
 
 class SoldItemLayoutGrid extends StatelessWidget {
   SoldItemLayoutGrid({Key? key, required this.perColumn, required this.item})

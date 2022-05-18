@@ -38,9 +38,10 @@ class DialogButton extends StatelessWidget {
 
 class ErrorDialogButton extends StatelessWidget {
   const ErrorDialogButton({
+    Key? key,
     required this.buttonText,
     this.onTap,
-  });
+  }) : super(key: key);
 
   final String? buttonText;
   final Function()? onTap;

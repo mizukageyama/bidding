@@ -246,7 +246,7 @@ class SignupScreen extends StatelessWidget {
                                                     !confirmPwObscure.value;
                                               },
                                               icon: Icon(
-                                                confirmPwObscure!.value
+                                                confirmPwObscure.value
                                                     ? Icons.visibility
                                                     : Icons.visibility_off,
                                               ),

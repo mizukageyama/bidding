@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:bidding/controllers/_controllers.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/components/_components.dart';
+import 'package:bidding/shared/components/category_dropdown.dart';
 import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/services/_services.dart';
@@ -23,8 +24,7 @@ class AddItemForm extends StatelessWidget {
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
 
-  final AddItemFormController addItemController =
-      Get.put(AddItemFormController());
+  final AddItemController addItemController = Get.put(AddItemController());
   final _addItemFormkey = GlobalKey<FormState>();
 
   @override
@@ -86,11 +86,13 @@ class _Content extends StatelessWidget {
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 30),
-                              child: Text(
-                                'Photo 0/10 - You can add up to 10 photos.',
-                                style: robotoMedium.copyWith(
-                                    color: greyColor, fontSize: 15),
-                                textAlign: TextAlign.right,
+                              child: Obx(
+                                () => Text(
+                                  'Photo ${addItemController.itemImages.length}/10 - You can add up to 10 photos.',
+                                  style: robotoMedium.copyWith(
+                                      color: greyColor, fontSize: 15),
+                                  textAlign: TextAlign.right,
+                                ),
                               ),
                             ),
                             Form(
@@ -155,7 +157,7 @@ class _Content extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
-                                        ItemFormInputField(
+                                        InputField(
                                           controller:
                                               addItemController.titleController,
                                           labelText: 'Title',
@@ -170,7 +172,7 @@ class _Content extends StatelessWidget {
                                         const SizedBox(
                                           height: 15,
                                         ),
-                                        ItemFormInputField(
+                                        InputField(
                                           controller: addItemController
                                               .descriptionController,
                                           labelText: 'Description',
@@ -189,7 +191,7 @@ class _Content extends StatelessWidget {
                                         Row(
                                           children: [
                                             Expanded(
-                                              child: ItemFormInputField(
+                                              child: InputField(
                                                 controller: addItemController
                                                     .askingPriceController,
                                                 labelText: 'Asking Price',
@@ -234,12 +236,22 @@ class _Content extends StatelessWidget {
                                           height: 15,
                                         ),
                                         SizedBox(
-                                          child: CustomDropdown(
+                                          child: CategoryDropdown(
                                             hintText: 'Category',
                                             dropdownItems: category,
-                                            onChanged: (item) =>
+                                            onChanged: (item) {
+                                              if (item ==
+                                                  'Add Custom Category') {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        addItemController
+                                                            .inputDialog());
+                                              } else {
                                                 addItemController.category
-                                                    .add(item!),
+                                                    .add(item!);
+                                              }
+                                            },
                                             onSaved: (item) => addItemController
                                                 .category
                                                 .add(item!),
@@ -248,13 +260,14 @@ class _Content extends StatelessWidget {
                                                   .category.isEmpty) {
                                                 return 'Please select a category';
                                               }
+                                              return null;
                                             },
                                           ),
                                         ),
                                         const SizedBox(
                                           height: 15,
                                         ),
-                                        ItemFormInputField(
+                                        InputField(
                                           controller:
                                               addItemController.brandController,
                                           labelText: 'Brand (Optional)',
@@ -543,7 +556,7 @@ class _Content extends StatelessWidget {
 class DeletableCategoryChip extends StatelessWidget {
   const DeletableCategoryChip({Key? key, required this.controller})
       : super(key: key);
-  final AddItemFormController controller;
+  final AddItemController controller;
 
   @override
   Widget build(BuildContext context) {
