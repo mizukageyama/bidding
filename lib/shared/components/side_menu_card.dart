@@ -1,31 +1,33 @@
 import 'package:bidding/controllers/_controllers.dart';
+import 'package:bidding/controllers/sold_items_controller.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:flutter/material.dart';
 
 class SideMenuCard extends StatelessWidget {
-  SideMenuCard({Key? key, required this.menu}) : super(key: key);
+  SideMenuCard({Key? key, required this.menu, required this.menuController})
+      : super(key: key);
   final MenuItem menu;
   final RxBool onHover = false.obs;
-
-  final SideMenucontroller menucontroller = Get.find();
+  final dynamic menuController;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        menucontroller.changeActiveItem(menu.name);
+        menuController.changeActiveItem(menu.name);
         menu.function();
         if (menu.name == 'Logout') {
-          menucontroller.reset();
+          menuController.reset();
+          menuController.dispose();
         }
       },
       onHover: (value) => onHover.value = value,
       child: Obx(
         () => Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
-          color: menucontroller.activeColor(menu.name, onHover.value),
+          color: menuController.activeColor(menu.name, onHover.value),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [

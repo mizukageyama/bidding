@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:bidding/shared/services/image_upload.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:bidding/screens/seller/home.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';

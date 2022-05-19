@@ -24,8 +24,9 @@ class SoldItemCard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-              color: Colors.transparent,
-              border: Border.all(color: neutralColor)),
+            color: Colors.transparent,
+            border: Border.all(color: orangeColor),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.max,
@@ -81,19 +82,5 @@ class SoldItemCard extends StatelessWidget {
         ),
       ]),
     );
-  }
-
-  List<Chip> categories() {
-    return product.category
-        .map(
-          (data) => Chip(
-            backgroundColor: blackColor,
-            label: Text(
-              data,
-              style: const TextStyle(color: whiteColor, fontSize: 10),
-            ),
-          ),
-        )
-        .toList();
   }
 }

@@ -4,10 +4,16 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 
-class SideMenucontroller extends GetxController {
+class BidderSideMenuController extends GetxController {
   // static final AuthController _authController = Get.find();
   // final UserModel user = _authController.userModel.value!;
   final RxString activeMenu = 'Dashboard'.obs;
+
+  @override
+  void dispose() {
+    Get.delete<SellerSideMenuController>(force: true);
+    super.dispose();
+  }
 
   // String userName() {
   //   return '${user.firstName} ${user.lastName}';

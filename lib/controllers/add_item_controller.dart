@@ -1,5 +1,4 @@
 import 'package:bidding/controllers/auth_controller.dart';
-import 'package:bidding/models/user_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/components/custom_button.dart';
 import 'package:bidding/shared/components/input_field.dart';

@@ -52,20 +52,10 @@ class Item {
         'images': images,
       };
 
-  get formattedDT {
-    final dt = endDate.toDate();
-    return '${DateFormat.yMMMd().format(dt)} (${DateFormat.jm().format(dt)})';
-  }
-
   @override
   String toString() {
     return '{itemId: $itemId\nsellerId: $sellerId\ntitle: $title\ndescription: $description'
         '\naskingPrice: $askingPrice\ncategory: $category\ncondition: $condition'
         '\nbrand: $brand\nendDate: $endDate\nimages: $images}';
-  }
-
-  get ftAmount {
-    NumberFormat f = NumberFormat("#,##0.00", "en_US");
-    return f.format(askingPrice);
   }
 }

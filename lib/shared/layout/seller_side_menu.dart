@@ -1,17 +1,19 @@
-import 'package:bidding/controllers/side_menu_controller.dart';
-import 'package:bidding/models/_models.dart';
+import 'package:bidding/controllers/item_list_controller.dart';
+import 'package:bidding/controllers/seller_side_menu_controller.dart';
+import 'package:bidding/controllers/sold_items_controller.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/components/_components.dart';
-import 'package:bidding/shared/components/side_menu_item_list.dart';
+import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:flutter/material.dart';
 
-class SideMenu extends StatelessWidget {
-  SideMenu(this.menuItems, {Key? key}) : super(key: key);
+class SellerSideMenu extends StatelessWidget {
+  SellerSideMenu({Key? key}) : super(key: key);
   final scrollController = ScrollController(initialScrollOffset: 0);
-  final List<MenuItem> menuItems;
-  final SideMenucontroller menucontroller =
-      Get.put(SideMenucontroller(), permanent: true);
+
+  //Add here the permament controllers of seller user
+  final SellerSideMenuController menucontroller =
+      Get.put(SellerSideMenuController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +85,12 @@ class SideMenu extends StatelessWidget {
               height: 45,
               width: 45,
             ),
-            SideMenuItemList(itemList: menuItems),
+            ...sellerSideMenuItem
+                .map((item) => SideMenuCard(
+                      menu: item,
+                      menuController: SellerSideMenuController,
+                    ))
+                .toList(),
             const SizedBox(height: 40),
           ],
         ),

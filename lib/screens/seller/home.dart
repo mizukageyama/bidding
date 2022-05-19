@@ -1,6 +1,6 @@
 import 'package:bidding/shared/_packages_imports.dart';
-import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:bidding/shared/layout/seller_side_menu.dart';
 import 'package:flutter/material.dart';
 
 class SellerHome extends StatelessWidget {
@@ -9,7 +9,9 @@ class SellerHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ResponsiveView(const Content(), sellerSideMenuItem),
+      //I accept ning incoming changes diria na part han kay giusab nako ang
+      //responsive view. Then, i delete lang ni na comment. Thanks han
+      body: ResponsiveView(const Content(), SellerSideMenu()),
     );
   }
 }

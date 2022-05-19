@@ -11,22 +11,22 @@ List<MenuItem> sellerSideMenuItem = [
   MenuItem(
     name: 'Dashboard',
     icon: Icons.dashboard,
-    function: () => Get.to(() => const SellerHome()),
+    function: () => Get.offAll(() => const SellerHome()),
   ),
   MenuItem(
     name: 'Auctioned Items',
     iconPath: 'icons/icon_raise.png',
-    function: () => Get.to(() => const ItemListScreen()),
+    function: () => Get.offAll(() => const ItemListScreen()),
   ),
   MenuItem(
     name: 'Add Item for Auction',
     icon: Icons.add_rounded,
-    function: () => Get.to(() => const AddItemForm()),
+    function: () => Get.offAll(() => const AddItemForm()),
   ),
   MenuItem(
     name: 'Sold Items',
     iconPath: 'icons/icon_auction.png',
-    function: () => Get.to(() => const SoldItemList()),
+    function: () => Get.offAll(() => const SoldItemList()),
   ),
   // MenuItem(
   //   name: 'Settings',

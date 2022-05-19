@@ -5,6 +5,8 @@ import 'package:bidding/shared/components/display_info_section.dart';
 import 'package:bidding/shared/components/gallery_view.dart';
 import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:bidding/shared/layout/seller_side_menu.dart';
+import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/material.dart';
 
 class SoldItemInfoScreen extends StatelessWidget {
@@ -16,14 +18,17 @@ class SoldItemInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ResponsiveView(_Content(item: _item), sellerSideMenuItem),
+      body: ResponsiveView(
+          _Content(
+            item: _item,
+          ),
+          SellerSideMenu()),
     );
   }
 }
 
 class _Content extends StatelessWidget {
   const _Content({Key? key, required this.item}) : super(key: key);
-  //TO DO: show the bidder who won
   final SoldItem item;
 
   @override
@@ -133,42 +138,68 @@ class _Content extends StatelessWidget {
             items: item.category,
           ),
           const SizedBox(
-            height: 15,
+            height: 20,
+          ),
+          const Divider(),
+          const SizedBox(
+            height: 20,
+          ),
+          FutureBuilder(
+            future: item.getBuyerInfo(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return DisplayInfo(
+                    title: 'Auction Winner', content: item.buyerName);
+              }
+              return const SizedBox(
+                height: 0,
+                width: 0,
+              );
+            },
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: Wrap(
+              runSpacing: 20,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 DisplayInfo(
                   title: 'Asking Price',
-                  content: '₱ ${item.ftAmount}',
+                  content: '₱ ${Format.amount(item.askingPrice)}',
                 ),
                 const SizedBox(
                   width: 15,
                 ),
-                const Icon(
-                  Icons.arrow_forward_outlined,
-                  color: greyColor,
-                  size: 20,
-                ),
-                const SizedBox(
-                  width: 15,
-                ),
-                DisplayInfo(
-                  title: 'Sold at',
-                  content: '₱ ${item.ftSoldAmount}',
-                  isPrice: true,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.arrow_forward_outlined,
+                      color: greyColor,
+                      size: 20,
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    DisplayInfo(
+                      title: 'Sold at',
+                      content: '₱ ${Format.amount(item.soldAt)}',
+                      isPrice: true,
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
+          Text(
+            'Closed: ${Format.date(item.endDate)}',
+            style: robotoRegular.copyWith(color: greyColor),
+          ),
           const SizedBox(
-            height: 15,
+            height: 10,
           ),
           Text(
-            'Item was closed: ${item.formattedDT}',
+            'Marked as Sold: ${Format.date(item.dateSold)}',
             style: robotoRegular.copyWith(color: greyColor),
           ),
         ],

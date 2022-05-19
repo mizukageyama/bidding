@@ -5,8 +5,9 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/components/_components.dart';
 import 'package:bidding/shared/components/bid_tile.dart';
 import 'package:bidding/shared/components/display_info_section.dart';
-import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:bidding/shared/layout/seller_side_menu.dart';
+import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/material.dart';
 
 class ItemInfoScreen extends StatelessWidget {
@@ -22,7 +23,7 @@ class ItemInfoScreen extends StatelessWidget {
           _Content(
             item: _item,
           ),
-          sellerSideMenuItem),
+          SellerSideMenu()),
     );
   }
 }
@@ -151,7 +152,7 @@ class _Content extends StatelessWidget {
             height: 15,
           ),
           Text(
-            'Item will be closed: ${item.formattedDT}',
+            'Item will be closed: ${Format.date(item.endDate)}',
             style: robotoRegular.copyWith(color: greyColor),
           ),
           Obx(() => Padding(
@@ -173,7 +174,7 @@ class _Content extends StatelessWidget {
           children: [
             DisplayInfo(
               title: 'Highest Approved Bid',
-              content: '₱ ${bidsController.bids[index].ftAmount}',
+              content: '₱ ${Format.amount(bidsController.bids[index].amount)}',
               isPrice: true,
             ),
             const SizedBox(
@@ -201,7 +202,7 @@ class _Content extends StatelessWidget {
         children: [
           DisplayInfo(
             title: 'Asking Price',
-            content: '₱ ${item.ftAmount}',
+            content: '₱ ${Format.amount(item.askingPrice)}',
             isPrice: true,
           ),
           const SizedBox(
@@ -226,7 +227,7 @@ class _Content extends StatelessWidget {
         bidsController.bids.isEmpty) {
       return DisplayInfo(
         title: 'Asking Price',
-        content: '₱ ${item.ftAmount}',
+        content: '₱ ${Format.amount(item.askingPrice)}',
         isPrice: true,
       );
     }

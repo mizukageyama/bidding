@@ -2,8 +2,8 @@ import 'package:bidding/controllers/_controllers.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/components/_components.dart';
-import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:bidding/shared/layout/seller_side_menu.dart';
 import 'package:flutter/material.dart';
 
 class ItemListScreen extends StatelessWidget {
@@ -12,7 +12,7 @@ class ItemListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ResponsiveView(_Content(), sellerSideMenuItem),
+      body: ResponsiveView(_Content(), SellerSideMenu()),
     );
   }
 }
@@ -20,7 +20,7 @@ class ItemListScreen extends StatelessWidget {
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
 
-  final ItemListController itemListController = Get.put(ItemListController());
+  final ItemListController itemListController = Get.find();
 
   @override
   Widget build(BuildContext context) {

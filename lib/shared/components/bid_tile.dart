@@ -4,6 +4,8 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 
+import '../services/format.dart';
+
 class BidTile extends StatelessWidget {
   BidTile({Key? key, required this.bid, this.showAll = false})
       : super(key: key);
@@ -44,7 +46,7 @@ class BidTile extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Text(
-              '₱  ${bid.ftAmount}',
+              '₱  ${Format.amount(bid.amount)}',
               style: robotoRegular.copyWith(color: greyColor),
             ),
           ),
@@ -83,14 +85,14 @@ class BidTile extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Text(
-              '₱  ${bid.ftAmount}',
+              '₱  ${Format.amount(bid.amount)}',
               style: robotoRegular.copyWith(color: greyColor),
             ),
           ),
           Expanded(
             flex: 3,
             child: Text(
-              bid.formattedDT,
+              Format.date(bid.bidDate),
               style: robotoRegular.copyWith(color: greyColor),
             ),
           ),
