@@ -1,5 +1,8 @@
 import 'package:bidding/controllers/_controllers.dart';
+import 'package:bidding/models/category_model.dart';
 import 'package:bidding/models/menu_model.dart';
+import 'package:bidding/screens/bidder/home.dart';
+import 'package:bidding/screens/bidder/ongoing_auctions.dart';
 import 'package:bidding/screens/seller/_seller_screens.dart';
 import 'package:bidding/screens/seller/sold_item_list.dart';
 import 'package:bidding/shared/_packages_imports.dart';
@@ -7,6 +10,7 @@ import 'package:flutter/material.dart';
 
 final AuthController authController = Get.find();
 
+//Seller Side Menu Options
 List<MenuItem> sellerSideMenuItem = [
   MenuItem(
     name: 'Dashboard',
@@ -28,11 +32,6 @@ List<MenuItem> sellerSideMenuItem = [
     iconPath: 'icons/icon_auction.png',
     function: () => Get.offAll(() => const SoldItemList()),
   ),
-  // MenuItem(
-  //   name: 'Settings',
-  //   icon: Icons.settings,
-  //   function: () => Get.to(() => const SellerHome()),
-  // ),
   MenuItem(
     name: 'Logout',
     icon: Icons.logout,
@@ -40,14 +39,37 @@ List<MenuItem> sellerSideMenuItem = [
   ),
 ];
 
-//Note:
-//List<String> for dp items
-//readable and easy to understand variable names
+//Bidder Side Menu Options
+List<MenuItem> bidderSideMenuItem = [
+  MenuItem(
+    name: 'Dashboard',
+    icon: Icons.dashboard,
+    function: () => Get.offAll(() => const BidderHome()),
+  ),
+  MenuItem(
+    name: 'Ongoing Auctions',
+    iconPath: 'icons/icon_raise.png',
+    function: () => Get.offAll(() => const OngoingAuctionScreen()),
+  ),
+  MenuItem(
+    name: 'Transactions',
+    icon: Icons.add_rounded,
+    function: () => Get.offAll(() => const AddItemForm()),
+  ),
+  MenuItem(
+    name: 'Logout',
+    icon: Icons.logout,
+    function: () => authController.signOut(),
+  ),
+];
+
+//Registration Dropdown
 final List<String> userType = [
   'Seller',
   'Bidder',
 ];
 
+//Add Item for Auction
 final List<Category> category = [
   Category(value: 'Electronics'),
   Category(value: 'IT'),
@@ -65,10 +87,3 @@ final List<String> condition = [
   'Used - Good',
   'Used - Fair'
 ];
-
-class Category {
-  bool isAdd;
-  final String value;
-
-  Category({required this.value, this.isAdd = false});
-}

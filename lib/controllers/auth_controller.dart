@@ -1,3 +1,4 @@
+import 'package:bidding/screens/bidder/home.dart';
 import 'package:bidding/shared/services/image_upload.dart';
 import 'package:bidding/screens/seller/home.dart';
 import 'package:bidding/shared/_packages_imports.dart';
@@ -72,7 +73,11 @@ class AuthController extends GetxController {
     } else {
       log.i('_setInitialScreen | User found. Data: ${_firebaseUser.email}');
       await _initializeUser();
-      await Get.offAll(() => const SellerHome());
+      if (userModel.value!.userRole == 'Seller') {
+        await Get.offAll(() => const SellerHome());
+      } else {
+        await Get.offAll(() => const BidderHome());
+      }
     }
   }
 

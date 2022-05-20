@@ -1,5 +1,3 @@
-import 'package:bidding/controllers/_controllers.dart';
-import 'package:bidding/controllers/sold_items_controller.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';

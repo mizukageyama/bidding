@@ -7,12 +7,17 @@ import 'package:flutter/material.dart';
 import '../services/format.dart';
 
 class BidTile extends StatelessWidget {
-  BidTile({Key? key, required this.bid, this.showAll = false})
+  BidTile(
+      {Key? key,
+      required this.bid,
+      this.showAll = false,
+      required this.isBidder})
       : super(key: key);
 
   final BidsController bidsController = Get.find();
   final Bid bid;
   final bool showAll;
+  final bool isBidder;
 
   @override
   Widget build(BuildContext context) {
@@ -52,16 +57,19 @@ class BidTile extends StatelessWidget {
           ),
           SizedBox(
             width: 30,
-            child: bid.isApproved
-                ? const Icon(
-                    Icons.check_circle_rounded,
-                    color: orangeColor,
-                    size: 18,
-                  )
-                : const SizedBox(
-                    height: 0,
-                    width: 0,
-                  ),
+            child: Visibility(
+              visible: !isBidder,
+              child: bid.isApproved
+                  ? const Icon(
+                      Icons.check_circle_rounded,
+                      color: orangeColor,
+                      size: 18,
+                    )
+                  : const SizedBox(
+                      height: 0,
+                      width: 0,
+                    ),
+            ),
           )
         ],
       ),

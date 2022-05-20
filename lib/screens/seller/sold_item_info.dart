@@ -2,8 +2,7 @@ import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/components/category_chip.dart';
 import 'package:bidding/shared/components/display_info_section.dart';
-import 'package:bidding/shared/components/gallery_view.dart';
-import 'package:bidding/shared/constants/app_items.dart';
+import 'package:bidding/shared/components/item_info_left_column.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/seller_side_menu.dart';
 import 'package:bidding/shared/services/format.dart';
@@ -78,8 +77,16 @@ class _Content extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(child: leftColumn()),
-                    Expanded(child: rightColumn()),
+                    Expanded(
+                      child: LeftColumn(
+                        images: item.images,
+                      ),
+                    ),
+                    Expanded(
+                      child: _RightColumn(
+                        item: item,
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -89,17 +96,14 @@ class _Content extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget leftColumn() {
-    return AspectRatio(
-      aspectRatio: 1 / 1,
-      child: GalleryView(
-        images: item.images,
-      ),
-    );
-  }
+class _RightColumn extends StatelessWidget {
+  const _RightColumn({Key? key, required this.item}) : super(key: key);
+  final SoldItem item;
 
-  Widget rightColumn() {
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Column(

@@ -1,6 +1,5 @@
 import 'package:bidding/screens/auth/_auth_screens.dart';
 import 'package:bidding/screens/seller/_seller_screens.dart';
-import 'package:bidding/screens/seller/sold_item_info.dart';
 import 'package:bidding/screens/seller/sold_item_list.dart';
 import 'package:bidding/screens/splash.dart';
 import 'package:bidding/shared/_packages_imports.dart';

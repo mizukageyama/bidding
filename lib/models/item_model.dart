@@ -1,5 +1,4 @@
 import 'package:bidding/shared/constants/_firebase_imports.dart';
-import 'package:intl/intl.dart';
 
 class Item {
   final String itemId;

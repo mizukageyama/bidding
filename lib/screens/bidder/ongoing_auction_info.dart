@@ -4,11 +4,11 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/components/item_info_left_column.dart';
 import 'package:bidding/shared/components/item_info_right_column.dart';
 import 'package:bidding/shared/layout/_layout.dart';
-import 'package:bidding/shared/layout/seller_side_menu.dart';
+import 'package:bidding/shared/layout/bidder_side_menu.dart';
 import 'package:flutter/material.dart';
 
-class ItemInfoScreen extends StatelessWidget {
-  const ItemInfoScreen({Key? key, required Item item})
+class OngoingAuctionInfoScreen extends StatelessWidget {
+  const OngoingAuctionInfoScreen({Key? key, required Item item})
       : _item = item,
         super(key: key);
   final Item _item;
@@ -20,7 +20,7 @@ class ItemInfoScreen extends StatelessWidget {
           _Content(
             item: _item,
           ),
-          SellerSideMenu()),
+          BidderSideMenu()),
     );
   }
 }
@@ -62,7 +62,7 @@ class _Content extends StatelessWidget {
                   width: 15,
                 ),
                 Text(
-                  'Auctioned Items > ${item.title}',
+                  'Ongoing Auctions > ${item.title}',
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.start,
                   style: const TextStyle(
@@ -91,7 +91,7 @@ class _Content extends StatelessWidget {
                       child: RightColumn(
                           item: item,
                           controller: bidsController,
-                          isBidder: false),
+                          isBidder: true),
                     ),
                   ],
                 ),

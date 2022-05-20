@@ -116,6 +116,7 @@ class _Content extends StatelessWidget {
                             return BidTile(
                               bid: bidsController.bids[index],
                               showAll: true,
+                              isBidder: false,
                             );
                           },
                           separatorBuilder: (context, index) => const Divider(),

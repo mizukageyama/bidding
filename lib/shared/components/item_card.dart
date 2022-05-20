@@ -1,25 +1,50 @@
-import 'package:bidding/models/_models.dart';
+import 'package:bidding/controllers/_controllers.dart';
+import 'package:bidding/models/user_model.dart';
+import 'package:bidding/screens/bidder/ongoing_auction_info.dart';
 import 'package:bidding/screens/seller/_seller_screens.dart';
+import 'package:bidding/screens/seller/sold_item_info.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/components/_components.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:flutter/material.dart';
 
 class ItemCard extends StatelessWidget {
-  const ItemCard({Key? key, required this.product}) : super(key: key);
+  ItemCard({Key? key, required this.item, required this.isSoldItem})
+      : super(key: key);
 
-  final Item product;
+  static final AuthController authController = Get.find();
+  final UserModel user = authController.userModel.value!;
+  final dynamic item;
+  final bool isSoldItem;
 
   int endTime() {
-    return product.endDate.millisecondsSinceEpoch + 1000 * 30;
+    return item.endDate.millisecondsSinceEpoch + 1000 * 30;
+  }
+
+  void navigateToInfo(dynamic item) {
+    if (user.userRole == 'Seller') {
+      if (!isSoldItem) {
+        Get.to(
+          () => ItemInfoScreen(item: item),
+        );
+      } else {
+        Get.to(
+          () => SoldItemInfoScreen(item: item),
+        );
+      }
+    } else if (user.userRole == 'Bidder') {
+      Get.to(
+        () => OngoingAuctionInfoScreen(item: item),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.to(
-        () => ItemInfoScreen(item: product),
-      ),
+      onTap: () {
+        navigateToInfo(item);
+      },
       child: Stack(children: [
         Container(
           padding: const EdgeInsets.all(10),
@@ -31,14 +56,14 @@ class ItemCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             children: [
               ImageView(
-                imageUrl: product.images[0],
+                imageUrl: item.images[0],
                 height: Get.height / 4,
               ),
               const SizedBox(
                 height: 10,
               ),
               Text(
-                product.title,
+                item.title,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: robotoMedium.copyWith(
@@ -50,7 +75,7 @@ class ItemCard extends StatelessWidget {
                 height: 8,
               ),
               Text(
-                product.description,
+                item.description,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: robotoRegular.copyWith(
@@ -124,7 +149,7 @@ class ItemCard extends StatelessWidget {
   }
 
   List<Chip> categories() {
-    return product.category
+    return item.category
         .map(
           (data) => Chip(
             backgroundColor: blackColor,

@@ -1,6 +1,3 @@
-// matching various patterns for kinds of data
-import 'package:get/get.dart';
-
 class Validator {
   Validator();
 
@@ -27,11 +24,25 @@ class Validator {
 
   String? number(String? value) {
     if (value == null) {
-      return null;
+      return 'This is a required field';
     }
     bool isNum = double.tryParse(value) != null;
     if (!isNum) {
       return 'Enter a number';
+    }
+    return null;
+  }
+
+  String? bid(String? value, double askingPrice) {
+    if (value == null) {
+      return 'This is a required field';
+    }
+    bool isNum = double.tryParse(value) != null;
+    if (!isNum) {
+      return 'Enter a number';
+    }
+    if (double.parse(value) < askingPrice) {
+      return 'Please start bidding at the asking price or more';
     }
     return null;
   }

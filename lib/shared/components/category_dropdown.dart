@@ -1,4 +1,4 @@
-import 'package:bidding/shared/constants/app_items.dart';
+import 'package:bidding/models/category_model.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 

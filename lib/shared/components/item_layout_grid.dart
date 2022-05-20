@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:bidding/shared/_packages_imports.dart';
-import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/components/_components.dart';
 
 class ItemLayoutGrid extends StatelessWidget {
-  ItemLayoutGrid({Key? key, required this.perColumn, required this.item})
-      : super(key: key);
-  final int perColumn;
-  final List<Item> item;
+  ItemLayoutGrid({
+    Key? key,
+    required this.perColumn,
+    required this.item,
+    required this.isSoldItem,
+  }) : super(key: key);
+
   final List<TrackSize> sizePerColumn = List.empty(growable: true);
   final List<TrackSize> sizePerRow = List.empty(growable: true);
+  final int perColumn;
+  final List<dynamic> item;
+  final bool isSoldItem;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +27,11 @@ class ItemLayoutGrid extends StatelessWidget {
       rowGap: 15,
       rowSizes: sizePerRow,
       children: [
-        for (var i = 0; i < item.length; i++) ItemCard(product: item[i]),
+        for (var i = 0; i < item.length; i++)
+          ItemCard(
+            item: item[i],
+            isSoldItem: isSoldItem,
+          ),
       ],
     );
   }

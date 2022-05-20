@@ -64,7 +64,7 @@ class BidderSideMenu extends StatelessWidget {
                           ),
                           child: Text(
                             //menucontroller.userRole().toUpperCase(),
-                            'SELLER',
+                            'BIDDER',
                             style: robotoMedium.copyWith(
                               color: whiteColor,
                               fontSize: 11,
@@ -81,7 +81,12 @@ class BidderSideMenu extends StatelessWidget {
               height: 45,
               width: 45,
             ),
-            //...sellerSideMenuItem.map((item) => BidderSideMenuController(menu: item)).toList(),
+            ...bidderSideMenuItem
+                .map((item) => SideMenuCard(
+                      menu: item,
+                      menuController: menucontroller,
+                    ))
+                .toList(),
             const SizedBox(height: 40),
           ],
         ),

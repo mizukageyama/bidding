@@ -1,6 +1,4 @@
-import 'package:bidding/controllers/item_list_controller.dart';
 import 'package:bidding/controllers/seller_side_menu_controller.dart';
-import 'package:bidding/controllers/sold_items_controller.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/components/_components.dart';
 import 'package:bidding/shared/constants/app_items.dart';
@@ -88,7 +86,7 @@ class SellerSideMenu extends StatelessWidget {
             ...sellerSideMenuItem
                 .map((item) => SideMenuCard(
                       menu: item,
-                      menuController: SellerSideMenuController,
+                      menuController: menucontroller,
                     ))
                 .toList(),
             const SizedBox(height: 40),
