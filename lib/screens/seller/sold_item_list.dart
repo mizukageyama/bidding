@@ -1,10 +1,9 @@
 import 'package:bidding/controllers/sold_items_controller.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
-import 'package:bidding/shared/components/info_display.dart';
-import 'package:bidding/shared/components/sold_item_layout_grid.dart';
-import 'package:bidding/shared/constants/app_items.dart';
+import 'package:bidding/shared/components/_components.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:bidding/shared/layout/seller_side_menu.dart';
 import 'package:flutter/material.dart';
 
 class SoldItemList extends StatelessWidget {
@@ -13,15 +12,14 @@ class SoldItemList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ResponsiveView(Content(), sellerSideMenuItem),
+      body: ResponsiveView(_Content(), SellerSideMenu()),
     );
   }
 }
 
-class Content extends StatelessWidget {
-  Content({Key? key}) : super(key: key);
-  final SoldItemsController soldItemsController =
-      Get.put(SoldItemsController());
+class _Content extends StatelessWidget {
+  _Content({Key? key}) : super(key: key);
+  final SoldItemsController soldItemsController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -102,20 +100,23 @@ class ResponsiveItemGrid extends GetResponsiveView {
   final RxList<SoldItem> item;
 
   @override
-  Widget? phone() => SoldItemLayoutGrid(
+  Widget? phone() => ItemLayoutGrid(
         perColumn: 2,
         item: item,
+        isSoldItem: true,
       );
 
   @override
-  Widget? tablet() => SoldItemLayoutGrid(
+  Widget? tablet() => ItemLayoutGrid(
         perColumn: 3,
         item: item,
+        isSoldItem: true,
       );
 
   @override
-  Widget? desktop() => SoldItemLayoutGrid(
+  Widget? desktop() => ItemLayoutGrid(
         perColumn: 4,
         item: item,
+        isSoldItem: true,
       );
 }

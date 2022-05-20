@@ -1,3 +1,4 @@
+import 'package:bidding/controllers/auth_controller.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
@@ -5,7 +6,10 @@ import 'package:bidding/shared/services/_services.dart';
 
 class BidsController extends GetxController {
   final log = getLogger('Bids Controller');
+  static final AuthController authController = Get.find();
+  final UserModel user = authController.userModel.value!;
   final RxList<Bid> bids = RxList.empty(growable: true);
+  final RxList<Bid> filteredBids = RxList.empty(growable: true);
   final RxBool isDoneLoading = false.obs;
 
   @override
@@ -15,7 +19,11 @@ class BidsController extends GetxController {
   }
 
   void bindBidList(String itemId) {
-    bids.bindStream(getBids(itemId));
+    if (user.userRole == 'Seller') {
+      bids.bindStream(getBids(itemId));
+    } else {
+      bids.bindStream(getBidsforBidder(itemId));
+    }
     Future.delayed(const Duration(seconds: 3), () {
       isDoneLoading.value = true;
     });
@@ -27,6 +35,21 @@ class BidsController extends GetxController {
         .collection('bids')
         .orderBy('amount', descending: true)
         .where('item_id', isEqualTo: itemId)
+        .snapshots(includeMetadataChanges: true)
+        .map((query) {
+      return query.docs.map((item) {
+        return Bid.fromJson(item.data());
+      }).toList();
+    });
+  }
+
+  Stream<List<Bid>> getBidsforBidder(String itemId) {
+    log.i('Streaming Item List');
+    return firestore
+        .collection('bids')
+        .orderBy('amount', descending: true)
+        .where('item_id', isEqualTo: itemId)
+        .where('is_approved', isEqualTo: true)
         .snapshots(includeMetadataChanges: true)
         .map((query) {
       return query.docs.map((item) {

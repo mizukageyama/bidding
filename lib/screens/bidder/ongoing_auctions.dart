@@ -3,16 +3,16 @@ import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/components/_components.dart';
 import 'package:bidding/shared/layout/_layout.dart';
-import 'package:bidding/shared/layout/seller_side_menu.dart';
+import 'package:bidding/shared/layout/bidder_side_menu.dart';
 import 'package:flutter/material.dart';
 
-class ItemListScreen extends StatelessWidget {
-  const ItemListScreen({Key? key}) : super(key: key);
+class OngoingAuctionScreen extends StatelessWidget {
+  const OngoingAuctionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ResponsiveView(_Content(), SellerSideMenu()),
+      body: ResponsiveView(_Content(), BidderSideMenu()),
     );
   }
 }
@@ -40,7 +40,7 @@ class _Content extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: const [
                 Text(
-                  'Auctioned Items',
+                  'Ongoing Auctions',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: whiteColor,
@@ -48,9 +48,12 @@ class _Content extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       fontSize: 15),
                 ),
-                //searchBar()
               ],
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: searchBar(),
           ),
           Expanded(child: Obx(() => showItems())),
         ],
@@ -65,12 +68,8 @@ class _Content extends StatelessWidget {
           padding: const EdgeInsets.all(25),
           shrinkWrap: true,
           children: [
-            // searchBar(),
-            // const SizedBox(
-            //   height: 20,
-            // ),
             const Text(
-              'Your Listings',
+              'AUCTIONED ITEMS',
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.w500,
@@ -98,44 +97,51 @@ class _Content extends StatelessWidget {
     );
   }
 
-  //FOR BIDDER
-  // Widget searchBar() {
-  //   return Row(
-  //     children: [
-  //       SizedBox(
-  //         width: 300,
-  //         child: TextFormField(
-  //           maxLines: 1,
-  //           decoration: InputDecoration(
-  //             isDense: true,
-  //             floatingLabelBehavior: FloatingLabelBehavior.never,
-  //             fillColor: whiteColor,
-  //             filled: true,
-  //             label: const Text(
-  //               'Search item here...',
-  //               style: TextStyle(fontSize: 15),
-  //             ),
-  //             border: OutlineInputBorder(
-  //               borderRadius: BorderRadius.circular(8),
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //       const SizedBox(
-  //         width: 20,
-  //       ),
-  //       const Text('Dropdown (Temporary)'),
-  //       const SizedBox(
-  //         width: 20,
-  //       ),
-  //       ElevatedButton(
-  //           child: const Text('Search (Temporary)'),
-  //           onPressed: () {
-  //             print('Search button is pressed.');
-  //           }),
-  //     ],
-  //   );
-  // }
+  Widget searchBar() {
+    return Row(
+      children: [
+        SizedBox(
+          width: 400,
+          child: InputField(
+            labelText: 'Enter Item',
+            keyboardType: TextInputType.multiline,
+            onChanged: (value) {
+              return;
+            },
+            onSaved: (value) => {},
+            controller: TextEditingController(),
+          ),
+        ),
+        const SizedBox(
+          width: 20,
+        ),
+        SizedBox(
+          width: 150,
+          child: CustomDropdown(
+            hintText: 'Open/Closed',
+            dropdownItems: const ['Open', 'Close'],
+            onChanged: (item) => {},
+            onSaved: (item) => {},
+            validator: (value) {
+              return null;
+            },
+          ),
+        ),
+        const SizedBox(
+          width: 20,
+        ),
+        SizedBox(
+          height: 45,
+          child: CustomButton(
+            onTap: () {},
+            text: 'Search',
+            buttonColor: maroonColor,
+            fontSize: 16,
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class ResponsiveItemGrid extends GetResponsiveView {

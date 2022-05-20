@@ -1,7 +1,6 @@
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
-import 'package:intl/intl.dart';
 
 class Bid {
   final String bidId;
@@ -44,16 +43,6 @@ class Bid {
   @override
   String toString() {
     return '{$toJson}';
-  }
-
-  get ftAmount {
-    NumberFormat f = NumberFormat("#,##0.00", "en_US");
-    return f.format(amount);
-  }
-
-  get formattedDT {
-    final dt = bidDate.toDate();
-    return '${DateFormat.yMMMd().format(dt)} (${DateFormat.jm().format(dt)})';
   }
 
   Future<void> getBidderInfo() async {
@@ -99,14 +88,4 @@ class MyBid {
         'bid_date': bidDate,
         'is_approved': isApproved,
       };
-
-  get ftAmount {
-    NumberFormat f = NumberFormat("#,##0.00", "en_US");
-    return f.format(amount);
-  }
-
-  get formattedDT {
-    final dt = bidDate.toDate();
-    return '${DateFormat.yMMMd().format(dt)} (${DateFormat.jm().format(dt)})';
-  }
 }

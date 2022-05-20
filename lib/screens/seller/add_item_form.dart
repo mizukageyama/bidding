@@ -5,6 +5,7 @@ import 'package:bidding/shared/components/_components.dart';
 import 'package:bidding/shared/components/category_dropdown.dart';
 import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:bidding/shared/layout/seller_side_menu.dart';
 import 'package:bidding/shared/services/_services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class AddItemForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ResponsiveView(_Content(), sellerSideMenuItem),
+      body: ResponsiveView(_Content(), SellerSideMenu()),
     );
   }
 }

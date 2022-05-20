@@ -4,13 +4,20 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 
+import '../services/format.dart';
+
 class BidTile extends StatelessWidget {
-  BidTile({Key? key, required this.bid, this.showAll = false})
+  BidTile(
+      {Key? key,
+      required this.bid,
+      this.showAll = false,
+      required this.isBidder})
       : super(key: key);
 
   final BidsController bidsController = Get.find();
   final Bid bid;
   final bool showAll;
+  final bool isBidder;
 
   @override
   Widget build(BuildContext context) {
@@ -44,22 +51,25 @@ class BidTile extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Text(
-              '₱  ${bid.ftAmount}',
+              '₱  ${Format.amount(bid.amount)}',
               style: robotoRegular.copyWith(color: greyColor),
             ),
           ),
           SizedBox(
             width: 30,
-            child: bid.isApproved
-                ? const Icon(
-                    Icons.check_circle_rounded,
-                    color: orangeColor,
-                    size: 18,
-                  )
-                : const SizedBox(
-                    height: 0,
-                    width: 0,
-                  ),
+            child: Visibility(
+              visible: !isBidder,
+              child: bid.isApproved
+                  ? const Icon(
+                      Icons.check_circle_rounded,
+                      color: orangeColor,
+                      size: 18,
+                    )
+                  : const SizedBox(
+                      height: 0,
+                      width: 0,
+                    ),
+            ),
           )
         ],
       ),
@@ -83,14 +93,14 @@ class BidTile extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Text(
-              '₱  ${bid.ftAmount}',
+              '₱  ${Format.amount(bid.amount)}',
               style: robotoRegular.copyWith(color: greyColor),
             ),
           ),
           Expanded(
             flex: 3,
             child: Text(
-              bid.formattedDT,
+              Format.date(bid.bidDate),
               style: robotoRegular.copyWith(color: greyColor),
             ),
           ),

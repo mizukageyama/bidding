@@ -9,6 +9,7 @@ class AttachedPhotosController extends GetxController {
   RxInt selectedIndex = 0.obs;
 
   void init(List<String> images) {
+    selectedIndex.value = 0;
     fetchedImages.clear();
     fetchedImages.addAll(images);
   }

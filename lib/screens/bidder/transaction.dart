@@ -3,8 +3,8 @@ import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/bidder_side_menu.dart';
 import 'package:flutter/material.dart';
 
-class BidderHome extends StatelessWidget {
-  const BidderHome({Key? key}) : super(key: key);
+class TransactionScreen extends StatelessWidget {
+  const TransactionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class _Content extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: const [
                 Text(
-                  'Dashboard',
+                  'My Transactions',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: whiteColor,

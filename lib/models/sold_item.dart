@@ -1,10 +1,11 @@
+import 'package:bidding/models/user_model.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
-import 'package:intl/intl.dart';
+import 'package:bidding/shared/constants/firebase.dart';
 
 class SoldItem {
   final String itemId;
   final String sellerId;
-  final String bidderId;
+  final String buyerId;
   final double soldAt;
   final String title;
   final String description;
@@ -15,11 +16,12 @@ class SoldItem {
   final Timestamp endDate;
   final Timestamp dateSold;
   final List<String> images;
+  UserModel? buyer;
 
   SoldItem({
     required this.itemId,
     required this.sellerId,
-    required this.bidderId,
+    required this.buyerId,
     required this.soldAt,
     required this.title,
     required this.description,
@@ -30,12 +32,13 @@ class SoldItem {
     required this.endDate,
     required this.dateSold,
     required this.images,
+    this.buyer,
   });
 
   factory SoldItem.fromJson(Map<String, dynamic> json) => SoldItem(
         itemId: json['item_id'] as String,
         sellerId: json['seller_id'] as String,
-        bidderId: json['bidder_id'] as String,
+        buyerId: json['buyer_id'] as String,
         soldAt: json['sold_at'] as double,
         title: json['title'] as String,
         description: json['description'] as String,
@@ -48,32 +51,13 @@ class SoldItem {
         images: List<String>.from(json['images'] ?? []),
       );
 
-  Map<String, dynamic> toJson() => {
-        'item_id': itemId,
-        'seller_id': sellerId,
-        'title': title,
-        'description': description,
-        'asking_price': askingPrice,
-        'category': category,
-        'condition': condition,
-        'brand': brand,
-        'end_date': endDate,
-        'date_sold': dateSold,
-        'images': images,
-      };
-
-  get formattedDT {
-    final dt = endDate.toDate();
-    return '${DateFormat.yMMMd().format(dt)} (${DateFormat.jm().format(dt)})';
+  Future<void> getBuyerInfo() async {
+    buyer = await firestore
+        .collection('users')
+        .doc(buyerId)
+        .get()
+        .then((doc) => UserModel.fromJson(doc.data()!));
   }
 
-  get ftAmount {
-    NumberFormat f = NumberFormat("#,##0.00", "en_US");
-    return f.format(askingPrice);
-  }
-
-  get ftSoldAmount {
-    NumberFormat f = NumberFormat("#,##0.00", "en_US");
-    return f.format(soldAt);
-  }
+  get buyerName => '${buyer!.firstName} ${buyer!.lastName}';
 }

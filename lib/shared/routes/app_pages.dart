@@ -1,5 +1,6 @@
 import 'package:bidding/screens/auth/_auth_screens.dart';
 import 'package:bidding/screens/seller/_seller_screens.dart';
+import 'package:bidding/screens/seller/sold_item_list.dart';
 import 'package:bidding/screens/splash.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 part 'app_routes.dart';
@@ -8,7 +9,7 @@ class AppPages {
   AppPages._();
 
   //Note: Set sa initial screen na atong gusto itest
-  static const iNITIAL = Routes.ADD_ITEM_FORM;
+  static const iNITIAL = Routes.SOLD_ITEM_INFO;
 
   static final routes = [
     GetPage(
@@ -39,13 +40,9 @@ class AppPages {
       name: _Paths.ITEM_LIST,
       page: () => const ItemListScreen(),
     ),
-    // GetPage(
-    //   name: _Paths.ITEM_INFO,
-    //   page: () => ItemInfoScreen(),
-    // ),
-    // GetPage(
-    //   name: _Paths.ITEM_LIST,
-    //   page: () => ItemForSaleScreen(),
-    // ),
+    GetPage(
+      name: _Paths.SOLD_ITEM_LIST,
+      page: () => const SoldItemList(),
+    ),
   ];
 }

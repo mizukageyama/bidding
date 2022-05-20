@@ -1,8 +1,8 @@
 import 'package:bidding/controllers/_controllers.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/components/bid_tile.dart';
-import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:bidding/shared/layout/seller_side_menu.dart';
 import 'package:flutter/material.dart';
 
 class BidListScreen extends StatelessWidget {
@@ -11,7 +11,7 @@ class BidListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ResponsiveView(_Content(), sellerSideMenuItem),
+      body: ResponsiveView(_Content(), SellerSideMenu()),
     );
   }
 }
@@ -116,6 +116,7 @@ class _Content extends StatelessWidget {
                             return BidTile(
                               bid: bidsController.bids[index],
                               showAll: true,
+                              isBidder: false,
                             );
                           },
                           separatorBuilder: (context, index) => const Divider(),

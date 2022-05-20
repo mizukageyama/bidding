@@ -1,7 +1,7 @@
 import 'package:bidding/screens/seller/_seller_screens.dart';
 import 'package:bidding/shared/_packages_imports.dart';
-import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:bidding/shared/layout/seller_side_menu.dart';
 import 'package:flutter/material.dart';
 
 class SellerHome extends StatelessWidget {
@@ -10,7 +10,7 @@ class SellerHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ResponsiveView(Content(), sellerSideMenuItem),
+      body: ResponsiveView(Content(), SellerSideMenu()),
     );
   }
 }
