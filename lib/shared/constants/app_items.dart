@@ -50,12 +50,17 @@ final List<String> userType = [
 
 final List<Category> category = [
   Category(value: 'Electronics'),
-  Category(value: 'IT'),
-  Category(value: 'Tools'),
+  Category(value: 'Electronic & Computers'),
+  Category(value: 'Mobile Phones'),
   Category(value: 'Books'),
   Category(value: 'Supplies'),
-  Category(value: 'Apparel'),
-  Category(value: 'Others'),
+  Category(value: 'Bags'),
+  Category(value: 'Arts & Crafts'),
+  Category(value: 'Jewelries & Accessories'),
+  Category(value: 'Mens Clothing & Shoes'),
+  Category(value: 'Womens Clothing & Shoes'),
+  Category(value: 'Jewelries & Accessories'),
+  Category(value: 'Video Games'),
   Category(value: 'Add Custom Category', isAdd: true),
 ];
 
