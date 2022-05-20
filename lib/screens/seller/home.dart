@@ -2,6 +2,7 @@ import 'package:bidding/screens/seller/_seller_screens.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/seller_side_menu.dart';
+import 'package:bidding/shared/layout/test_side_menu.dart';
 import 'package:flutter/material.dart';
 
 class SellerHome extends StatelessWidget {
@@ -10,8 +11,8 @@ class SellerHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ResponsiveView(const Content(), SellerSideMenu()),
-    );
+        body: ResponsiveView(Content(), TestSideMenu()) //SellerSideMenu()),
+        );
   }
 }
 
@@ -30,7 +31,6 @@ class Content extends StatelessWidget {
             color: maroonColor,
             height: 50,
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            width: Get.width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -50,284 +50,305 @@ class Content extends StatelessWidget {
           Expanded(
               child: Center(
             child: ListView(
+              padding: const EdgeInsets.all(15),
               shrinkWrap: true,
               children: [
                 Wrap(
                   alignment: WrapAlignment.center,
                   children: [
-                    Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: Column(children: [
-                          SizedBox(
-                            height: 320,
-                            width: Get.width,
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0)),
-                              color: pinkColor,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 15, horizontal: 10),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'These Deals Are in\n a League of Their\n Own',
-                                                  style: robotoBold.copyWith(
-                                                      color: whiteColor,
-                                                      fontSize: 45),
-                                                  textAlign: TextAlign.justify,
-                                                ),
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Text(
-                                                  'Dont strike out! Score the best pictures\n before theyre gone.',
-                                                  style: robotoMedium.copyWith(
-                                                      color: whiteColor,
-                                                      fontSize: 15),
-                                                  textAlign: TextAlign.justify,
-                                                ),
-                                              ],
-                                            )
-                                          ]),
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                      SizedBox(
+                    Column(children: [
+                      SizedBox(
+                        height: 320,
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0)),
+                          color: pinkColor,
+                          child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 10),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'These Deals Are in\na League of Their\nOwn',
+                                                style: robotoBold.copyWith(
+                                                    color: whiteColor,
+                                                    fontSize: 45),
+                                                textAlign: TextAlign.justify,
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              Text(
+                                                'Dont strike out! Score the best pictures\nbefore theyre gone.',
+                                                style: robotoMedium.copyWith(
+                                                    color: whiteColor,
+                                                    fontSize: 15),
+                                                textAlign: TextAlign.justify,
+                                              ),
+                                            ],
+                                          )
+                                        ]),
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    SizedBox(
                                         height: 40,
                                         width: 150,
                                         child: Container(
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: whiteColor)),
-                                          child: InkWell(
-                                            splashColor: Colors.transparent,
-                                            onTap: () async {
-                                              Get.to(() => AddItemForm());
-                                            },
-                                            child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  Text(
-                                                    'Add Auction Item',
-                                                    style:
-                                                        robotoMedium.copyWith(
-                                                            color: whiteColor,
-                                                            fontSize: 14),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  const Icon(
-                                                    Icons.arrow_forward,
-                                                    color: whiteColor,
-                                                  ),
-                                                ]),
-                                          ),
-                                        ),
-                                      ),
-                                    ]),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Wrap(children: [
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: whiteColor)),
+                                            child: InkWell(
+                                              splashColor: Colors.transparent,
+                                              onTap: () {
+                                                //  Get.to(() => ItemListScreen());
+                                              },
+                                              child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Text(
+                                                      'Add Auction Item',
+                                                      style:
+                                                          robotoMedium.copyWith(
+                                                              color: whiteColor,
+                                                              fontSize: 14),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    const Icon(
+                                                      Icons.arrow_forward,
+                                                      color: whiteColor,
+                                                    ),
+                                                  ]),
+                                            ))),
+                                  ])),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Wrap(
+                          runSpacing: 10,
+                          runAlignment: WrapAlignment.spaceAround,
+                          alignment: WrapAlignment.center,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
                             Container(
-                              padding: const EdgeInsets.only(
-                                  top: 15, bottom: 10, right: 30),
                               width: 650,
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      width: Get.width,
-                                      height: 315,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          image: const DecorationImage(
-                                              image: AssetImage(
-                                                  'assets/images/auction_image.jpg'),
-                                              fit: BoxFit.cover)),
-                                    )
-                                  ]),
+                              height: 325,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 20,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.amber,
+                                borderRadius: BorderRadius.circular(12),
+                                // image: const DecorationImage(
+                                //     image: AssetImage(
+                                //         'assets/images/auction_image.jpg'),
+                                //     fit: BoxFit.cover),
+                              ),
                             ),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                vertical: 12,
-                              ),
+                                  vertical: 12, horizontal: 20),
                               width: 570,
-                              child: Column(children: [
-                                Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                        child: Container(
-                                            height: 150,
-                                            decoration: BoxDecoration(
-                                                color: fadeColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(15),
-                                              child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text('Total Auctioned',
-                                                        style: robotoMedium
-                                                            .copyWith(
-                                                                color:
-                                                                    whiteColor,
-                                                                fontSize: 16),
-                                                        textAlign:
-                                                            TextAlign.left),
-                                                    const SizedBox(height: 15),
-                                                    Text('30',
-                                                        style: robotoMedium
-                                                            .copyWith(
-                                                                color:
-                                                                    whiteColor,
-                                                                fontSize: 30),
-                                                        textAlign:
-                                                            TextAlign.left)
-                                                  ]),
-                                            ))),
-                                    const SizedBox(
-                                      width: 30,
+                              child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                            child: Container(
+                                                height: 150,
+                                                decoration: BoxDecoration(
+                                                    color: fadeColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(15),
+                                                  child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text('Total Auctioned',
+                                                            style: robotoMedium
+                                                                .copyWith(
+                                                                    color:
+                                                                        whiteColor,
+                                                                    fontSize:
+                                                                        16),
+                                                            textAlign:
+                                                                TextAlign.left),
+                                                        const SizedBox(
+                                                            height: 15),
+                                                        Text('30',
+                                                            style: robotoMedium
+                                                                .copyWith(
+                                                                    color:
+                                                                        whiteColor,
+                                                                    fontSize:
+                                                                        30),
+                                                            textAlign:
+                                                                TextAlign.left)
+                                                      ]),
+                                                ))),
+                                        const SizedBox(
+                                          width: 20,
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                              height: 150,
+                                              decoration: BoxDecoration(
+                                                  color: orangeColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(15),
+                                                  child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text('Open Auctions',
+                                                            style: robotoMedium
+                                                                .copyWith(
+                                                                    color:
+                                                                        whiteColor,
+                                                                    fontSize:
+                                                                        16),
+                                                            textAlign:
+                                                                TextAlign.left),
+                                                        const SizedBox(
+                                                            height: 15),
+                                                        Text('--',
+                                                            style: robotoMedium
+                                                                .copyWith(
+                                                                    color:
+                                                                        whiteColor,
+                                                                    fontSize:
+                                                                        30),
+                                                            textAlign:
+                                                                TextAlign.left)
+                                                      ]))),
+                                        )
+                                      ],
                                     ),
-                                    Expanded(
-                                      child: Container(
-                                          height: 150,
-                                          decoration: BoxDecoration(
-                                              color: orangeColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          child: Padding(
-                                              padding: const EdgeInsets.all(15),
-                                              child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text('Open Auctions',
-                                                        style: robotoMedium
-                                                            .copyWith(
-                                                                color:
-                                                                    whiteColor,
-                                                                fontSize: 16),
-                                                        textAlign:
-                                                            TextAlign.left),
-                                                    const SizedBox(height: 15),
-                                                    Text('--',
-                                                        style: robotoMedium
-                                                            .copyWith(
-                                                                color:
-                                                                    whiteColor,
-                                                                fontSize: 30),
-                                                        textAlign:
-                                                            TextAlign.left)
-                                                  ]))),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 25,
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                        child: Container(
-                                            height: 150,
-                                            decoration: BoxDecoration(
-                                                color: blueColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(15),
-                                                child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text('Sold Items',
-                                                          style: robotoMedium
-                                                              .copyWith(
-                                                                  color:
-                                                                      whiteColor,
-                                                                  fontSize: 16),
-                                                          textAlign:
-                                                              TextAlign.left),
-                                                      const SizedBox(
-                                                          height: 15),
-                                                      Text('12',
-                                                          style: robotoMedium
-                                                              .copyWith(
-                                                                  color:
-                                                                      whiteColor,
-                                                                  fontSize: 30),
-                                                          textAlign:
-                                                              TextAlign.left)
-                                                    ])))),
                                     const SizedBox(
-                                      width: 30,
+                                      height: 25,
                                     ),
-                                    Expanded(
-                                      child: Container(
-                                          height: 150,
-                                          decoration: BoxDecoration(
-                                              color: redColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          child: Padding(
-                                              padding: const EdgeInsets.all(15),
-                                              child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text('Closed Auctions',
-                                                        style: robotoMedium
-                                                            .copyWith(
-                                                                color:
-                                                                    whiteColor,
-                                                                fontSize: 16),
-                                                        textAlign:
-                                                            TextAlign.left),
-                                                    const SizedBox(height: 15),
-                                                    Text('--',
-                                                        style: robotoMedium
-                                                            .copyWith(
-                                                                color:
-                                                                    whiteColor,
-                                                                fontSize: 30),
-                                                        textAlign:
-                                                            TextAlign.left)
-                                                  ]))),
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                            child: Container(
+                                                height: 150,
+                                                decoration: BoxDecoration(
+                                                    color: blueColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                                child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            15),
+                                                    child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text('Sold Items',
+                                                              style: robotoMedium
+                                                                  .copyWith(
+                                                                      color:
+                                                                          whiteColor,
+                                                                      fontSize:
+                                                                          16),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .left),
+                                                          const SizedBox(
+                                                              height: 15),
+                                                          Text('12',
+                                                              style: robotoMedium
+                                                                  .copyWith(
+                                                                      color:
+                                                                          whiteColor,
+                                                                      fontSize:
+                                                                          30),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .left)
+                                                        ])))),
+                                        const SizedBox(
+                                          width: 20,
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                              height: 150,
+                                              decoration: BoxDecoration(
+                                                  color: redColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(15),
+                                                  child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text('Closed Auctions',
+                                                            style: robotoMedium
+                                                                .copyWith(
+                                                                    color:
+                                                                        whiteColor,
+                                                                    fontSize:
+                                                                        16),
+                                                            textAlign:
+                                                                TextAlign.left),
+                                                        const SizedBox(
+                                                            height: 15),
+                                                        Text('--',
+                                                            style: robotoMedium
+                                                                .copyWith(
+                                                                    color:
+                                                                        whiteColor,
+                                                                    fontSize:
+                                                                        30),
+                                                            textAlign:
+                                                                TextAlign.left)
+                                                      ]))),
+                                        )
+                                      ],
                                     )
-                                  ],
-                                )
-                              ]),
+                                  ]),
                             )
                           ])
-                        ])),
+                    ]),
                   ],
                 ),
               ],
