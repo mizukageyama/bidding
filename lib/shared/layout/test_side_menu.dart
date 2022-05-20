@@ -73,10 +73,6 @@ class TestSideMenu extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 45,
-              width: 45,
-            ),
           ],
         ),
       ),
