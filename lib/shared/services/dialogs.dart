@@ -1,7 +1,7 @@
+import 'package:bidding/components/_components.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:bidding/shared/components/_components.dart';
 import 'package:bidding/shared/layout/styles.dart';
 
 void showLoading() {
