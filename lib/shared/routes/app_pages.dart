@@ -9,7 +9,7 @@ class AppPages {
   AppPages._();
 
   //Note: Set sa initial screen na atong gusto itest
-  static const iNITIAL = Routes.SOLD_ITEM_INFO;
+  static const iNITIAL = Routes.LOGIN;
 
   static final routes = [
     GetPage(
