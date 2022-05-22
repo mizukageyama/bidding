@@ -1,6 +1,7 @@
 import 'package:bidding/components/circle_image.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class TestSideMenu extends StatelessWidget {
@@ -10,6 +11,11 @@ class TestSideMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: kIsWeb && Get.width >= 600
+          ? double.infinity
+          : kIsWeb && Get.width <= 600
+              ? Get.width * .45
+              : Get.width * .65,
       height: Get.height,
       color: indigoColor,
       child: SingleChildScrollView(

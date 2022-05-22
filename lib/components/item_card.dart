@@ -5,6 +5,7 @@ import 'package:bidding/models/user_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ItemCard extends StatelessWidget {
@@ -56,7 +57,7 @@ class ItemCard extends StatelessWidget {
             children: [
               ImageView(
                 imageUrl: item.images[0],
-                height: Get.height / 4,
+                height: kIsWeb ? Get.height / 4 : 140,
               ),
               const SizedBox(
                 height: 10,

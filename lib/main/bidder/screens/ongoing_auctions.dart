@@ -4,6 +4,8 @@ import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/bidder/side_menu.dart';
+import 'package:bidding/shared/layout/mobile_body_sliver.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class OngoingAuctionScreen extends StatelessWidget {
@@ -11,8 +13,19 @@ class OngoingAuctionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ResponsiveView(_Content(), BidderSideMenu()),
+    return SafeArea(
+      child: Scaffold(
+        drawer: BidderSideMenu(),
+        body: ResponsiveView(
+          _Content(),
+          MobileSliver(
+            title: 'Ongoing Auctions',
+            body: _Content(),
+            scrollable: false,
+          ),
+          BidderSideMenu(),
+        ),
+      ),
     );
   }
 }
@@ -30,28 +43,38 @@ class _Content extends StatelessWidget {
       color: whiteColor,
       child: Column(
         children: [
-          Container(
-            color: maroonColor,
-            height: 55,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                Text(
-                  'Ongoing Auctions',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: whiteColor,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15),
+          kIsWeb && Get.width >= 600
+              ? Container(
+                  color: maroonColor,
+                  height: 55,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Text(
+                        'Ongoing Auctions',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            color: whiteColor,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15),
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
                 ),
-              ],
-            ),
-          ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            padding: const EdgeInsets.fromLTRB(
+              kIsWeb ? 20 : 12,
+              20,
+              kIsWeb ? 20 : 12,
+              kIsWeb ? 0 : 5,
+            ),
             child: searchBar(),
           ),
           Expanded(child: Obx(() => showItems())),
@@ -64,7 +87,7 @@ class _Content extends StatelessWidget {
     if (itemListController.isDoneLoading.value &&
         itemListController.itemList.isNotEmpty) {
       return ListView(
-          padding: const EdgeInsets.all(25),
+          padding: const EdgeInsets.all(kIsWeb ? 25 : 12),
           shrinkWrap: true,
           children: [
             const Text(

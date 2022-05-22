@@ -4,6 +4,8 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/bidder/side_menu.dart';
+import 'package:bidding/shared/layout/mobile_body_sliver.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class OngoingAuctionInfoScreen extends StatelessWidget {
@@ -14,12 +16,21 @@ class OngoingAuctionInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ResponsiveView(
+    return SafeArea(
+      child: Scaffold(
+        body: ResponsiveView(
           _Content(
             item: _item,
           ),
-          BidderSideMenu()),
+          MobileSliver(
+            title: 'Ongoing Auctions > ${_item.title}',
+            body: _Content(
+              item: _item,
+            ),
+          ),
+          BidderSideMenu(),
+        ),
+      ),
     );
   }
 }
@@ -41,37 +52,41 @@ class _Content extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            color: maroonColor,
-            height: 55,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () => Get.back(),
-                  child: const Icon(
-                    Icons.arrow_back_outlined,
-                    color: whiteColor,
+          kIsWeb && Get.width >= 600
+              ? Container(
+                  color: maroonColor,
+                  height: 55,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () => Get.back(),
+                        child: const Icon(
+                          Icons.arrow_back_outlined,
+                          color: whiteColor,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Text(
+                        'Ongoing Auctions > ${item.title}',
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.start,
+                        style: const TextStyle(
+                            color: whiteColor,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15),
+                      ),
+                    ],
                   ),
+                )
+              : const SizedBox(
+                  height: 0,
                 ),
-                const SizedBox(
-                  width: 15,
-                ),
-                Text(
-                  'Ongoing Auctions > ${item.title}',
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.start,
-                  style: const TextStyle(
-                      color: whiteColor,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: ListView(
               shrinkWrap: true,

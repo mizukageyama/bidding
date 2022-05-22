@@ -4,7 +4,9 @@ import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
+import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:bidding/shared/services/format.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SoldItemInfoScreen extends StatelessWidget {
@@ -15,12 +17,17 @@ class SoldItemInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ResponsiveView(
-          _Content(
-            item: _item,
+    return SafeArea(
+      child: Scaffold(
+        body: ResponsiveView(
+          _Content(item: _item),
+          MobileSliver(
+            title: 'Sold Item > ${_item.title}',
+            body: _Content(item: _item),
           ),
-          SellerSideMenu()),
+          SellerSideMenu(),
+        ),
+      ),
     );
   }
 }
@@ -37,59 +44,82 @@ class _Content extends StatelessWidget {
       color: whiteColor,
       child: Column(
         children: [
-          Container(
-            color: maroonColor,
-            height: 50,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () => Get.back(),
-                  child: const Icon(
-                    Icons.arrow_back_outlined,
-                    color: whiteColor,
+          kIsWeb && Get.width >= 600
+              ? Container(
+                  color: maroonColor,
+                  height: 50,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () => Get.back(),
+                        child: const Icon(
+                          Icons.arrow_back_outlined,
+                          color: whiteColor,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Flexible(
+                        child: Text(
+                          'Sold Item > ${item.title}',
+                          textAlign: TextAlign.start,
+                          style: const TextStyle(
+                              color: whiteColor,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              overflow: TextOverflow.ellipsis),
+                        ),
+                      ),
+                    ],
                   ),
+                )
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
                 ),
-                const SizedBox(
-                  width: 15,
-                ),
-                Text(
-                  'Sold Item > ${item.title}',
-                  textAlign: TextAlign.start,
-                  style: const TextStyle(
-                      color: whiteColor,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              primary: true,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: LeftColumn(
+          kIsWeb
+              ? Expanded(
+                  child: ListView(
+                    shrinkWrap: true,
+                    primary: true,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: LeftColumn(
+                              images: item.images,
+                            ),
+                          ),
+                          Expanded(
+                            child: _RightColumn(
+                              item: item,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              : Expanded(
+                  child: ListView(
+                    shrinkWrap: true,
+                    primary: true,
+                    children: [
+                      LeftColumn(
                         images: item.images,
                       ),
-                    ),
-                    Expanded(
-                      child: _RightColumn(
+                      _RightColumn(
                         item: item,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
         ],
       ),
     );
@@ -103,7 +133,7 @@ class _RightColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,

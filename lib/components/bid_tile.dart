@@ -3,6 +3,7 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:bidding/shared/services/format.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class BidTile extends StatelessWidget {
@@ -83,25 +84,34 @@ class BidTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 2,
+            flex: kIsWeb ? 2 : 1,
             child: Text(
               '${bid.bidderInfo!.firstName} ${bid.bidderInfo!.lastName}',
               style: robotoRegular.copyWith(color: greyColor),
             ),
           ),
+          const SizedBox(
+            width: 5,
+          ),
           Expanded(
             flex: 1,
             child: Text(
-              '₱  ${Format.amount(bid.amount)}',
+              '₱ ${Format.amount(bid.amount)}',
               style: robotoRegular.copyWith(color: greyColor),
             ),
           ),
+          const SizedBox(
+            width: 3,
+          ),
           Expanded(
-            flex: 3,
+            flex: kIsWeb ? 3 : 2,
             child: Text(
               Format.date(bid.bidDate),
               style: robotoRegular.copyWith(color: greyColor),
             ),
+          ),
+          const SizedBox(
+            width: 5,
           ),
           SizedBox(
             width: 70,

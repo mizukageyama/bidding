@@ -30,7 +30,7 @@ class Item {
         sellerId: json['seller_id'] as String,
         title: json['title'] as String,
         description: json['description'] as String,
-        askingPrice: json['asking_price'] as double,
+        askingPrice: double.parse('${json['asking_price']}'),
         category: List<String>.from(json['category'] ?? []),
         condition: json['condition'] as String,
         brand: json['brand'] as String,
