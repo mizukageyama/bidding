@@ -15,24 +15,17 @@ class SoldItemList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        drawer: kIsWeb ? null : SellerSideMenu(),
-        body: kIsWeb
-            ? const _Body()
-            : const MobileSliver(
-                title: 'Sold Items',
-                body: _Body(),
-              ),
+        drawer: SellerSideMenu(),
+        body: ResponsiveView(
+          _Content(),
+          MobileSliver(
+            title: 'Sold Items',
+            body: _Content(),
+          ),
+          SellerSideMenu(),
+        ),
       ),
     );
-  }
-}
-
-class _Body extends StatelessWidget {
-  const _Body({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ResponsiveView(_Content(), SellerSideMenu());
   }
 }
 
@@ -48,7 +41,7 @@ class _Content extends StatelessWidget {
       color: whiteColor,
       child: Column(
         children: [
-          kIsWeb
+          kIsWeb && Get.width >= 600
               ? Container(
                   color: maroonColor,
                   height: 50,

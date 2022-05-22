@@ -1,6 +1,7 @@
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SideMenuCard extends StatelessWidget {
@@ -24,7 +25,7 @@ class SideMenuCard extends StatelessWidget {
       onHover: (value) => onHover.value = value,
       child: Obx(
         () => Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: kIsWeb ? 10 : 15),
           color: menuController.activeColor(menu.name, onHover.value),
           child: Row(
             mainAxisSize: MainAxisSize.max,
@@ -36,23 +37,24 @@ class SideMenuCard extends StatelessWidget {
                   ? Icon(
                       menu.icon,
                       color: whiteColor,
-                      size: 16,
+                      size: kIsWeb ? 16 : 20,
                     )
                   : Image.asset(
                       menu.iconPath,
-                      height: 16,
-                      width: 16,
+                      height: kIsWeb ? 16 : 20,
+                      width: kIsWeb ? 16 : 20,
                     ),
               const SizedBox(
-                width: 10,
+                width: kIsWeb ? 10 : 15,
               ),
               Text(
                 menu.name,
                 style: const TextStyle(
-                    color: whiteColor,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 13),
+                  color: whiteColor,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.w400,
+                  fontSize: kIsWeb ? 13 : 16,
+                ),
               ),
             ],
           ),

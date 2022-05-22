@@ -17,7 +17,11 @@ class SellerSideMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: kIsWeb ? double.infinity : Get.width * .65,
+      width: kIsWeb && Get.width >= 600
+          ? double.infinity
+          : kIsWeb && Get.width <= 600
+              ? Get.width * .45
+              : Get.width * .65,
       height: Get.height,
       color: indigoColor,
       child: SingleChildScrollView(
@@ -49,7 +53,7 @@ class SellerSideMenu extends StatelessWidget {
                           'Jesicca Day',
                           style: robotoMedium.copyWith(
                             color: whiteColor,
-                            fontSize: 13,
+                            fontSize: kIsWeb ? 13 : 16,
                           ),
                         ),
                         const SizedBox(
@@ -71,7 +75,7 @@ class SellerSideMenu extends StatelessWidget {
                             'SELLER',
                             style: robotoMedium.copyWith(
                               color: whiteColor,
-                              fontSize: 11,
+                              fontSize: kIsWeb ? 11 : 14,
                             ),
                           ),
                         )

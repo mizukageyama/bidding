@@ -18,28 +18,16 @@ class ItemInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: kIsWeb
-            ? _Body(item: _item)
-            : MobileSliver(
-                title: 'Auctioned Items > ${_item.title}',
-                body: _Body(item: _item),
-              ),
+        body: ResponsiveView(
+          _Content(item: _item),
+          MobileSliver(
+            title: 'Auctioned Items > ${_item.title}',
+            body: _Content(item: _item),
+          ),
+          SellerSideMenu(),
+        ),
       ),
     );
-  }
-}
-
-class _Body extends StatelessWidget {
-  const _Body({Key? key, required this.item}) : super(key: key);
-  final Item item;
-
-  @override
-  Widget build(BuildContext context) {
-    return ResponsiveView(
-        _Content(
-          item: item,
-        ),
-        SellerSideMenu());
   }
 }
 
@@ -60,7 +48,7 @@ class _Content extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          kIsWeb
+          kIsWeb && Get.width >= 600
               ? Container(
                   color: maroonColor,
                   height: 55,

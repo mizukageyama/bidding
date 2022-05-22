@@ -1,6 +1,8 @@
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:bidding/shared/layout/test_side_menu.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AdminHome extends StatelessWidget {
@@ -8,8 +10,17 @@ class AdminHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ResponsiveView(const _Content(), TestSideMenu()),
+    return SafeArea(
+      child: Scaffold(
+        body: ResponsiveView(
+          const _Content(),
+          MobileSliver(
+            title: 'Admin Dashboard',
+            body: const _Content(),
+          ),
+          TestSideMenu(),
+        ),
+      ),
     );
   }
 }
@@ -25,26 +36,31 @@ class _Content extends StatelessWidget {
       color: whiteColor,
       child: Column(
         children: [
-          Container(
-            color: maroonColor,
-            height: 50,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                Text(
-                  'Admin Dashboard',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: whiteColor,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15),
+          kIsWeb && Get.width >= 600
+              ? Container(
+                  color: maroonColor,
+                  height: 50,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Text(
+                        'Admin Dashboard',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            color: whiteColor,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15),
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
                 ),
-              ],
-            ),
-          ),
           //diria ang sulod
         ],
       ),

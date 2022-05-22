@@ -3,6 +3,8 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
+import 'package:bidding/shared/layout/mobile_body_sliver.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class BidListScreen extends StatelessWidget {
@@ -10,8 +12,17 @@ class BidListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ResponsiveView(_Content(), SellerSideMenu()),
+    return SafeArea(
+      child: Scaffold(
+        body: ResponsiveView(
+          _Content(),
+          MobileSliver(
+            title: 'Bid History',
+            body: _Content(),
+          ),
+          SellerSideMenu(),
+        ),
+      ),
     );
   }
 }
@@ -29,40 +40,45 @@ class _Content extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            color: maroonColor,
-            height: 55,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () => Get.back(),
-                  child: const Icon(
-                    Icons.arrow_back_outlined,
-                    color: whiteColor,
+          kIsWeb && Get.width >= 600
+              ? Container(
+                  color: maroonColor,
+                  height: 55,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () => Get.back(),
+                        child: const Icon(
+                          Icons.arrow_back_outlined,
+                          color: whiteColor,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      const Text(
+                        'Bid History',
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            color: whiteColor,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15),
+                      ),
+                    ],
                   ),
+                )
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
                 ),
-                const SizedBox(
-                  width: 15,
-                ),
-                const Text(
-                  'Bid History',
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: whiteColor,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(kIsWeb ? 20 : 12),
               child: Container(
                 padding: const EdgeInsets.all(10),
                 color: whiteColor,
@@ -76,31 +92,40 @@ class _Content extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            flex: 2,
+                            flex: kIsWeb ? 2 : 1,
                             child: Text(
                               'Bidder',
-                              style: robotoRegular.copyWith(color: greyColor),
+                              style: robotoMedium.copyWith(color: blackColor),
                             ),
+                          ),
+                          const SizedBox(
+                            width: 5,
                           ),
                           Expanded(
                             flex: 1,
                             child: Text(
                               'Amount',
-                              style: robotoRegular.copyWith(color: greyColor),
+                              style: robotoMedium.copyWith(color: blackColor),
                             ),
                           ),
+                          const SizedBox(
+                            width: 5,
+                          ),
                           Expanded(
-                            flex: 3,
+                            flex: kIsWeb ? 3 : 2,
                             child: Text(
                               'Bid Date',
-                              style: robotoRegular.copyWith(color: greyColor),
+                              style: robotoMedium.copyWith(color: blackColor),
                             ),
+                          ),
+                          const SizedBox(
+                            width: 3,
                           ),
                           SizedBox(
                             width: 70,
                             child: Text(
                               'Action',
-                              style: robotoRegular.copyWith(color: greyColor),
+                              style: robotoMedium.copyWith(color: blackColor),
                             ),
                           )
                         ],

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CircleImage extends StatelessWidget {
@@ -21,12 +22,12 @@ class CircleImage extends StatelessWidget {
       child: Image.network(
         imageUrl,
         fit: BoxFit.cover,
-        height: height,
-        width: width,
+        height: kIsWeb ? height : 70,
+        width: kIsWeb ? width : 70,
         errorBuilder: (context, error, stackTrace) {
           return SizedBox(
-            height: height,
-            width: width,
+            height: kIsWeb ? height : 70,
+            width: kIsWeb ? width : 70,
             child: Image.asset(
               assetImage,
               fit: BoxFit.cover,

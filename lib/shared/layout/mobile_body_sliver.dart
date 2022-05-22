@@ -1,23 +1,30 @@
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class MobileSliver extends StatelessWidget {
-  const MobileSliver({
+  MobileSliver({
     Key? key,
     required this.title,
     required this.body,
+    this.scrollable = true,
   }) : super(key: key);
 
   final String title;
   final Widget body;
+  bool scrollable;
 
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
-        floatHeaderSlivers: true,
+        physics: scrollable
+            ? const AlwaysScrollableScrollPhysics()
+            : const NeverScrollableScrollPhysics(),
+        floatHeaderSlivers: scrollable,
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverAppBar(
-                floating: true,
+                floating: scrollable,
                 title: Text(
                   title,
                   textAlign: TextAlign.start,
@@ -26,7 +33,7 @@ class MobileSliver extends StatelessWidget {
                     color: whiteColor,
                     fontFamily: 'Roboto',
                     fontWeight: FontWeight.w500,
-                    fontSize: 15,
+                    fontSize: kIsWeb ? 15 : 18,
                   ),
                 ),
                 backgroundColor: maroonColor,
