@@ -3,6 +3,7 @@ import 'package:bidding/main/seller/controllers/seller_side_menu_controller.dart
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SellerSideMenu extends StatelessWidget {
@@ -16,6 +17,7 @@ class SellerSideMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: kIsWeb ? double.infinity : Get.width * .65,
       height: Get.height,
       color: indigoColor,
       child: SingleChildScrollView(

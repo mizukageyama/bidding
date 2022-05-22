@@ -18,7 +18,7 @@ List<MenuItem> sellerSideMenuItem = [
   ),
   MenuItem(
     name: 'Auctioned Items',
-    iconPath: 'icons/icon_raise.png',
+    iconPath: 'assets/icons/icon_raise.png',
     function: () => Get.offAll(() => const AuctionedItemListScreen()),
   ),
   MenuItem(
@@ -28,7 +28,7 @@ List<MenuItem> sellerSideMenuItem = [
   ),
   MenuItem(
     name: 'Sold Items',
-    iconPath: 'icons/icon_auction.png',
+    iconPath: 'assets/icons/icon_auction.png',
     function: () => Get.offAll(() => const SoldItemList()),
   ),
   MenuItem(
@@ -47,7 +47,7 @@ List<MenuItem> bidderSideMenuItem = [
   ),
   MenuItem(
     name: 'Ongoing Auctions',
-    iconPath: 'icons/icon_raise.png',
+    iconPath: 'assets/icons/icon_raise.png',
     function: () => Get.offAll(() => const OngoingAuctionScreen()),
   ),
   MenuItem(

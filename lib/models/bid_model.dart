@@ -26,7 +26,7 @@ class Bid {
         bidId: json['bid_id'] as String,
         itemId: json['item_id'] as String,
         bidderId: json['bidder_id'] as String,
-        amount: json['amount'] as double,
+        amount: double.parse('${json['amount']}'),
         bidDate: json['bid_date'] as Timestamp,
         isApproved: json['is_approved'] as bool);
   }

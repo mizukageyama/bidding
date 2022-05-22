@@ -18,421 +18,452 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: Get.height,
-      width: Get.width,
-      decoration: const BoxDecoration(
+    return SafeArea(
+      child: Container(
+        height: Get.height,
+        width: Get.width,
+        decoration: const BoxDecoration(
           image: DecorationImage(
-        image: AssetImage('assets/images/background.png'),
-        fit: BoxFit.cover,
-      )),
-      child: Center(
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Wrap(
-              alignment: WrapAlignment.center,
-              children: [
-                Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                  color: lightgreyColor,
-                  elevation: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 30, horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Get.back();
-                              },
-                              child: const Icon(
-                                Icons.arrow_back_outlined,
-                                color: greyColor,
-                                size: 28,
+            image: AssetImage('assets/images/background.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  Card(
+                    margin: const EdgeInsets.all(kIsWeb ? 0 : 20),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    color: lightgreyColor,
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: kIsWeb ? 30 : 10,
+                          horizontal: kIsWeb ? 20 : 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          kIsWeb
+                              ? const SizedBox(
+                                  height: 0,
+                                )
+                              : const SizedBox(
+                                  height: 10,
+                                ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: const Icon(
+                                  Icons.arrow_back_outlined,
+                                  color: greyColor,
+                                  size: kIsWeb ? 28 : 26,
+                                ),
                               ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Registration Form',
-                              style: robotoBold.copyWith(
-                                  color: blackColor, fontSize: 24),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 50,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Text(
-                                'Personal Details',
-                                style: robotoMedium.copyWith(
-                                    color: blackColor, fontSize: 15),
-                                textAlign: TextAlign.right,
+                              const SizedBox(
+                                width: 10,
                               ),
-                            ),
-                            Form(
-                              key: _registerFormKey,
-                              child: Wrap(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 20),
-                                    width: 510,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            SizedBox(
-                                              width: 160,
-                                              child: CustomDropdown(
-                                                hintText: 'Select user type',
-                                                dropdownItems: userType,
-                                                onChanged: (item) =>
-                                                    authController
-                                                        .userType.value = item!,
-                                                onSaved: (item) =>
-                                                    authController
-                                                        .userType.value = item!,
-                                                validator: (value) {
-                                                  if (authController
-                                                          .userType.value ==
-                                                      '') {
-                                                    return 'This is a required field';
-                                                  }
-                                                  return null;
-                                                },
+                              Text(
+                                'Registration Form',
+                                style: robotoBold.copyWith(
+                                    color: blackColor,
+                                    fontSize: kIsWeb ? 24 : 20),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: kIsWeb ? 50 : 30,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Text(
+                                  'Personal Details',
+                                  style: robotoMedium.copyWith(
+                                      color: blackColor, fontSize: 15),
+                                  textAlign: TextAlign.right,
+                                ),
+                              ),
+                              Form(
+                                key: _registerFormKey,
+                                child: Wrap(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12,
+                                          horizontal: kIsWeb ? 20 : 10),
+                                      width: 510,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              SizedBox(
+                                                width: 160,
+                                                child: CustomDropdown(
+                                                  hintText: 'Select user type',
+                                                  dropdownItems: userType,
+                                                  onChanged: (item) =>
+                                                      authController.userType
+                                                          .value = item!,
+                                                  onSaved: (item) =>
+                                                      authController.userType
+                                                          .value = item!,
+                                                  validator: (value) {
+                                                    if (authController
+                                                            .userType.value ==
+                                                        '') {
+                                                      return 'This is a required field';
+                                                    }
+                                                    return null;
+                                                  },
+                                                ),
                                               ),
-                                            ),
-                                            const SizedBox(
-                                              width: 20,
-                                            ),
-                                            Expanded(
-                                              child: FormInputFieldWithIcon(
-                                                controller: authController
-                                                    .idNumberController,
-                                                iconPrefix: Icons.person,
-                                                labelText: 'ID Number',
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                onChanged: (value) {
-                                                  return;
-                                                },
-                                                onSaved: (value) =>
-                                                    authController
-                                                        .idNumberController
-                                                        .text = value!,
-                                                validator: Validator().notEmpty,
+                                              const SizedBox(
+                                                width: 20,
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        FormInputFieldWithIcon(
-                                          capitalizedFirst: true,
-                                          controller: authController
-                                              .firstNameController,
-                                          iconPrefix: Icons.person,
-                                          labelText: 'First Name',
-                                          keyboardType: TextInputType.name,
-                                          onChanged: (value) {
-                                            return;
-                                          },
-                                          onSaved: (value) => authController
-                                              .firstNameController
-                                              .text = value!,
-                                          validator: Validator().notEmpty,
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        FormInputFieldWithIcon(
-                                          capitalizedFirst: true,
-                                          controller:
-                                              authController.lastNameController,
-                                          iconPrefix: Icons.person,
-                                          labelText: 'Last Name',
-                                          keyboardType: TextInputType.name,
-                                          onChanged: (value) {
-                                            return;
-                                          },
-                                          onSaved: (value) => authController
-                                              .lastNameController.text = value!,
-                                          validator: Validator().notEmpty,
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        FormInputFieldWithIcon(
-                                          controller:
-                                              authController.emailController,
-                                          iconPrefix: Icons.mail,
-                                          labelText: 'Email Address',
-                                          keyboardType: TextInputType.name,
-                                          onChanged: (value) {
-                                            return;
-                                          },
-                                          onSaved: (value) => authController
-                                              .emailController.text = value!,
-                                          validator: Validator().email,
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Obx(
-                                          () => FormInputFieldWithIcon(
+                                              Expanded(
+                                                child: InputField(
+                                                  controller: authController
+                                                      .idNumberController,
+                                                  labelText: 'ID Number',
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  onChanged: (value) {
+                                                    return;
+                                                  },
+                                                  onSaved: (value) =>
+                                                      authController
+                                                          .idNumberController
+                                                          .text = value!,
+                                                  validator:
+                                                      Validator().notEmpty,
+                                                  hideLabelTyping: true,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          FormInputFieldWithIcon(
+                                            capitalizedFirst: true,
                                             controller: authController
-                                                .passwordController,
-                                            iconPrefix: Icons.lock,
-                                            suffixIcon: IconButton(
-                                              onPressed: () {
-                                                pwObscure.value =
-                                                    !pwObscure.value;
-                                              },
-                                              icon: Icon(
-                                                pwObscure.value
-                                                    ? Icons.visibility
-                                                    : Icons.visibility_off,
-                                              ),
-                                            ),
-                                            labelText: 'Password',
-                                            validator: Validator().password,
-                                            obscureText: pwObscure.value,
+                                                .firstNameController,
+                                            iconPrefix: Icons.person,
+                                            labelText: 'First Name',
+                                            keyboardType: TextInputType.name,
                                             onChanged: (value) {
                                               return;
                                             },
                                             onSaved: (value) => authController
-                                                .passwordController
+                                                .firstNameController
                                                 .text = value!,
-                                            maxLines: 1,
-                                            textInputAction:
-                                                TextInputAction.done,
+                                            validator: Validator().notEmpty,
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Obx(
-                                          () => FormInputFieldWithIcon(
-                                            iconPrefix: Icons.lock,
-                                            suffixIcon: IconButton(
-                                              onPressed: () {
-                                                confirmPwObscure.value =
-                                                    !confirmPwObscure.value;
-                                              },
-                                              icon: Icon(
-                                                confirmPwObscure.value
-                                                    ? Icons.visibility
-                                                    : Icons.visibility_off,
-                                              ),
-                                            ),
-                                            labelText: 'Confirm Password',
-                                            validator: (value) {
-                                              if (value!.isEmpty) {
-                                                return 'This is a required field';
-                                              }
-                                              if (value !=
-                                                  authController
-                                                      .passwordController
-                                                      .text) {
-                                                return 'Password does not match';
-                                              } else {
-                                                return null;
-                                              }
-                                            },
-                                            obscureText: confirmPwObscure.value,
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          FormInputFieldWithIcon(
+                                            capitalizedFirst: true,
+                                            controller: authController
+                                                .lastNameController,
+                                            iconPrefix: Icons.person,
+                                            labelText: 'Last Name',
+                                            keyboardType: TextInputType.name,
                                             onChanged: (value) {
                                               return;
                                             },
-                                            maxLines: 1,
-                                            textInputAction:
-                                                TextInputAction.done,
+                                            onSaved: (value) => authController
+                                                .lastNameController
+                                                .text = value!,
+                                            validator: Validator().notEmpty,
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 20),
-                                    width: 520,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: <Widget>[
-                                            Expanded(
-                                              child: Container(
-                                                height: 310,
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors.grey),
-                                                    color: whiteColor,
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                      Radius.circular(12),
-                                                    )),
-                                                child: ClipRRect(
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                12)),
-                                                    child: Obx(getUMID)),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 30,
-                                            ),
-                                            Expanded(
-                                              child: Container(
-                                                height: 310,
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: Colors.grey,
-                                                    ),
-                                                    color: whiteColor,
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                      Radius.circular(12),
-                                                    )),
-                                                child: ClipRRect(
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                12)),
-                                                    child: Obx(getForm1)),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        CheckboxFormField(
-                                          title: Row(
-                                            children: [
-                                              Text(
-                                                'I agree to ',
-                                                style: robotoRegular.copyWith(
-                                                    fontSize: 13,
-                                                    color: blackColor),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  showDialog(
-                                                    context: context,
-                                                    builder: (context) =>
-                                                        tACDialog(context),
-                                                  );
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          FormInputFieldWithIcon(
+                                            controller:
+                                                authController.emailController,
+                                            iconPrefix: Icons.mail,
+                                            labelText: 'Email Address',
+                                            keyboardType: TextInputType.name,
+                                            onChanged: (value) {
+                                              return;
+                                            },
+                                            onSaved: (value) => authController
+                                                .emailController.text = value!,
+                                            validator: Validator().email,
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Obx(
+                                            () => FormInputFieldWithIcon(
+                                              controller: authController
+                                                  .passwordController,
+                                              iconPrefix: Icons.lock,
+                                              suffixIcon: IconButton(
+                                                onPressed: () {
+                                                  pwObscure.value =
+                                                      !pwObscure.value;
                                                 },
-                                                child: Text(
-                                                  'Terms & Condition',
-                                                  style: robotoMedium.copyWith(
-                                                      fontSize: 13,
-                                                      color: lightblueColor),
+                                                icon: Icon(
+                                                  pwObscure.value
+                                                      ? Icons.visibility
+                                                      : Icons.visibility_off,
                                                 ),
-                                              )
+                                              ),
+                                              labelText: 'Password',
+                                              validator: Validator().password,
+                                              obscureText: pwObscure.value,
+                                              onChanged: (value) {
+                                                return;
+                                              },
+                                              onSaved: (value) => authController
+                                                  .passwordController
+                                                  .text = value!,
+                                              maxLines: 1,
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Obx(
+                                            () => FormInputFieldWithIcon(
+                                              iconPrefix: Icons.lock,
+                                              suffixIcon: IconButton(
+                                                onPressed: () {
+                                                  confirmPwObscure.value =
+                                                      !confirmPwObscure.value;
+                                                },
+                                                icon: Icon(
+                                                  confirmPwObscure.value
+                                                      ? Icons.visibility
+                                                      : Icons.visibility_off,
+                                                ),
+                                              ),
+                                              labelText: 'Confirm Password',
+                                              validator: (value) {
+                                                if (value!.isEmpty) {
+                                                  return 'This is a required field';
+                                                }
+                                                if (value !=
+                                                    authController
+                                                        .passwordController
+                                                        .text) {
+                                                  return 'Password does not match';
+                                                } else {
+                                                  return null;
+                                                }
+                                              },
+                                              obscureText:
+                                                  confirmPwObscure.value,
+                                              onChanged: (value) {
+                                                return;
+                                              },
+                                              maxLines: 1,
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12,
+                                          horizontal: kIsWeb ? 20 : 10),
+                                      width: 520,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Expanded(
+                                                child: Container(
+                                                  height: kIsWeb ? 310 : 240,
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Colors.grey),
+                                                      color: whiteColor,
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .all(
+                                                        Radius.circular(12),
+                                                      )),
+                                                  child: ClipRRect(
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                                  .all(
+                                                              Radius.circular(
+                                                                  12)),
+                                                      child: Obx(getUMID)),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: kIsWeb ? 30 : 10,
+                                              ),
+                                              Expanded(
+                                                child: Container(
+                                                  height: kIsWeb ? 310 : 240,
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                        color: Colors.grey,
+                                                      ),
+                                                      color: whiteColor,
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .all(
+                                                        Radius.circular(12),
+                                                      )),
+                                                  child: ClipRRect(
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                                  .all(
+                                                              Radius.circular(
+                                                                  12)),
+                                                      child: Obx(getForm1)),
+                                                ),
+                                              ),
                                             ],
                                           ),
-                                          validator: (value) {
-                                            if (!value!) {
-                                              return 'This is a required field';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            SizedBox(
-                                              height: 40,
-                                              width: 110,
-                                              child: CustomButton(
-                                                onTap: () {
-                                                  _registerFormKey.currentState!
-                                                      .reset();
-                                                  authController
-                                                      .userType.value = '';
-                                                  authController.idImage.value =
-                                                      '';
-                                                  authController
-                                                      .form1Image.value = '';
-                                                },
-                                                text: 'Clear Form',
-                                                buttonColor: maroonColor,
-                                                fontSize: 16,
-                                              ),
+                                          CheckboxFormField(
+                                            title: Row(
+                                              children: [
+                                                Text(
+                                                  'I agree to ',
+                                                  style: robotoRegular.copyWith(
+                                                      fontSize:
+                                                          kIsWeb ? 13 : 15,
+                                                      color: blackColor),
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          tACDialog(context),
+                                                    );
+                                                  },
+                                                  child: Text(
+                                                    'Terms & Condition',
+                                                    style:
+                                                        robotoMedium.copyWith(
+                                                            fontSize: kIsWeb
+                                                                ? 13
+                                                                : 15,
+                                                            color:
+                                                                lightblueColor),
+                                                  ),
+                                                )
+                                              ],
                                             ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            SizedBox(
-                                              height: 40,
-                                              width: 110,
-                                              child: CustomButton(
-                                                onTap: () {
-                                                  if (_registerFormKey
-                                                      .currentState!
-                                                      .validate()) {
+                                            validator: (value) {
+                                              if (!value!) {
+                                                return 'This is a required field';
+                                              }
+                                              return null;
+                                            },
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              SizedBox(
+                                                height: 40,
+                                                width: 110,
+                                                child: CustomButton(
+                                                  onTap: () {
+                                                    _registerFormKey
+                                                        .currentState!
+                                                        .reset();
                                                     authController
-                                                        .submitRegistration(
-                                                            context);
-                                                  }
-                                                },
-                                                text: 'Register',
-                                                buttonColor: maroonColor,
-                                                fontSize: 16,
+                                                        .userType.value = '';
+                                                    authController
+                                                        .idImage.value = '';
+                                                    authController
+                                                        .form1Image.value = '';
+                                                  },
+                                                  text: kIsWeb
+                                                      ? 'Clear Form'
+                                                      : 'Clear',
+                                                  buttonColor: maroonColor,
+                                                  fontSize: 16,
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              SizedBox(
+                                                height: 40,
+                                                width: 110,
+                                                child: CustomButton(
+                                                  onTap: () {
+                                                    if (_registerFormKey
+                                                        .currentState!
+                                                        .validate()) {
+                                                      authController
+                                                          .submitRegistration(
+                                                              context);
+                                                    }
+                                                  },
+                                                  text: 'Register',
+                                                  buttonColor: maroonColor,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

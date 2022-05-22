@@ -4,6 +4,8 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
+import 'package:bidding/shared/layout/mobile_body_sliver.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ItemInfoScreen extends StatelessWidget {
@@ -14,13 +16,30 @@ class ItemInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ResponsiveView(
-          _Content(
-            item: _item,
-          ),
-          SellerSideMenu()),
+    return SafeArea(
+      child: Scaffold(
+        body: kIsWeb
+            ? _Body(item: _item)
+            : MobileSliver(
+                title: 'Auctioned Items > ${_item.title}',
+                body: _Body(item: _item),
+              ),
+      ),
     );
+  }
+}
+
+class _Body extends StatelessWidget {
+  const _Body({Key? key, required this.item}) : super(key: key);
+  final Item item;
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveView(
+        _Content(
+          item: item,
+        ),
+        SellerSideMenu());
   }
 }
 
@@ -41,61 +60,84 @@ class _Content extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            color: maroonColor,
-            height: 55,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () => Get.back(),
-                  child: const Icon(
-                    Icons.arrow_back_outlined,
-                    color: whiteColor,
+          kIsWeb
+              ? Container(
+                  color: maroonColor,
+                  height: 55,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () => Get.back(),
+                        child: const Icon(
+                          Icons.arrow_back_outlined,
+                          color: whiteColor,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Flexible(
+                        child: Text(
+                          'Auctioned Items > ${item.title}',
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.start,
+                          style: const TextStyle(
+                            color: whiteColor,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
+                )
+              : const SizedBox(
+                  height: 0,
                 ),
-                const SizedBox(
-                  width: 15,
-                ),
-                Text(
-                  'Auctioned Items > ${item.title}',
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.start,
-                  style: const TextStyle(
-                      color: whiteColor,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              primary: true,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: LeftColumn(
+          kIsWeb
+              ? Expanded(
+                  child: ListView(
+                    shrinkWrap: true,
+                    primary: true,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: LeftColumn(
+                              images: item.images,
+                            ),
+                          ),
+                          Expanded(
+                            child: RightColumn(
+                                item: item,
+                                controller: bidsController,
+                                isBidder: false),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              : Expanded(
+                  child: ListView(
+                    shrinkWrap: true,
+                    primary: true,
+                    children: [
+                      LeftColumn(
                         images: item.images,
                       ),
-                    ),
-                    Expanded(
-                      child: RightColumn(
+                      RightColumn(
                           item: item,
                           controller: bidsController,
-                          isBidder: false),
-                    ),
-                  ],
+                          isBidder: false)
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
         ],
       ),
     );
