@@ -1,9 +1,9 @@
-import 'package:bidding/controllers/all_controller_binding.dart';
+import 'package:bidding/routes/app_pages.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
-import 'package:bidding/shared/routes/app_pages.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'shared/controllers/all_controller_binding.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

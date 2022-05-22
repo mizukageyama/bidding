@@ -1,11 +1,10 @@
-import 'package:bidding/controllers/_controllers.dart';
+import 'package:bidding/main/bidder/screens/_bidder_screens.dart';
+import 'package:bidding/main/seller/screens/_seller_screens.dart';
+import 'package:bidding/main/seller/screens/sold_item_list.dart';
 import 'package:bidding/models/category_model.dart';
 import 'package:bidding/models/menu_model.dart';
-import 'package:bidding/screens/bidder/home.dart';
-import 'package:bidding/screens/bidder/ongoing_auctions.dart';
-import 'package:bidding/screens/seller/_seller_screens.dart';
-import 'package:bidding/screens/seller/sold_item_list.dart';
 import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:flutter/material.dart';
 
 final AuthController authController = Get.find();
@@ -20,7 +19,7 @@ List<MenuItem> sellerSideMenuItem = [
   MenuItem(
     name: 'Auctioned Items',
     iconPath: 'icons/icon_raise.png',
-    function: () => Get.offAll(() => const ItemListScreen()),
+    function: () => Get.offAll(() => const AuctionedItemListScreen()),
   ),
   MenuItem(
     name: 'Add Item for Auction',
@@ -54,7 +53,7 @@ List<MenuItem> bidderSideMenuItem = [
   MenuItem(
     name: 'Transactions',
     icon: Icons.add_rounded,
-    function: () => Get.offAll(() => const AddItemForm()),
+    function: () => Get.offAll(() => const TransactionScreen()),
   ),
   MenuItem(
     name: 'Logout',
