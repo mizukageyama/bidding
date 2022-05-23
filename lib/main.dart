@@ -2,15 +2,20 @@ import 'package:bidding/firebase_options.dart';
 import 'package:bidding/routes/app_pages.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'shared/controllers/all_controller_binding.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    name: 'bidding-app',
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } else {
+    await Firebase.initializeApp();
+  }
   runApp(const MyApp());
 }
 
