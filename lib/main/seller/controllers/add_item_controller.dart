@@ -1,4 +1,5 @@
 import 'package:bidding/components/_components.dart';
+import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
@@ -13,7 +14,7 @@ class AddItemController extends GetxController {
   final log = getLogger('Add Item Form Controller');
 
   static final AuthController authController = Get.find();
-  //final UserModel user = authController.userModel.value!;
+  final UserModel user = authController.userModel.value!;
   final ImagePickerService itemPicker = ImagePickerService();
   final uuid = const Uuid();
 
@@ -87,7 +88,7 @@ class AddItemController extends GetxController {
 
       await firestore.collection('items').doc(generatedItemId).set({
         'item_id': generatedItemId,
-        'seller_id': 'iebjbHvazId6UbXVEcloCQ9bSXt1', //user.userID,
+        'seller_id': user.userID,
         'title': titleController.text.trim(),
         'description': descriptionController.text.trim(),
         'asking_price': double.parse(askingPriceController.text),
