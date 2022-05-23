@@ -141,10 +141,10 @@ class GalleryView extends StatelessWidget {
   Widget buildImage(int index) {
     return Container(
       width: double.infinity,
-      color: Colors.grey,
+      color: Colors.white,
       child: Image.network(
         apController.fetchedImages[index],
-        fit: BoxFit.cover,
+        fit: BoxFit.contain,
         errorBuilder: (context, error, stackTrace) {
           return Image.asset('assets/images/default_image.png',
               fit: BoxFit.cover);
