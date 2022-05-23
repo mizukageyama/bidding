@@ -66,119 +66,117 @@ class _Content extends StatelessWidget {
                   height: 0,
                 ),
           Expanded(
-              child: Center(
-            child: ListView(
-              padding: const EdgeInsets.all(15),
-              shrinkWrap: true,
-              children: [
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  children: [
-                    Column(children: [
-                      Container(
-                        height: 320,
-                        color: pinkColor,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    kIsWeb
-                                        ? 'Start posting your \navailable items now'
-                                        : 'Start posting your available items now',
-                                    style: robotoBold.copyWith(
-                                        color: whiteColor,
-                                        fontSize: kIsWeb ? 45 : 41),
-                                    overflow: TextOverflow.fade,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'Start an auction within the University of Mindanao Community.',
-                              style: robotoMedium.copyWith(
-                                  color: whiteColor, fontSize: 15),
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            InkWell(
-                              splashColor: Colors.transparent,
-                              onTap: () {
-                                SellerSideMenuController menu = Get.find();
-                                menu.changeActiveItem('Add Item for Auction');
-                                Get.to(() => const AddItemForm());
-                              },
-                              child: Container(
-                                height: 40,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: whiteColor)),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      'Add Auction Item',
-                                      style: robotoMedium.copyWith(
-                                          color: whiteColor, fontSize: 14),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    const Icon(
-                                      Icons.arrow_forward,
+              child: ListView(
+            padding: const EdgeInsets.all(15),
+            shrinkWrap: true,
+            children: [
+              Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  Column(children: [
+                    Container(
+                      height: 320,
+                      color: pinkColor,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  kIsWeb
+                                      ? 'Start posting your \navailable items now'
+                                      : 'Start posting your available items now',
+                                  style: robotoBold.copyWith(
                                       color: whiteColor,
-                                    ),
-                                  ],
+                                      fontSize: kIsWeb ? 45 : 41),
+                                  overflow: TextOverflow.fade,
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 7,
-                      ),
-                      Wrap(
-                          runSpacing: 10,
-                          runAlignment: WrapAlignment.spaceAround,
-                          alignment: WrapAlignment.center,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Container(
-                              width: 650,
-                              height: 320,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 12,
-                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'Start an auction within the University of Mindanao Community.',
+                            style: robotoMedium.copyWith(
+                                color: whiteColor, fontSize: 15),
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          InkWell(
+                            splashColor: Colors.transparent,
+                            onTap: () {
+                              SellerSideMenuController menu = Get.find();
+                              menu.changeActiveItem('Add Item for Auction');
+                              Get.to(() => const AddItemForm());
+                            },
+                            child: Container(
+                              height: 40,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
                               decoration: BoxDecoration(
-                                color: fadeColor,
-                                borderRadius: BorderRadius.circular(12),
-                                image: const DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/auction_image.jpg'),
-                                    fit: BoxFit.cover),
+                                  border: Border.all(color: whiteColor)),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    'Add Auction Item',
+                                    style: robotoMedium.copyWith(
+                                        color: whiteColor, fontSize: 14),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  const Icon(
+                                    Icons.arrow_forward,
+                                    color: whiteColor,
+                                  ),
+                                ],
                               ),
                             ),
-                            const DisplayStatus()
-                          ])
-                    ]),
-                  ],
-                ),
-              ],
-            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 7,
+                    ),
+                    Wrap(
+                        runSpacing: 10,
+                        runAlignment: WrapAlignment.spaceAround,
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Container(
+                            width: 750,
+                            height: 320,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 12,
+                            ),
+                            decoration: BoxDecoration(
+                              color: fadeColor,
+                              borderRadius: BorderRadius.circular(12),
+                              image: const DecorationImage(
+                                  image: AssetImage(
+                                      'assets/images/auction_image.jpg'),
+                                  fit: BoxFit.cover),
+                            ),
+                          ),
+                          const DisplayStatus()
+                        ])
+                  ]),
+                ],
+              ),
+            ],
           ))
         ],
       ),
@@ -201,7 +199,7 @@ class DisplayStatus extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-      width: 570,
+      width: 400,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

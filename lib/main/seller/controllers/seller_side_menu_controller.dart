@@ -1,12 +1,14 @@
 import 'package:bidding/main/seller/controllers/auctioned_items_controller.dart';
 import 'package:bidding/main/seller/controllers/sold_items_controller.dart';
+import 'package:bidding/models/user_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/controllers/auth_controller.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 
 class SellerSideMenuController extends GetxController {
-  // static final AuthController _authController = Get.find();
-  // final UserModel user = _authController.userModel.value!;
+  static final AuthController _authController = Get.find();
+  final UserModel user = _authController.userModel.value!;
   final RxString activeMenu = 'Dashboard'.obs;
 
   final AuctionedItemController itemListController =
@@ -22,9 +24,9 @@ class SellerSideMenuController extends GetxController {
     super.dispose();
   }
 
-  // String userName() {
-  //   return '${user.firstName} ${user.lastName}';
-  // }
+  String userName() {
+    return '${user.firstName} ${user.lastName}';
+  }
 
   // String userRole() {
   //   return user.userRole;

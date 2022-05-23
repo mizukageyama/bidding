@@ -21,7 +21,6 @@ class OngoingAuctionScreen extends StatelessWidget {
           MobileSliver(
             title: 'Ongoing Auctions',
             body: _Content(),
-            scrollable: false,
           ),
           BidderSideMenu(),
         ),

@@ -22,7 +22,7 @@ class SellerSideMenu extends StatelessWidget {
           : kIsWeb && Get.width <= 600
               ? Get.width * .45
               : Get.width * .65,
-      height: Get.height,
+      height: double.infinity,
       color: indigoColor,
       child: SingleChildScrollView(
         controller: scrollController,
@@ -49,8 +49,7 @@ class SellerSideMenu extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          //menucontroller.userName(),
-                          'Jesicca Day',
+                          menucontroller.userName(),
                           style: robotoMedium.copyWith(
                             color: whiteColor,
                             fontSize: kIsWeb ? 13 : 16,
@@ -71,7 +70,6 @@ class SellerSideMenu extends StatelessWidget {
                             vertical: 3,
                           ),
                           child: Text(
-                            //menucontroller.userRole().toUpperCase(),
                             'SELLER',
                             style: robotoMedium.copyWith(
                               color: whiteColor,

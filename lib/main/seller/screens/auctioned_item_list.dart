@@ -21,7 +21,6 @@ class AuctionedItemListScreen extends StatelessWidget {
           MobileSliver(
             title: 'Auctioned Items',
             body: _Content(),
-            scrollable: false,
           ),
           SellerSideMenu(),
         ),
