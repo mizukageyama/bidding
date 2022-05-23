@@ -8,6 +8,7 @@ import 'shared/controllers/all_controller_binding.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: 'bidding-app',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
