@@ -156,19 +156,18 @@ class _Content extends StatelessWidget {
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           Container(
-                            width: 750,
-                            height: 320,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 12,
-                            ),
                             decoration: BoxDecoration(
-                              color: fadeColor,
+                              color: const Color(0xFFb8fcff),
                               borderRadius: BorderRadius.circular(12),
-                              image: const DecorationImage(
-                                  image: AssetImage(
-                                      'assets/images/auction_image.jpg'),
-                                  fit: BoxFit.cover),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.asset(
+                                'assets/images/auction_image.jpg',
+                                fit: BoxFit.contain,
+                                width: 750,
+                                height: 320,
+                              ),
                             ),
                           ),
                           const DisplayStatus()

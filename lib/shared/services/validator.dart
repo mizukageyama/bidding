@@ -42,7 +42,7 @@ class Validator {
       return 'Enter a number';
     }
     if (double.parse(value) < askingPrice) {
-      return 'Please start bidding at the asking price or more';
+      return 'Please start bidding at $askingPrice';
     }
     return null;
   }

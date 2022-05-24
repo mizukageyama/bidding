@@ -500,7 +500,7 @@ class _Content extends StatelessWidget {
       );
     }
     return SizedBox(
-      height: 330,
+      height: kIsWeb ? 330 : 250,
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: GridView.count(
@@ -576,7 +576,7 @@ class DeletableCategoryChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 5,
-      runSpacing: 5,
+      runSpacing: kIsWeb ? 5 : 1,
       children: [...categories(controller.category)],
     );
   }

@@ -37,10 +37,10 @@ class _Content extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.height,
       width: Get.width,
       color: whiteColor,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           kIsWeb && Get.width >= 600
               ? Container(

@@ -1,4 +1,6 @@
 import 'package:bidding/components/_components.dart';
+import 'package:bidding/main/seller/controllers/seller_side_menu_controller.dart';
+import 'package:bidding/main/seller/screens/_seller_screens.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
@@ -51,7 +53,9 @@ class AddItemController extends GetxController {
         if (result) {
           key.currentState!.reset();
           clearControllers();
-          //Go to auction list
+          SellerSideMenuController menu = Get.find();
+          menu.changeActiveItem('Auctioned Items');
+          Get.to(() => const AuctionedItemListScreen());
         } else {
           showSimpleDialog(
             title: 'Add Item for Auction Failed',
@@ -84,6 +88,7 @@ class AddItemController extends GetxController {
     final String generatedItemId = uuid.v4();
     final bool uploadingSuccess = await uploadImages(generatedItemId);
     if (uploadingSuccess) {
+      log.i('uploading success');
       Timestamp endTimeStamp = Timestamp.fromDate(endDateValue());
 
       await firestore.collection('items').doc(generatedItemId).set({
@@ -94,10 +99,12 @@ class AddItemController extends GetxController {
         'asking_price': double.parse(askingPriceController.text),
         'brand': brandController.text,
         'end_date': endTimeStamp,
-        'category': category,
+        'category': List<String>.from(category),
         'condition': condition.value,
         'images': itemImageUrls,
       }).catchError((error) {
+        log.i(error);
+
         dismissDialog();
         successWrite.value = false;
       });
