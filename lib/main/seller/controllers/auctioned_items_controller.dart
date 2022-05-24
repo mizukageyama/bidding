@@ -2,6 +2,7 @@ import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
 import 'package:bidding/shared/services/_services.dart';
+import 'package:flutter/material.dart';
 
 class AuctionedItemController extends GetxController {
   final log = getLogger('Auctioned Item Controller');
@@ -12,6 +13,12 @@ class AuctionedItemController extends GetxController {
   //Dashboard
   final RxInt closedItemCount = 0.obs;
   final RxInt openedItemCount = 0.obs;
+
+  //Reopening Closed Item - Date and Time Input
+  final Rx<DateTime> selectedDate = DateTime.now().obs;
+  final Rx<TimeOfDay> selectedTime = TimeOfDay.now().obs;
+  final RxString time = ''.obs;
+  final RxString date = ''.obs;
 
   @override
   void onInit() {
@@ -28,7 +35,7 @@ class AuctionedItemController extends GetxController {
     log.i('Streaming Item List');
     return firestore
         .collection('items')
-        .orderBy('end_date', descending: true)
+        .orderBy('end_date')
         .where('seller_id', isEqualTo: auth.currentUser!.uid)
         .snapshots(includeMetadataChanges: true)
         .map((query) {

@@ -49,8 +49,7 @@ class ItemCard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-              color: Colors.transparent,
-              border: Border.all(color: neutralColor)),
+              color: whiteColor, border: Border.all(color: neutralColor)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.max,

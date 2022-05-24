@@ -18,14 +18,14 @@ class ImageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image.network(
       imageUrl,
-      fit: BoxFit.cover,
+      fit: BoxFit.contain,
       width: width,
       height: height,
       errorBuilder: (context, error, stackTrace) {
         return SizedBox(
           child: Image.asset(
             assetImage,
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
             width: width,
             height: height,
           ),

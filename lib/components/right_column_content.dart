@@ -1,6 +1,9 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/display_info_section.dart';
+import 'package:bidding/main/seller/controllers/auctioned_items_controller.dart';
+import 'package:bidding/main/seller/controllers/manage_item.dart';
 import 'package:bidding/models/_models.dart';
+import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/services/format.dart';
@@ -16,6 +19,7 @@ class RightColumnContent extends StatelessWidget {
       : super(key: key);
 
   final BidsController controller;
+  final AuctionedItemController itemController = Get.find();
   final TextEditingController bidInput = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final bool isBidder;
@@ -29,6 +33,55 @@ class RightColumnContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
+          Visibility(
+            visible: !isBidder,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                InkWell(
+                  onTap: () async {
+                    await ManageItem.edit(context, item);
+                  },
+                  child: const Icon(
+                    Icons.edit,
+                    color: blackColor,
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                InkWell(
+                  onTap: () async {
+                    await ManageItem.delete(item.itemId);
+                  },
+                  child: const Icon(
+                    Icons.delete,
+                    color: blackColor,
+                  ),
+                ),
+                Visibility(
+                  visible: (!isBidder &&
+                      DateTime.now().isAfter(item.endDate.toDate())),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      CustomButton(
+                        onTap: () async {
+                          await ManageItem.reOpen(context, item.itemId);
+                        },
+                        buttonColor: maroonColor,
+                        text: 'Reopen Item',
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
           Text(
             item.title.toUpperCase(),
             style: robotoBold.copyWith(
@@ -120,7 +173,7 @@ class RightColumnContent extends StatelessWidget {
             height: 15,
           ),
           Text(
-            'Item will be closed: ${Format.date(item.endDate)}',
+            'Item ${DateTime.now().isBefore(item.endDate.toDate()) ? 'will be' : 'was'} closed: ${Format.date(item.endDate)}',
             style: robotoRegular.copyWith(color: greyColor),
           ),
           Padding(
