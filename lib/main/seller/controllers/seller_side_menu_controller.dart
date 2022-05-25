@@ -24,17 +24,13 @@ class SellerSideMenuController extends GetxController {
     super.dispose();
   }
 
-  String userName() {
-    return '${user.firstName} ${user.lastName}';
+  get userName => '${user.firstName} ${user.lastName}';
+
+  get initials => '${user.firstName[0]}${user.lastName[0]}';
+
+  String userProfile() {
+    return _authController.info.value?.profilePhoto ?? '';
   }
-
-  // String userRole() {
-  //   return user.userRole;
-  // }
-
-  // String userProfile(){
-  //   return user.;
-  // }
 
   void reset() {
     activeMenu.value = 'Dashboard';

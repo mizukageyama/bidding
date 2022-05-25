@@ -37,8 +37,11 @@ class SellerSideMenu extends StatelessWidget {
                 alignment: WrapAlignment.center,
                 runSpacing: 8,
                 children: [
-                  const CircleImage(
-                    imageUrl: '',
+                  Obx(
+                    () => CircleImage(
+                      imageUrl: menucontroller.userProfile(),
+                      initial: menucontroller.initials,
+                    ),
                   ),
                   const SizedBox(
                     width: 20,
@@ -49,7 +52,7 @@ class SellerSideMenu extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          menucontroller.userName(),
+                          menucontroller.userName,
                           style: robotoMedium.copyWith(
                             color: whiteColor,
                             fontSize: kIsWeb ? 13 : 16,

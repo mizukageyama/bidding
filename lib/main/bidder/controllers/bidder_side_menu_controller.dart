@@ -1,11 +1,13 @@
 import 'package:bidding/main/bidder/controllers/ongoing_auction_controller.dart';
+import 'package:bidding/models/user_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 
 class BidderSideMenuController extends GetxController {
-  // static final AuthController _authController = Get.find();
-  // final UserModel user = _authController.userModel.value!;
+  static final AuthController _authController = Get.find();
+  final UserModel user = _authController.userModel.value!;
   final RxString activeMenu = 'Dashboard'.obs;
 
   final OngoingAuctionController itemListController =
@@ -18,17 +20,13 @@ class BidderSideMenuController extends GetxController {
     super.dispose();
   }
 
-  // String userName() {
-  //   return '${user.firstName} ${user.lastName}';
-  // }
+  get userName => '${user.firstName} ${user.lastName}';
 
-  // String userRole() {
-  //   return user.userRole;
-  // }
+  get initials => '${user.firstName[0]}${user.lastName[0]}';
 
-  // String userProfile(){
-  //   return user.;
-  // }
+  String userProfile() {
+    return _authController.info.value?.profilePhoto ?? '';
+  }
 
   void reset() {
     activeMenu.value = 'Dashboard';

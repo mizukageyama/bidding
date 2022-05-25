@@ -31,8 +31,12 @@ class TestSideMenu extends StatelessWidget {
               alignment: WrapAlignment.center,
               runSpacing: 8,
               children: [
-                const CircleImage(
-                  imageUrl: '',
+                const SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: CircleImage(
+                    imageUrl: '',
+                  ),
                 ),
                 const SizedBox(
                   width: 20,

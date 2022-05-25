@@ -116,65 +116,69 @@ class RightColumnContent extends StatelessWidget {
               isBidder: isBidder,
               bidsController: controller,
               askingPrice: item.askingPrice),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 25,
-              ),
-              Form(
-                key: _formKey,
-                child: Wrap(
-                  runSpacing: 5,
-                  children: [
-                    SizedBox(
-                      width: 200,
-                      child: InputField(
-                        controller: controller.bidInput,
-                        labelText: 'Enter your bid',
-                        keyboardType: TextInputType.multiline,
-                        onChanged: (value) {
-                          return;
-                        },
-                        onSaved: (value) => controller.bidInput.text = value!,
-                        validator: (value) {
-                          if (controller.isDoneLoading.value &&
-                              controller.bids.isNotEmpty) {
-                            int index = controller.approvedBid(controller.bids);
-                            if (index != -1) {
-                              return Validator()
-                                  .bid(value, controller.bids[index].amount);
-                            } else {
+          Visibility(
+            visible: isBidder,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 25,
+                ),
+                Form(
+                  key: _formKey,
+                  child: Wrap(
+                    runSpacing: 5,
+                    children: [
+                      SizedBox(
+                        width: 200,
+                        child: InputField(
+                          controller: controller.bidInput,
+                          labelText: 'Enter your bid',
+                          keyboardType: TextInputType.multiline,
+                          onChanged: (value) {
+                            return;
+                          },
+                          onSaved: (value) => controller.bidInput.text = value!,
+                          validator: (value) {
+                            if (controller.isDoneLoading.value &&
+                                controller.bids.isNotEmpty) {
+                              int index =
+                                  controller.approvedBid(controller.bids);
+                              if (index != -1) {
+                                return Validator()
+                                    .bid(value, controller.bids[index].amount);
+                              } else {
+                                return Validator().bid(value, item.askingPrice);
+                              }
+                            } else if (controller.isDoneLoading.value &&
+                                controller.bids.isEmpty) {
                               return Validator().bid(value, item.askingPrice);
                             }
-                          } else if (controller.isDoneLoading.value &&
-                              controller.bids.isEmpty) {
-                            return Validator().bid(value, item.askingPrice);
-                          }
-                          return 'Something went wrong. Please try again';
-                        },
+                            return 'Something went wrong. Please try again';
+                          },
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    SizedBox(
-                      height: 45,
-                      child: CustomButton(
-                        onTap: () async {
-                          if (_formKey.currentState!.validate()) {
-                            await controller.submitBid(item.itemId);
-                          }
-                        },
-                        text: 'Submit Bid',
-                        buttonColor: maroonColor,
-                        fontSize: 16,
+                      const SizedBox(
+                        width: 10,
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        height: 45,
+                        child: CustomButton(
+                          onTap: () async {
+                            if (_formKey.currentState!.validate()) {
+                              await controller.submitBid(item.itemId);
+                            }
+                          },
+                          text: 'Submit Bid',
+                          buttonColor: maroonColor,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(
             height: 15,
