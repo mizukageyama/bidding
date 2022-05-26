@@ -227,7 +227,7 @@ class _Content extends StatelessWidget {
               flex: 2,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text('Transaction Date',
+                child: Text('Bought Date',
                     style: robotoMedium.copyWith(
                         color: blackColor, fontSize: kIsWeb ? 17 : 16)),
               ),
@@ -334,7 +334,7 @@ class _Content extends StatelessWidget {
             ]));
   }
 
-//Phone
+//Mobile Version
   Widget phoneHeaderVersion() {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -345,7 +345,7 @@ class _Content extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: Text('Item',
                     style: robotoMedium.copyWith(
                         color: blackColor, fontSize: kIsWeb ? 17 : 15)),
@@ -354,8 +354,8 @@ class _Content extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text('Bought At',
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Text('Seller',
                     style: robotoMedium.copyWith(
                         color: blackColor, fontSize: kIsWeb ? 17 : 15)),
               ),
@@ -363,7 +363,7 @@ class _Content extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0),
-                child: Text('Action',
+                child: Text('Bought Date',
                     style: robotoMedium.copyWith(
                         color: blackColor, fontSize: kIsWeb ? 17 : 15)),
               ),
@@ -382,7 +382,7 @@ class _Content extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: Text(item.title,
                       style: robotoLight.copyWith(
                           color: greyColor, fontSize: kIsWeb ? 15 : 16)),
@@ -391,22 +391,19 @@ class _Content extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text('₱ ${Format.amount(item.soldAt)}',
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Text(item.buyerName,
                       style: robotoLight.copyWith(
                           color: greyColor, fontSize: kIsWeb ? 15 : 16)),
                 ),
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: InkWell(
-                    onTap: () {},
-                    child: Text(
-                      'View',
-                      style: robotoRegularUnderlined.copyWith(
-                          color: brownColor, fontSize: kIsWeb ? 15 : 14),
-                    ),
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Text(
+                    '₱ ${Format.amount(item.soldAt)}',
+                    style: robotoRegularUnderlined.copyWith(
+                        color: brownColor, fontSize: kIsWeb ? 15 : 14),
                   ),
                 ),
               ),
