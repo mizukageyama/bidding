@@ -21,9 +21,9 @@ class BoughtItemsController extends GetxController {
   Stream<List<SoldItem>> getBoughtItemsBidder() {
     log.i('Streaming Item List');
     return firestore
-        .collection('items')
-        .orderBy('end_date', descending: true)
-        .where('bidder_id', isEqualTo: auth.currentUser!.uid)
+        .collection('sold_items')
+        .orderBy('date_sold', descending: true)
+        .where('buyer_id', isEqualTo: auth.currentUser!.uid)
         .snapshots(includeMetadataChanges: true)
         .map((query) {
       return query.docs.map((item) {

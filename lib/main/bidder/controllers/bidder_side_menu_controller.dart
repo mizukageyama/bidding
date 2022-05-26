@@ -1,3 +1,4 @@
+import 'package:bidding/main/bidder/controllers/bought_items_controller.dart';
 import 'package:bidding/main/bidder/controllers/ongoing_auction_controller.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/styles.dart';
@@ -10,11 +11,14 @@ class BidderSideMenuController extends GetxController {
 
   final OngoingAuctionController itemListController =
       Get.put(OngoingAuctionController(), permanent: true);
+  final BoughtItemsController boughtItemsController =
+      Get.put(BoughtItemsController(), permanent: true);
 
   @override
   void dispose() {
     Get.delete<BidderSideMenuController>(force: true);
     Get.delete<OngoingAuctionController>(force: true);
+    Get.delete<BoughtItemsController>(force: true);
     super.dispose();
   }
 

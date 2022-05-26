@@ -46,3 +46,9 @@ const robotoItalic = TextStyle(
   fontWeight: FontWeight.w400,
   fontStyle: FontStyle.italic,
 );
+
+const robotoRegularUnderlined = TextStyle(
+  fontFamily: fontFamily,
+  fontWeight: FontWeight.w400,
+  decoration: TextDecoration.underline,
+);
