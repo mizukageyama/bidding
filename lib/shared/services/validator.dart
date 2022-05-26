@@ -33,7 +33,7 @@ class Validator {
     return null;
   }
 
-  String? bid(String? value, double askingPrice) {
+  String? bid(String? value, double askingPrice, bool hasApprovedBid) {
     if (value == null) {
       return 'This is a required field';
     }
@@ -41,8 +41,11 @@ class Validator {
     if (!isNum) {
       return 'Enter a number';
     }
+    if (hasApprovedBid && double.parse(value) < askingPrice) {
+      return 'Bid higher than $askingPrice';
+    }
     if (double.parse(value) < askingPrice) {
-      return 'Please start bidding at $askingPrice';
+      return 'Start bidding at $askingPrice';
     }
     return null;
   }

@@ -87,7 +87,7 @@ class _Content extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: Text(
-                                  kIsWeb
+                                  kIsWeb && Get.width >= 600
                                       ? 'Start posting your \navailable items now'
                                       : 'Start posting your available items now',
                                   style: robotoBold.copyWith(

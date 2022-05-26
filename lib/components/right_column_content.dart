@@ -145,14 +145,16 @@ class RightColumnContent extends StatelessWidget {
                               int index =
                                   controller.approvedBid(controller.bids);
                               if (index != -1) {
-                                return Validator()
-                                    .bid(value, controller.bids[index].amount);
+                                return Validator().bid(
+                                    value, controller.bids[index].amount, true);
                               } else {
-                                return Validator().bid(value, item.askingPrice);
+                                return Validator()
+                                    .bid(value, item.askingPrice, false);
                               }
                             } else if (controller.isDoneLoading.value &&
                                 controller.bids.isEmpty) {
-                              return Validator().bid(value, item.askingPrice);
+                              return Validator()
+                                  .bid(value, item.askingPrice, false);
                             }
                             return 'Something went wrong. Please try again';
                           },
