@@ -135,9 +135,19 @@ class ItemCard extends StatelessWidget {
         int minutes = time.min ?? 0;
         int seconds = time.sec ?? 0;
 
+        if (days == 0) {
+          return Text(
+            '${overallHours < 10 ? '0$overallHours' : overallHours} '
+            ': ${minutes < 10 ? '0$minutes' : minutes} : ${seconds < 10 ? '0$seconds' : seconds} left',
+            style: robotoMedium.copyWith(
+              color: whiteColor,
+              fontSize: 17,
+            ),
+          );
+        }
+
         return Text(
-          '${overallHours < 10 ? '0$overallHours' : overallHours} '
-          ': ${minutes < 10 ? '0$minutes' : minutes} : ${seconds < 10 ? '0$seconds' : seconds}',
+          '$days ${days > 1 ? 'days' : 'day'} and\n$minutes : $seconds left',
           style: robotoMedium.copyWith(
             color: whiteColor,
             fontSize: 17,

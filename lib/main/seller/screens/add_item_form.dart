@@ -225,6 +225,7 @@ class _Content extends StatelessWidget {
                                               width: 10,
                                             ),
                                             Expanded(
+                                              flex: 2,
                                               child: CustomDropdown(
                                                 hintText: 'Condition',
                                                 dropdownItems: condition,
@@ -299,30 +300,33 @@ class _Content extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            Container(
-                                              height: 50,
-                                              width: 200,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: greyColor),
-                                                color: whiteColor,
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  Radius.circular(10),
+                                            Expanded(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: greyColor),
+                                                  color: whiteColor,
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                    Radius.circular(10),
+                                                  ),
                                                 ),
-                                              ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(12)),
-                                                child: getDate(context),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(12)),
+                                                  child: getDate(context),
+                                                ),
                                               ),
                                             ),
                                             const SizedBox(
-                                              width: 30,
+                                              width: 15,
                                             ),
-                                            Obx(() => Text(
-                                                addItemController.date.value)),
+                                            Expanded(
+                                              child: Obx(() => Text(
+                                                  addItemController
+                                                      .date.value)),
+                                            ),
                                           ],
                                         ),
                                         const SizedBox(height: 15),
@@ -330,30 +334,33 @@ class _Content extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            Container(
-                                              height: 50,
-                                              width: 200,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: greyColor),
-                                                color: whiteColor,
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  Radius.circular(10),
+                                            Expanded(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: greyColor),
+                                                  color: whiteColor,
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                    Radius.circular(10),
+                                                  ),
                                                 ),
-                                              ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(12)),
-                                                child: getTime(context),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(12)),
+                                                  child: getTime(context),
+                                                ),
                                               ),
                                             ),
                                             const SizedBox(
-                                              width: 30,
+                                              width: 15,
                                             ),
-                                            Obx(() => Text(
-                                                addItemController.time.value)),
+                                            Expanded(
+                                              child: Obx(() => Text(
+                                                  addItemController
+                                                      .time.value)),
+                                            ),
                                           ],
                                         ),
                                         const SizedBox(
@@ -423,9 +430,11 @@ class _Content extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            Text(
-              'End Date of Auction',
-              style: robotoBold.copyWith(color: blackColor, fontSize: 14),
+            Expanded(
+              child: Text(
+                'End Date of Auction',
+                style: robotoBold.copyWith(color: blackColor, fontSize: 14),
+              ),
             )
           ],
         ),
@@ -459,9 +468,11 @@ class _Content extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            Text(
-              'End Time of Auction',
-              style: robotoBold.copyWith(color: blackColor, fontSize: 14),
+            Expanded(
+              child: Text(
+                'End Time of Auction',
+                style: robotoBold.copyWith(color: blackColor, fontSize: 14),
+              ),
             )
           ],
         ),
@@ -500,7 +511,7 @@ class _Content extends StatelessWidget {
       );
     }
     return SizedBox(
-      height: 330,
+      height: kIsWeb ? 330 : 250,
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: GridView.count(
@@ -576,7 +587,7 @@ class DeletableCategoryChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 5,
-      runSpacing: 5,
+      runSpacing: kIsWeb ? 5 : 1,
       children: [...categories(controller.category)],
     );
   }

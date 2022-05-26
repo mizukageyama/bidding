@@ -87,30 +87,46 @@ class _Content extends StatelessWidget {
               : const SizedBox(
                   height: 0,
                 ),
-          Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              primary: true,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: LeftColumn(
+          kIsWeb
+              ? Expanded(
+                  child: ListView(
+                    shrinkWrap: true,
+                    primary: true,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: LeftColumn(
+                              images: item.images,
+                            ),
+                          ),
+                          Expanded(
+                            child: RightColumn(
+                                item: item,
+                                controller: bidsController,
+                                isBidder: true),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              : Expanded(
+                  child: ListView(
+                    shrinkWrap: true,
+                    primary: true,
+                    children: [
+                      LeftColumn(
                         images: item.images,
                       ),
-                    ),
-                    Expanded(
-                      child: RightColumn(
+                      RightColumn(
                           item: item,
                           controller: bidsController,
-                          isBidder: true),
-                    ),
-                  ],
+                          isBidder: true)
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
         ],
       ),
     );

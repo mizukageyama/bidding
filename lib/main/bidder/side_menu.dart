@@ -36,8 +36,11 @@ class BidderSideMenu extends StatelessWidget {
                 alignment: WrapAlignment.center,
                 runSpacing: 8,
                 children: [
-                  const CircleImage(
-                    imageUrl: '',
+                  Obx(
+                    () => CircleImage(
+                      imageUrl: menucontroller.userProfile(),
+                      initial: menucontroller.initials,
+                    ),
                   ),
                   const SizedBox(
                     width: 20,
@@ -48,8 +51,7 @@ class BidderSideMenu extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          //menucontroller.userName(),
-                          'Jesicca Day',
+                          menucontroller.userName,
                           style: robotoMedium.copyWith(
                             color: whiteColor,
                             fontSize: kIsWeb ? 13 : 16,
@@ -70,7 +72,6 @@ class BidderSideMenu extends StatelessWidget {
                             vertical: 3,
                           ),
                           child: Text(
-                            //menucontroller.userRole().toUpperCase(),
                             'BIDDER',
                             style: robotoMedium.copyWith(
                               color: whiteColor,

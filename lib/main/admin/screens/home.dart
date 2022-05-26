@@ -12,6 +12,7 @@ class AdminHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawer: TestSideMenu(),
         body: ResponsiveView(
           const _Content(),
           MobileSliver(

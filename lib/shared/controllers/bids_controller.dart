@@ -1,8 +1,10 @@
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/services/_services.dart';
+import 'package:flutter/material.dart';
 
 class BidsController extends GetxController {
   final log = getLogger('Bids Controller');
@@ -10,7 +12,9 @@ class BidsController extends GetxController {
   final UserModel user = authController.userModel.value!;
   final RxList<Bid> bids = RxList.empty(growable: true);
   final RxList<Bid> filteredBids = RxList.empty(growable: true);
+  final TextEditingController bidInput = TextEditingController();
   final RxBool isDoneLoading = false.obs;
+  final uuid = const Uuid();
 
   @override
   void onInit() {
@@ -49,13 +53,16 @@ class BidsController extends GetxController {
         .collection('bids')
         .orderBy('amount', descending: true)
         .where('item_id', isEqualTo: itemId)
-        .where('is_approved', isEqualTo: true)
         .snapshots(includeMetadataChanges: true)
         .map((query) {
       return query.docs.map((item) {
         return Bid.fromJson(item.data());
       }).toList();
     });
+  }
+
+  Iterable<Bid> filtered() {
+    return List<Bid>.from(bids).where((bid) => bid.isApproved);
   }
 
   int approvedBid(List<Bid> bids) {
@@ -67,5 +74,24 @@ class BidsController extends GetxController {
 
   Future<void> approveBid(String bidId) async {
     await firestore.collection('bids').doc(bidId).update({'is_approved': true});
+  }
+
+  Future<void> submitBid(String itemId) async {
+    final String generatedItemId = uuid.v4();
+    await firestore.collection('bids').doc(generatedItemId).set({
+      'bid_id': generatedItemId,
+      'item_id': itemId,
+      'bidder_id': auth.currentUser!.uid,
+      'amount': double.parse(bidInput.text),
+      'bid_date': Timestamp.now(),
+      'is_approved': false,
+    }).then((value) {
+      bidInput.clear();
+      showSimpleDialog(
+        title: 'Bid Sent Successfully',
+        description:
+            'Please wait for your bid to be approved by the seller. Thank you!',
+      );
+    });
   }
 }

@@ -2,6 +2,7 @@ import 'package:bidding/main/_auth/_auth_screens.dart';
 import 'package:bidding/main/admin/screens/home.dart';
 import 'package:bidding/main/bidder/screens/_bidder_screens.dart';
 import 'package:bidding/main/seller/screens/_seller_screens.dart';
+import 'package:bidding/models/user_additional_info.dart';
 import 'package:bidding/shared/services/image_upload.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
@@ -19,7 +20,9 @@ class AuthController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   Rxn<UserModel> userModel = Rxn<UserModel>();
   Rxn<User> firebaseUser = Rxn<User>();
-  //String? userRole = 'Test';
+
+  //User Streamed Information
+  Rxn<AdditionalInfo> info = Rxn<AdditionalInfo>();
 
   //Sign Up Screen
   TextEditingController firstNameController = TextEditingController();
@@ -106,12 +109,27 @@ class AuthController extends GetxController {
   }
 
   Future<void> _initializeUser() async {
-    userModel.value = await firestore
+    try {
+      userModel.value = await firestore
+          .collection('users')
+          .doc(firebaseUser.value!.uid)
+          .get()
+          .then((doc) => UserModel.fromJson(doc.data()!));
+      log.i('_initialize User | Initializing ${userModel.value}');
+      info.bindStream(getAdditionalInfo());
+    } catch (error) {
+      log.i('_initialize User| $error');
+    }
+  }
+
+  Stream<AdditionalInfo> getAdditionalInfo() {
+    return firestore
         .collection('users')
         .doc(firebaseUser.value!.uid)
-        .get()
-        .then((doc) => UserModel.fromJson(doc.data()!));
-    log.i('_initializePatientModel | Initializing ${userModel.value}');
+        .collection('additional_info')
+        .doc('value')
+        .snapshots()
+        .map((value) => AdditionalInfo.fromJson(value.data()!));
   }
 
   Future<void> signOut() async {
@@ -186,10 +204,20 @@ class AuthController extends GetxController {
       'form_1': form1Url.value,
       'um_id': umIdUrl.value,
     }).then((value) async {
+      await addSubCollection(_userID);
       dismissDialog();
       await signInWithEmailAndPassword(context);
       registrationSuccess();
     });
+  }
+
+  Future<void> addSubCollection(String _userID) async {
+    await firestore
+        .collection('users')
+        .doc(_userID)
+        .collection('additional_info')
+        .doc('value')
+        .set({'profile_photo': ''});
   }
 
   Future<void> uploadPhotos(String id) async {

@@ -5,6 +5,7 @@ import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/services/_services.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -102,8 +103,8 @@ class ManageItem extends GetxController {
     descriptionController.text = item.description;
     return SimpleDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+        contentPadding: const EdgeInsets.symmetric(
+            vertical: 20, horizontal: kIsWeb ? 30 : 5),
         children: [
           Column(
             children: [
@@ -119,7 +120,7 @@ class ManageItem extends GetxController {
                 key: _editFormkey,
                 child: Container(
                   width: 500,
-                  padding: const EdgeInsets.only(top: 15, right: 30, left: 30),
+                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
