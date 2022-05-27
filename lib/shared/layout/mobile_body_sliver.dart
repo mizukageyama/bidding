@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class MobileSliver extends StatelessWidget {
-  MobileSliver({
+  const MobileSliver({
     Key? key,
     required this.title,
     required this.body,
@@ -13,14 +13,11 @@ class MobileSliver extends StatelessWidget {
 
   final String title;
   final Widget body;
-  bool scrollable;
+  final bool scrollable;
 
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
-        physics: scrollable
-            ? const AlwaysScrollableScrollPhysics()
-            : const NeverScrollableScrollPhysics(),
         floatHeaderSlivers: scrollable,
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverAppBar(

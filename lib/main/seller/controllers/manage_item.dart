@@ -240,50 +240,60 @@ class ManageItem extends GetxController {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              height: 50,
-              width: 200,
-              decoration: BoxDecoration(
-                border: Border.all(color: greyColor),
-                color: whiteColor,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(10),
+            Expanded(
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(color: greyColor),
+                  color: whiteColor,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10),
+                  ),
                 ),
-              ),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
-                child: getDate(context),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  child: getDate(context),
+                ),
               ),
             ),
             const SizedBox(
-              width: 30,
+              width: 15,
             ),
-            Obx(() => Text(date.value == '' ? 'Select Date' : date.value)),
+            Expanded(
+              child: Obx(
+                () => Text(date.value == '' ? 'Select Date' : date.value),
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 15),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              height: 50,
-              width: 200,
-              decoration: BoxDecoration(
-                border: Border.all(color: greyColor),
-                color: whiteColor,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(10),
+            Expanded(
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(color: greyColor),
+                  color: whiteColor,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10),
+                  ),
                 ),
-              ),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
-                child: getTime(context),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  child: getTime(context),
+                ),
               ),
             ),
             const SizedBox(
-              width: 30,
+              width: 15,
             ),
-            Obx(() => Text(time.value == '' ? 'Select Time' : time.value)),
+            Expanded(
+              child: Obx(
+                () => Text(time.value == '' ? 'Select Time' : time.value),
+              ),
+            ),
           ],
         )
       ],

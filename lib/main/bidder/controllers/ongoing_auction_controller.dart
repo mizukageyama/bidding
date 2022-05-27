@@ -3,6 +3,7 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
 import 'package:bidding/shared/services/_services.dart';
+import 'package:flutter/foundation.dart';
 
 class OngoingAuctionController extends GetxController {
   final log = getLogger('Ongoing Auction Controller');
@@ -17,6 +18,7 @@ class OngoingAuctionController extends GetxController {
     Future.delayed(const Duration(seconds: 3), () {
       isDoneLoading.value = true;
     });
+    ever(itemList, (itemList) => recentList);
   }
 
   Stream<List<Item>> getAuctionedItems() {
@@ -31,5 +33,16 @@ class OngoingAuctionController extends GetxController {
         return Item.fromJson(item.data());
       }).toList();
     });
+  }
+
+  Iterable<Item> recentList() {
+    int count = 2;
+    if (Get.width >= 600 && Get.width < 1200) {
+      count = 3;
+    } else if (Get.width >= 1200) {
+      count = 4;
+    }
+    return itemList.getRange(
+        0, itemList.length < count ? itemList.length : count);
   }
 }
