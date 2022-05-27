@@ -17,11 +17,7 @@ class SellerSideMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: kIsWeb && Get.width >= 600
-          ? double.infinity
-          : kIsWeb && Get.width <= 600
-              ? Get.width * .45
-              : Get.width * .65,
+      width: Get.width >= 600 ? double.infinity : Get.width * .65,
       height: double.infinity,
       color: indigoColor,
       child: SingleChildScrollView(

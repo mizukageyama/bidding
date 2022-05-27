@@ -1,6 +1,8 @@
 import 'package:bidding/main/bidder/screens/_bidder_screens.dart';
+import 'package:bidding/main/bidder/side_menu.dart';
 import 'package:bidding/main/seller/screens/_seller_screens.dart';
 import 'package:bidding/main/seller/screens/sold_item_list.dart';
+import 'package:bidding/main/seller/side_menu.dart';
 import 'package:bidding/models/category_model.dart';
 import 'package:bidding/models/menu_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
@@ -32,9 +34,13 @@ List<MenuItem> sellerSideMenuItem = [
     function: () => Get.offAll(() => const SoldItemList()),
   ),
   MenuItem(
-    name: 'Settings',
+    name: 'My Profile',
     icon: Icons.settings,
-    function: () => Get.offAll(() => const ProfileScreen()),
+    function: () => Get.offAll(
+      () => ProfileScreen(
+        sideMenu: SellerSideMenu(),
+      ),
+    ),
   ),
   MenuItem(
     name: 'Logout',
@@ -61,9 +67,13 @@ List<MenuItem> bidderSideMenuItem = [
     function: () => Get.offAll(() => const TransactionScreen()),
   ),
   MenuItem(
-    name: 'Settings',
+    name: 'My Profile',
     icon: Icons.settings,
-    function: () => Get.offAll(() => const ProfileScreen()),
+    function: () => Get.offAll(
+      () => ProfileScreen(
+        sideMenu: BidderSideMenu(),
+      ),
+    ),
   ),
   MenuItem(
     name: 'Logout',
