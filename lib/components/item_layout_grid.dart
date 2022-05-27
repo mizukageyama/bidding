@@ -3,22 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 
 class ItemLayoutGrid extends StatelessWidget {
-  ItemLayoutGrid({
-    Key? key,
-    required this.perColumn,
-    required this.item,
-    required this.isSoldItem,
-  }) : super(key: key);
+  ItemLayoutGrid(
+      {Key? key,
+      required this.perColumn,
+      required this.item,
+      required this.isSoldItem,
+      this.oneRow = false})
+      : super(key: key);
 
   final List<TrackSize> sizePerColumn = List.empty(growable: true);
   final List<TrackSize> sizePerRow = List.empty(growable: true);
   final int perColumn;
   final List<dynamic> item;
   final bool isSoldItem;
+  final bool oneRow;
 
   @override
   Widget build(BuildContext context) {
-    int rowLength = getRowLength(item.length, perColumn);
+    int rowLength = getRowLength(item.length, perColumn, oneRow);
     getSizes(rowLength);
 
     return LayoutGrid(
@@ -27,7 +29,7 @@ class ItemLayoutGrid extends StatelessWidget {
       rowGap: 15,
       rowSizes: sizePerRow,
       children: [
-        for (var i = 0; i < item.length; i++)
+        for (var i = 0; i < (oneRow ? perColumn : item.length); i++)
           ItemCard(
             item: item[i],
             isSoldItem: isSoldItem,
@@ -36,7 +38,10 @@ class ItemLayoutGrid extends StatelessWidget {
     );
   }
 
-  int getRowLength(int itemCount, int perColumn) {
+  int getRowLength(int itemCount, int perColumn, bool isOneRow) {
+    if (isOneRow) {
+      return 1;
+    }
     var rowLength = itemCount / perColumn;
     if (rowLength.runtimeType == double) {
       rowLength = rowLength.floor() + 1;

@@ -47,14 +47,8 @@ class AuthController extends GetxController {
   XFile? imgIdFile;
   XFile? imgForm1File;
 
-  //Change pw
-  TextEditingController currentPwController = TextEditingController();
-  TextEditingController newPwController = TextEditingController();
-
   RxBool? isObscureText = true.obs;
   RxBool? isObscureText2 = true.obs;
-  RxBool? isObscureCurrentPW = true.obs;
-  RxBool? isObscureNewPW = true.obs;
   RxBool isCheckboxChecked = false.obs;
 
   @override
@@ -264,7 +258,7 @@ class AuthController extends GetxController {
     umIdUrl.value = '';
   }
 
-  //Change Password and Forgot Password ---------------------------------
+  //Forgot Password ---------------------------------
   Future<void> sendPasswordResetEmail(BuildContext context) async {
     FocusScope.of(context).unfocus();
     try {
@@ -286,42 +280,5 @@ class AuthController extends GetxController {
         onTapFunc: () => dismissDialog(),
       );
     }
-  }
-
-  Future<void> changePassword(BuildContext context) async {
-    FocusScope.of(context).unfocus();
-    final user = FirebaseAuth.instance.currentUser;
-    final cred = EmailAuthProvider.credential(
-        email: user!.email!, password: currentPwController.text);
-    showLoading();
-    await user.reauthenticateWithCredential(cred).then((value) {
-      user.updatePassword(newPwController.text).then((_) {
-        dismissDialog();
-        _changePasswordSuccess();
-        Get.back();
-        Get.snackbar('Password Changed Successfully',
-            'You may now use your new password.',
-            snackPosition: SnackPosition.BOTTOM,
-            duration: const Duration(seconds: 3),
-            backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-            colorText: Get.theme.snackBarTheme.actionTextColor);
-      });
-    }).catchError((err) {
-      dismissDialog();
-      Get.snackbar('Password Change Failed',
-          'Your current password you have entered is not correct',
-          snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(seconds: 3),
-          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-          colorText: Get.theme.snackBarTheme.actionTextColor);
-    });
-  }
-
-  Future<void> _changePasswordSuccess() async {
-    log.i('_clearControllers | Change Password Success');
-    currentPwController.clear();
-    newPwController.clear();
-    isObscureCurrentPW!.value = true;
-    isObscureNewPW!.value = true;
   }
 }

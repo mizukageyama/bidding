@@ -87,6 +87,7 @@ class _Content extends StatelessWidget {
         itemListController.itemList.isNotEmpty) {
       return ListView(
           padding: const EdgeInsets.all(kIsWeb ? 25 : 12),
+          physics: const AlwaysScrollableScrollPhysics(),
           shrinkWrap: true,
           children: [
             const Text(
@@ -122,8 +123,9 @@ class _Content extends StatelessWidget {
     return Row(
       children: [
         Expanded(
+          flex: 2,
           child: SizedBox(
-            //width: 400,
+            height: 45,
             child: InputField(
               labelText: 'Search item here...',
               keyboardType: TextInputType.multiline,
@@ -135,27 +137,12 @@ class _Content extends StatelessWidget {
             ),
           ),
         ),
-        // const SizedBox(
-        //   width: 20,
-        // ),
-        // SizedBox(
-        //   width: 150,
-        //   child: CustomDropdown(
-        //     hintText: 'Open/Closed',
-        //     dropdownItems: const ['Open', 'Close'],
-        //     onChanged: (item) => {},
-        //     onSaved: (item) => {},
-        //     validator: (value) {
-        //       return null;
-        //     },
-        //   ),
-        // ),
         const SizedBox(
-          width: 20,
+          width: 10,
         ),
         SizedBox(
+          width: 120,
           height: 45,
-          width: 150,
           child: CustomButton(
             onTap: () {},
             text: 'Search',
@@ -169,29 +156,21 @@ class _Content extends StatelessWidget {
 }
 
 class ResponsiveItemGrid extends GetResponsiveView {
-  ResponsiveItemGrid({Key? key, required this.item})
+  ResponsiveItemGrid({Key? key, required this.item, this.firstRowOnly = false})
       : super(key: key, alwaysUseBuilder: false);
 
   final RxList<Item> item;
+  final bool firstRowOnly;
 
   @override
   Widget? phone() => ItemLayoutGrid(
-        perColumn: 2,
-        item: item,
-        isSoldItem: false,
-      );
+      perColumn: 2, item: item, isSoldItem: false, oneRow: firstRowOnly);
 
   @override
   Widget? tablet() => ItemLayoutGrid(
-        perColumn: 3,
-        item: item,
-        isSoldItem: false,
-      );
+      perColumn: 3, item: item, isSoldItem: false, oneRow: firstRowOnly);
 
   @override
   Widget? desktop() => ItemLayoutGrid(
-        perColumn: 4,
-        item: item,
-        isSoldItem: false,
-      );
+      perColumn: 4, item: item, isSoldItem: false, oneRow: firstRowOnly);
 }

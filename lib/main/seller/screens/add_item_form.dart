@@ -323,9 +323,14 @@ class _Content extends StatelessWidget {
                                               width: 15,
                                             ),
                                             Expanded(
-                                              child: Obx(() => Text(
-                                                  addItemController
-                                                      .date.value)),
+                                              child: Obx(
+                                                () => Text(addItemController
+                                                            .date.value ==
+                                                        ''
+                                                    ? 'Select Date'
+                                                    : addItemController
+                                                        .date.value),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -357,9 +362,14 @@ class _Content extends StatelessWidget {
                                               width: 15,
                                             ),
                                             Expanded(
-                                              child: Obx(() => Text(
-                                                  addItemController
-                                                      .time.value)),
+                                              child: Obx(
+                                                () => Text(addItemController
+                                                            .time.value ==
+                                                        ''
+                                                    ? 'Select Time'
+                                                    : addItemController
+                                                        .time.value),
+                                              ),
                                             ),
                                           ],
                                         ),
