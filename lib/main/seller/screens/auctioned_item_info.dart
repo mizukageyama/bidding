@@ -1,4 +1,5 @@
 import 'package:bidding/components/_components.dart';
+import 'package:bidding/main/seller/controllers/auctioned_items_controller.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
@@ -9,20 +10,27 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ItemInfoScreen extends StatelessWidget {
-  const ItemInfoScreen({Key? key, required Item item})
+  const ItemInfoScreen({Key? key, required Item item, required this.id})
       : _item = item,
         super(key: key);
   final Item _item;
+  final String id;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: ResponsiveView(
-          _Content(item: _item),
+          _Content(
+            item: _item,
+            id: id,
+          ),
           MobileSliver(
             title: 'Auctioned Items > ${_item.title}',
-            body: _Content(item: _item),
+            body: _Content(
+              item: _item,
+              id: id,
+            ),
           ),
           SellerSideMenu(),
         ),
@@ -32,10 +40,17 @@ class ItemInfoScreen extends StatelessWidget {
 }
 
 class _Content extends StatelessWidget {
-  _Content({Key? key, required this.item}) : super(key: key);
-
+  _Content({Key? key, required this.item, required this.id}) : super(key: key);
+  final String id;
   final Item item;
   final BidsController bidsController = Get.put(BidsController());
+  final AuctionedItemController aController = Get.find();
+
+  Item getItem() {
+    List<Item> item =
+        aController.itemList.where((item) => item.itemId == id).toList();
+    return item[0];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +101,7 @@ class _Content extends StatelessWidget {
               : const SizedBox(
                   height: 0,
                 ),
-          kIsWeb
+          kIsWeb && Get.width >= 600
               ? Expanded(
                   child: ListView(
                     shrinkWrap: true,
@@ -101,10 +116,12 @@ class _Content extends StatelessWidget {
                             ),
                           ),
                           Expanded(
-                            child: RightColumn(
-                                item: item,
-                                controller: bidsController,
-                                isBidder: false),
+                            child: Obx(
+                              () => RightColumn(
+                                  item: getItem(),
+                                  controller: bidsController,
+                                  isBidder: false),
+                            ),
                           ),
                         ],
                       ),

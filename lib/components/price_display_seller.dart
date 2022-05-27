@@ -1,5 +1,6 @@
 import 'package:bidding/components/display_info_section.dart';
 import 'package:bidding/main/seller/screens/_seller_screens.dart';
+import 'package:bidding/models/item_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
@@ -8,10 +9,14 @@ import 'package:flutter/material.dart';
 
 class DisplayPriceSeller extends StatelessWidget {
   const DisplayPriceSeller(
-      {Key? key, required this.bidsController, required this.askingPrice})
+      {Key? key,
+      required this.bidsController,
+      required this.askingPrice,
+      required this.item})
       : super(key: key);
   final BidsController bidsController;
   final double askingPrice;
+  final Item item;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +40,10 @@ class DisplayPriceSeller extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Get.to(() => const BidListScreen(),
+                  Get.to(
+                      () => BidListScreen(
+                            id: item.itemId,
+                          ),
                       transition: Transition.noTransition);
                 },
                 child: Text(
@@ -63,7 +71,10 @@ class DisplayPriceSeller extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Get.to(() => const BidListScreen(),
+                Get.to(
+                    () => BidListScreen(
+                          id: item.itemId,
+                        ),
                     transition: Transition.noTransition);
               },
               child: Text(

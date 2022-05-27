@@ -302,6 +302,7 @@ class _Content extends StatelessWidget {
                                           children: [
                                             Expanded(
                                               child: Container(
+                                                height: 50,
                                                 decoration: BoxDecoration(
                                                   border: Border.all(
                                                       color: greyColor),
@@ -341,6 +342,7 @@ class _Content extends StatelessWidget {
                                           children: [
                                             Expanded(
                                               child: Container(
+                                                height: 50,
                                                 decoration: BoxDecoration(
                                                   border: Border.all(
                                                       color: greyColor),

@@ -69,85 +69,83 @@ class _Content extends StatelessWidget {
                   width: 0,
                 ),
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(30),
-              shrinkWrap: true,
-              children: [
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Your successful transactions for the past weeks.',
-                          style: robotoMedium.copyWith(
-                              color: blackColor, fontSize: kIsWeb ? 16 : 16),
-                          textAlign: TextAlign.justify,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              'Date',
-                              style: robotoMedium.copyWith(
-                                  color: blackColor,
-                                  fontSize: kIsWeb ? 16 : 16),
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 2),
-                                width: 120,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                    border: Border.all(),
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: const Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Icon(
-                                    Icons.calendar_today,
-                                    color: blackColor,
-                                    size: 25,
-                                  ),
-                                ))
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: Get.height * .7,
-                          width: Get.width,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 10),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: blackColor),
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(12),
-                            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Your successful transactions',
+                        style: robotoMedium.copyWith(
+                            color: blackColor, fontSize: kIsWeb ? 16 : 16),
+                        textAlign: TextAlign.justify,
+                      ),
+                      // const SizedBox(
+                      //   height: 20,
+                      // ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.end,
+                      //   children: [
+                      //     Text(
+                      //       'Date',
+                      //       style: robotoMedium.copyWith(
+                      //           color: blackColor,
+                      //           fontSize: kIsWeb ? 16 : 16),
+                      //     ),
+                      //     const SizedBox(
+                      //       width: 15,
+                      //     ),
+                      //     Container(
+                      //         padding: const EdgeInsets.symmetric(
+                      //             horizontal: 10, vertical: 2),
+                      //         width: 120,
+                      //         height: 30,
+                      //         decoration: BoxDecoration(
+                      //             border: Border.all(),
+                      //             borderRadius: BorderRadius.circular(5)),
+                      //         child: const Align(
+                      //           alignment: Alignment.bottomRight,
+                      //           child: Icon(
+                      //             Icons.calendar_today,
+                      //             color: blackColor,
+                      //             size: 25,
+                      //           ),
+                      //         ))
+                      //   ],
+                      // ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: Get.height * .8,
+                        width: Get.width,
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: blackColor),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(12),
                           ),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                kIsWeb ? header() : phoneHeaderVersion(),
-                                Flexible(
-                                  child: Obx(
-                                    (() => showTransactionList(context)),
-                                  ),
-                                ),
-                              ]),
                         ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              kIsWeb && Get.width >= 900
+                                  ? header()
+                                  : phoneHeaderVersion(),
+                              Flexible(
+                                child: Obx(
+                                  (() => showTransactionList(context)),
+                                ),
+                              ),
+                            ]),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -169,7 +167,7 @@ class _Content extends StatelessWidget {
                   future: boughtItemsController.soldItems[index].getBuyerInfo(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
-                      if (kIsWeb) {
+                      if (kIsWeb && Get.width >= 900) {
                         return customTableRow(
                             boughtItemsController.soldItems[index]);
                       }
@@ -227,7 +225,7 @@ class _Content extends StatelessWidget {
               flex: 2,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text('Bought Date',
+                child: Text('Date',
                     style: robotoMedium.copyWith(
                         color: blackColor, fontSize: kIsWeb ? 17 : 16)),
               ),
@@ -363,7 +361,7 @@ class _Content extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0),
-                child: Text('Bought Date',
+                child: Text('Date',
                     style: robotoMedium.copyWith(
                         color: blackColor, fontSize: kIsWeb ? 17 : 15)),
               ),

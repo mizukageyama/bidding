@@ -98,6 +98,7 @@ class AddItemController extends GetxController {
         'description': descriptionController.text.trim(),
         'asking_price': double.parse(askingPriceController.text),
         'brand': brandController.text,
+        'date_posted': Timestamp.now(),
         'end_date': endTimeStamp,
         'category': List<String>.from(category),
         'condition': condition.value,

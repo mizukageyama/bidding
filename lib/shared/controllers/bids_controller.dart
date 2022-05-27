@@ -76,6 +76,12 @@ class BidsController extends GetxController {
     await firestore.collection('bids').doc(bidId).update({'is_approved': true});
   }
 
+  Future<void> setWinningBid(String itemId, String bidId) async {
+    await firestore.collection('items').doc(itemId).update({
+      'winning_bid': bidId,
+    });
+  }
+
   Future<void> submitBid(String itemId) async {
     final String generatedItemId = uuid.v4();
     await firestore.collection('bids').doc(generatedItemId).set({

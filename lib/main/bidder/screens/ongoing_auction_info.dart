@@ -87,7 +87,7 @@ class _Content extends StatelessWidget {
               : const SizedBox(
                   height: 0,
                 ),
-          kIsWeb
+          kIsWeb && Get.width >= 600
               ? Expanded(
                   child: ListView(
                     shrinkWrap: true,
