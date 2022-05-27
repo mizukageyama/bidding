@@ -113,9 +113,11 @@ class RightColumnContent extends StatelessWidget {
             height: 15,
           ),
           DisplayPrice(
-              isBidder: isBidder,
-              bidsController: controller,
-              askingPrice: item.askingPrice),
+            isBidder: isBidder,
+            bidsController: controller,
+            askingPrice: item.askingPrice,
+            item: item,
+          ),
           Visibility(
             visible: isBidder,
             child: Column(
@@ -194,6 +196,7 @@ class RightColumnContent extends StatelessWidget {
             child: DisplayBids(
               bidsController: controller,
               isBidder: isBidder,
+              item: item,
             ),
           ),
         ],

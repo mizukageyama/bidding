@@ -36,8 +36,6 @@ class ManageItem extends GetxController {
       //TO DO: Success Dialog
       titleController.clear();
       descriptionController.clear();
-
-      Get.back();
     });
   }
 
@@ -84,10 +82,10 @@ class ManageItem extends GetxController {
 
   static Future<void> updateEndDate(String itemId) async {
     Timestamp endTimeStamp = Timestamp.fromDate(endDateValue());
-    return firestore
-        .collection('items')
-        .doc(itemId)
-        .update({'end_date': endTimeStamp}).then((value) => Get.back());
+    return firestore.collection('items').doc(itemId).update({
+      'end_date': endTimeStamp,
+      'winning_bid': '',
+    });
   }
 
   static DateTime endDateValue() {

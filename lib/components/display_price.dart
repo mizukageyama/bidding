@@ -1,4 +1,5 @@
 import 'package:bidding/components/_components.dart';
+import 'package:bidding/models/item_model.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:flutter/material.dart';
 
@@ -7,11 +8,13 @@ class DisplayPrice extends StatelessWidget {
       {Key? key,
       required this.isBidder,
       required this.bidsController,
+      required this.item,
       required this.askingPrice})
       : super(key: key);
   final bool isBidder;
   final BidsController bidsController;
   final double askingPrice;
+  final Item item;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +27,7 @@ class DisplayPrice extends StatelessWidget {
     return DisplayPriceSeller(
       bidsController: bidsController,
       askingPrice: askingPrice,
+      item: item,
     );
   }
 }

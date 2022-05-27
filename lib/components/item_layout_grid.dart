@@ -30,9 +30,11 @@ class ItemLayoutGrid extends StatelessWidget {
       rowSizes: sizePerRow,
       children: [
         for (var i = 0; i < (oneRow ? perColumn : item.length); i++)
-          ItemCard(
-            item: item[i],
-            isSoldItem: isSoldItem,
+          Obx(
+            () => ItemCard(
+              item: item[i],
+              isSoldItem: isSoldItem,
+            ),
           ),
       ],
     );

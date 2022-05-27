@@ -25,7 +25,7 @@ class ItemCard extends StatelessWidget {
     if (user.userRole == 'Seller') {
       if (!isSoldItem) {
         Get.to(
-          () => ItemInfoScreen(item: item),
+          () => ItemInfoScreen(item: item, id: item.itemId),
         );
       } else {
         Get.to(

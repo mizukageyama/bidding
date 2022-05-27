@@ -10,6 +10,7 @@ class Item {
   final String condition;
   final String brand;
   final Timestamp endDate;
+  final String winningBid;
   final List<String> images;
 
   Item({
@@ -17,6 +18,7 @@ class Item {
     required this.sellerId,
     required this.title,
     required this.description,
+    required this.winningBid,
     required this.askingPrice,
     required this.category,
     required this.condition,
@@ -36,6 +38,7 @@ class Item {
         brand: json['brand'] as String,
         endDate: json['end_date'] as Timestamp,
         images: List<String>.from(json['images'] ?? []),
+        winningBid: json['winning_bid'] as String,
       );
 
   Map<String, dynamic> toJson() => {
