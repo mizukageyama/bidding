@@ -1,3 +1,4 @@
+import 'package:bidding/models/user_model.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
@@ -11,7 +12,9 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 class ProfileController extends GetxController {
   final log = getLogger('Profile Controller');
   final ImagePickerService imagePicker = ImagePickerService();
-  final AuthController authController = Get.find();
+
+  static final AuthController _authController = Get.find();
+  final UserModel user = _authController.userModel.value!;
 
   //Change pfp
   XFile? imageSelected;
@@ -23,6 +26,14 @@ class ProfileController extends GetxController {
   TextEditingController newPwController = TextEditingController();
   RxBool? isObscureCurrentPW = true.obs;
   RxBool? isObscureNewPW = true.obs;
+
+  get fullName => '${user.firstName} ${user.lastName}';
+
+  get email => user.email;
+
+  get role => user.userRole;
+
+  get profilePhoto => _authController.info.value?.profilePhoto ?? '';
 
   void selectProfileImage() async {
     imageSelected = await imagePicker.pickImageOnWeb(imagePath);
