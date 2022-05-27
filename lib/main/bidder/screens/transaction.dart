@@ -70,7 +70,7 @@ class _Content extends StatelessWidget {
                 ),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(30),
+              padding: const EdgeInsets.all(kIsWeb ? 30 : 15),
               shrinkWrap: true,
               children: [
                 Wrap(

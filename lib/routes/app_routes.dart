@@ -15,6 +15,7 @@ abstract class Routes {
   static const TERMS_AND_CONDITION = _Paths.TERMS_AND_CONDITION;
   static const SOLD_ITEM_LIST = _Paths.SOLD_ITEM_LIST;
   static const SOLD_ITEM_INFO = _Paths.SOLD_ITEM_INFO;
+  static const PROFILE = _Paths.PROFILE;
 }
 
 abstract class _Paths {
@@ -28,4 +29,5 @@ abstract class _Paths {
   static const TERMS_AND_CONDITION = '/terms-and-condition';
   static const SOLD_ITEM_LIST = '/sold-item-list';
   static const SOLD_ITEM_INFO = '/sold-item-info';
+  static const PROFILE = '/profile';
 }

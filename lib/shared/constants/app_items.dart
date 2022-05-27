@@ -32,6 +32,11 @@ List<MenuItem> sellerSideMenuItem = [
     function: () => Get.offAll(() => const SoldItemList()),
   ),
   MenuItem(
+    name: 'Settings',
+    icon: Icons.settings,
+    function: () => Get.offAll(() => const ProfileScreen()),
+  ),
+  MenuItem(
     name: 'Logout',
     icon: Icons.logout,
     function: () => authController.signOut(),
@@ -54,6 +59,11 @@ List<MenuItem> bidderSideMenuItem = [
     name: 'Transactions',
     icon: Icons.add_rounded,
     function: () => Get.offAll(() => const TransactionScreen()),
+  ),
+  MenuItem(
+    name: 'Settings',
+    icon: Icons.settings,
+    function: () => Get.offAll(() => const ProfileScreen()),
   ),
   MenuItem(
     name: 'Logout',

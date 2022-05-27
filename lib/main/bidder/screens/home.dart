@@ -2,7 +2,6 @@ import 'package:bidding/components/_components.dart';
 import 'package:bidding/main/bidder/controllers/bidder_side_menu_controller.dart';
 import 'package:bidding/main/bidder/controllers/ongoing_auction_controller.dart';
 import 'package:bidding/main/bidder/screens/_bidder_screens.dart';
-import 'package:bidding/models/item_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/bidder/side_menu.dart';
