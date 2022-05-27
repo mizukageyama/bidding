@@ -335,7 +335,7 @@ class _Content extends StatelessWidget {
 //Mobile Version
   Widget phoneHeaderVersion() {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -345,17 +345,8 @@ class _Content extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: Text('Item',
-                    style: robotoMedium.copyWith(
-                        color: blackColor, fontSize: kIsWeb ? 17 : 15)),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Text('Seller',
-                    style: robotoMedium.copyWith(
-                        color: blackColor, fontSize: kIsWeb ? 17 : 15)),
+                    style:
+                        robotoMedium.copyWith(color: blackColor, fontSize: 16)),
               ),
             ),
             Expanded(
@@ -372,39 +363,34 @@ class _Content extends StatelessWidget {
 
   Widget mobileVersion(SoldItem item) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Text(item.title,
-                      style: robotoLight.copyWith(
-                          color: greyColor, fontSize: kIsWeb ? 15 : 16)),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Text(item.buyerName,
-                      style: robotoLight.copyWith(
-                          color: greyColor, fontSize: kIsWeb ? 15 : 16)),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: InkWell(
+                  onTap: () {},
                   child: Text(
-                    '₱ ${Format.amount(item.soldAt)}',
-                    style: robotoRegularUnderlined.copyWith(
-                        color: brownColor, fontSize: kIsWeb ? 15 : 14),
+                    item.title,
+                    style: robotoLight.copyWith(color: greyColor, fontSize: 14),
                   ),
                 ),
               ),
-            ]));
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Text(
+                  Format.date(item.dateSold),
+                  style: robotoLight.copyWith(color: greyColor, fontSize: 14),
+                ),
+              ),
+            ),
+          ]),
+    );
   }
 }
