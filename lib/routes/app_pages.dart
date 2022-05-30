@@ -1,4 +1,5 @@
 import 'package:bidding/main/_auth/_auth_screens.dart';
+import 'package:bidding/main/admin/screens/open_auctions.dart';
 import 'package:bidding/main/seller/screens/_seller_screens.dart';
 import 'package:bidding/main/seller/screens/sold_item_list.dart';
 import 'package:bidding/main/splash.dart';
@@ -43,6 +44,12 @@ class AppPages {
     GetPage(
       name: _Paths.SOLD_ITEM_LIST,
       page: () => const SoldItemList(),
+    ),
+
+    //Admin
+    GetPage(
+      name: _Paths.OPEN_AUCTIONS,
+      page: () => const OpenAuctionScreen(),
     ),
   ];
 }

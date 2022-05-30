@@ -32,4 +32,6 @@ class UserModel {
         'last_name': lastName,
         'user_role': userRole,
       };
+
+  get fullName => '$firstName $lastName';
 }

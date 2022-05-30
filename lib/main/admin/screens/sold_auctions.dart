@@ -5,8 +5,8 @@ import 'package:bidding/shared/layout/test_side_menu.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class AdminHome extends StatelessWidget {
-  const AdminHome({Key? key}) : super(key: key);
+class SoldAuctionScreen extends StatelessWidget {
+  const SoldAuctionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class AdminHome extends StatelessWidget {
         body: ResponsiveView(
           const _Content(),
           const MobileSliver(
-            title: 'Admin Dashboard',
+            title: 'Sold Auctions',
             body: _Content(),
           ),
           TestSideMenu(),
@@ -47,7 +47,7 @@ class _Content extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: const [
                       Text(
-                        'Admin Dashboard',
+                        'Sold Auctions',
                         textAlign: TextAlign.start,
                         style: TextStyle(
                             color: whiteColor,
