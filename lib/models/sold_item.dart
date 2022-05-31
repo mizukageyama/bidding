@@ -17,6 +17,7 @@ class SoldItem {
   final Timestamp dateSold;
   final List<String> images;
   UserModel? buyer;
+  UserModel? sellerInfo;
 
   SoldItem({
     required this.itemId,
@@ -55,6 +56,14 @@ class SoldItem {
     buyer = await firestore
         .collection('users')
         .doc(buyerId)
+        .get()
+        .then((doc) => UserModel.fromJson(doc.data()!));
+  }
+
+  Future<void> getSellerInfo() async {
+    sellerInfo = await firestore
+        .collection('users')
+        .doc(sellerId)
         .get()
         .then((doc) => UserModel.fromJson(doc.data()!));
   }

@@ -4,7 +4,7 @@ import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
 import 'package:bidding/shared/services/_services.dart';
 
-class OpenAuctionController extends GetxController {
+class ClosedAuctionController extends GetxController {
   final log = getLogger('Closed Auction Controller');
 
   final RxList<Item> closedItems = RxList.empty(growable: true);
