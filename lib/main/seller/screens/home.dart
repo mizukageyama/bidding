@@ -19,9 +19,9 @@ class SellerHome extends StatelessWidget {
         drawer: SellerSideMenu(),
         body: ResponsiveView(
           const _Content(),
-          MobileSliver(
+          const MobileSliver(
             title: 'Dashboard',
-            body: const _Content(),
+            body: _Content(),
           ),
           SellerSideMenu(),
         ),

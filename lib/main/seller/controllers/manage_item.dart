@@ -1,7 +1,10 @@
+import 'dart:core';
 import 'package:bidding/components/_components.dart';
+import 'package:bidding/main/seller/controllers/add_item_controller.dart';
 import 'package:bidding/models/item_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
+import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/constants/firebase.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/services/_services.dart';
@@ -21,6 +24,12 @@ class ManageItem extends GetxController {
   //Edit Controllers
   static TextEditingController titleController = TextEditingController();
   static TextEditingController descriptionController = TextEditingController();
+  static TextEditingController brandController = TextEditingController();
+  static TextEditingController askingPriceController = TextEditingController();
+  static final RxSet<String> category = <String>{}.obs;
+  static late final RxString cond = ''.obs;
+
+  final AddItemController addItemController = Get.put(AddItemController());
 
   //EDIT SELECTED AUCTIONED ITEM
   static Future<void> edit(BuildContext context, Item item) async {
@@ -32,10 +41,15 @@ class ManageItem extends GetxController {
     return firestore.collection('items').doc(item.itemId).update({
       'title': titleController.text,
       'description': descriptionController.text,
+      'brand': brandController.text,
+      'asking_price': double.parse(askingPriceController.text),
+      'category': List<String>.from(category),
+      'condition': cond.value,
     }).then((value) {
       //TO DO: Success Dialog
       titleController.clear();
       descriptionController.clear();
+      brandController.clear();
     });
   }
 
@@ -99,6 +113,11 @@ class ManageItem extends GetxController {
     final _editFormkey = GlobalKey<FormState>();
     titleController.text = item.title;
     descriptionController.text = item.description;
+    brandController.text = item.brand;
+    askingPriceController.text = '${item.askingPrice}';
+    //category = item.category as RxSet<String>;
+    cond.value = item.condition;
+
     return SimpleDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         contentPadding: const EdgeInsets.symmetric(
@@ -143,6 +162,49 @@ class ManageItem extends GetxController {
                           return;
                         },
                         onSaved: (value) => descriptionController.text = value!,
+                        validator: Validator().notEmpty,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      //row asking price condition
+                      InputField(
+                        controller: askingPriceController,
+                        labelText: 'Asking Price',
+                        keyboardType: TextInputType.text,
+                        onChanged: (value) {
+                          return;
+                        },
+                        onSaved: (value) => askingPriceController.text = value!,
+                        validator: Validator().notEmpty,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomDropdown(
+                        hintText: 'Condition',
+                        dropdownItems: condition,
+                        onChanged: (item) => cond.value = item!,
+                        onSaved: (item) => cond.value = item!,
+                        validator: (value) {
+                          if (cond.value == '') {
+                            return 'This is a required field';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+
+                      InputField(
+                        controller: brandController,
+                        labelText: 'Brand (Optional)',
+                        keyboardType: TextInputType.text,
+                        onChanged: (value) {
+                          return;
+                        },
+                        onSaved: (value) => brandController.text = value!,
                         validator: Validator().notEmpty,
                       ),
                       const SizedBox(

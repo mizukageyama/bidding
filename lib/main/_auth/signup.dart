@@ -359,6 +359,10 @@ class SignupScreen extends StatelessWidget {
                                             ],
                                           ),
                                           CheckboxFormField(
+                                            callback: () => showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    tACDialog(context)),
                                             title: Row(
                                               children: [
                                                 Text(
@@ -368,25 +372,13 @@ class SignupScreen extends StatelessWidget {
                                                           kIsWeb ? 13 : 15,
                                                       color: blackColor),
                                                 ),
-                                                InkWell(
-                                                  onTap: () {
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (context) =>
-                                                          tACDialog(context),
-                                                    );
-                                                  },
-                                                  child: Text(
-                                                    'Terms & Condition',
-                                                    style:
-                                                        robotoMedium.copyWith(
-                                                            fontSize: kIsWeb
-                                                                ? 13
-                                                                : 15,
-                                                            color:
-                                                                lightblueColor),
-                                                  ),
-                                                )
+                                                Text(
+                                                  'Terms & Condition',
+                                                  style: robotoMedium.copyWith(
+                                                      fontSize:
+                                                          kIsWeb ? 13 : 15,
+                                                      color: lightblueColor),
+                                                ),
                                               ],
                                             ),
                                             validator: (value) {

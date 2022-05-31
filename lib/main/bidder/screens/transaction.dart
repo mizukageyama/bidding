@@ -335,7 +335,7 @@ class _Content extends StatelessWidget {
 //Mobile Version
   Widget phoneHeaderVersion() {
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -350,11 +350,20 @@ class _Content extends StatelessWidget {
               ),
             ),
             Expanded(
+              flex: 2,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 0),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: Text('Date',
-                    style: robotoMedium.copyWith(
-                        color: blackColor, fontSize: kIsWeb ? 17 : 15)),
+                    style:
+                        robotoMedium.copyWith(color: blackColor, fontSize: 16)),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Text('Action',
+                    style:
+                        robotoMedium.copyWith(color: blackColor, fontSize: 16)),
               ),
             ),
           ],
@@ -363,7 +372,7 @@ class _Content extends StatelessWidget {
 
   Widget mobileVersion(SoldItem item) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -372,21 +381,30 @@ class _Content extends StatelessWidget {
               flex: 2,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: InkWell(
-                  onTap: () {},
-                  child: Text(
-                    item.title,
-                    style: robotoLight.copyWith(color: greyColor, fontSize: 14),
-                  ),
+                child: Text(
+                  item.title,
+                  style: robotoLight.copyWith(color: greyColor, fontSize: 15),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Text(
+                  Format.date(item.dateSold),
+                  style: robotoLight.copyWith(color: greyColor, fontSize: 15),
                 ),
               ),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Text(
-                  Format.date(item.dateSold),
-                  style: robotoLight.copyWith(color: greyColor, fontSize: 14),
+                child: InkWell(
+                  onTap: () {},
+                  child: Text('View',
+                      style: robotoRegularUnderlined.copyWith(
+                          color: orangeColor, fontSize: 15)),
                 ),
               ),
             ),
