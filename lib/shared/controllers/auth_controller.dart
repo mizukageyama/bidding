@@ -59,7 +59,7 @@ class AuthController extends GetxController {
     //   ever(firebaseUser, _setInitialScreen);
     //   firebaseUser.bindStream(user);
     // });
-    // super.onInit();
+    super.onInit();
   }
 
   Stream<User?> get user => auth.authStateChanges();

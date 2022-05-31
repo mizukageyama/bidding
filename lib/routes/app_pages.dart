@@ -60,6 +60,6 @@ class AppPages {
     GetPage(
       name: _Paths.SOLD_AUCTIONS,
       page: () => const SoldAuctionScreen(),
-    ),
+    )
   ];
 }

@@ -15,8 +15,7 @@ class ItemViewer extends StatelessWidget {
         child: Scaffold(body: SoldItemView(item: item)),
       );
     }
-    return SafeArea(
-      child: Scaffold(body: OpenClosedItemView(item: item)),
-    );
+    return SafeArea(child: Scaffold(body: OpenClosedItemView()) //item: item)),
+        );
   }
 }

@@ -19,6 +19,7 @@ abstract class Routes {
   static const OPEN_AUCTIONS = _Paths.OPEN_AUCTIONS;
   static const CLOSED_AUCTIONS = _Paths.CLOSED_AUCTIONS;
   static const SOLD_AUCTIONS = _Paths.SOLD_AUCTIONS;
+  static const OPEN_TEST = _Paths.OPEN_TEST;
 }
 
 abstract class _Paths {
@@ -36,4 +37,5 @@ abstract class _Paths {
   static const OPEN_AUCTIONS = '/open_auctions';
   static const CLOSED_AUCTIONS = '/closed_auctions';
   static const SOLD_AUCTIONS = '/sold_auctions';
+  static const OPEN_TEST = '/open_test';
 }
