@@ -172,5 +172,5 @@ class ResponsiveItemGrid extends GetResponsiveView {
 
   @override
   Widget? desktop() => ItemLayoutGrid(
-      perColumn: 3, item: item, isSoldItem: false, oneRow: firstRowOnly);
+      perColumn: 4, item: item, isSoldItem: false, oneRow: firstRowOnly);
 }

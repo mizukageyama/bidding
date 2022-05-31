@@ -16,15 +16,12 @@ class SellerSideMenuController extends GetxController {
       Get.put(AuctionedItemController(), permanent: true);
   final SoldItemsController soldItemsController =
       Get.put(SoldItemsController(), permanent: true);
-  final ProfileController profileController =
-      Get.put(ProfileController(), permanent: true);
 
   @override
   void dispose() {
     Get.delete<SellerSideMenuController>(force: true);
     Get.delete<AuctionedItemController>(force: true);
     Get.delete<SoldItemsController>(force: true);
-    Get.delete<ProfileController>(force: true);
     super.dispose();
   }
 

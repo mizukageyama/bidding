@@ -16,6 +16,7 @@ abstract class Routes {
   static const SOLD_ITEM_LIST = _Paths.SOLD_ITEM_LIST;
   static const SOLD_ITEM_INFO = _Paths.SOLD_ITEM_INFO;
   static const PROFILE = _Paths.PROFILE;
+  static const OPEN_AUCTIONS = _Paths.OPEN_AUCTIONS;
 }
 
 abstract class _Paths {
@@ -30,4 +31,5 @@ abstract class _Paths {
   static const SOLD_ITEM_LIST = '/sold-item-list';
   static const SOLD_ITEM_INFO = '/sold-item-info';
   static const PROFILE = '/profile';
+  static const OPEN_AUCTIONS = '/open_auctions';
 }

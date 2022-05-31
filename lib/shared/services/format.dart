@@ -8,8 +8,18 @@ class Format {
     return '${DateFormat.yMMMd().format(dt)} (${DateFormat.jm().format(dt)})';
   }
 
+  static String dateShort(Timestamp timestamp) {
+    final dt = timestamp.toDate();
+    return DateFormat.yMMMd().format(dt);
+  }
+
   static String amount(double amount) {
     NumberFormat f = NumberFormat("#,##0.00", "en_US");
+    return f.format(amount);
+  }
+
+  static String amountShort(double amount) {
+    NumberFormat f = NumberFormat("#,##0", "en_US");
     return f.format(amount);
   }
 }

@@ -1,7 +1,6 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/main/bidder/side_menu.dart';
 import 'package:bidding/shared/_packages_imports.dart';
-import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/controllers/profile_controller.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/mobile_body_sliver.dart';
@@ -10,20 +9,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({Key? key, required this.sideMenu}) : super(key: key);
+  final Widget sideMenu;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        drawer: BidderSideMenu(),
+        drawer: sideMenu,
         body: ResponsiveView(
           _Content(),
           MobileSliver(
             title: 'Profile',
             body: _Content(),
           ),
-          BidderSideMenu(),
+          sideMenu,
         ),
       ),
     );
@@ -33,9 +33,8 @@ class ProfileScreen extends StatelessWidget {
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
 
-  final ProfileController profileController = Get.find();
-  final RxBool currentpwObscure = true.obs;
-  final RxBool newPwObscure = true.obs;
+  final ProfileController profileController = Get.put(ProfileController());
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -86,7 +85,9 @@ class _Content extends StatelessWidget {
                       margin: const EdgeInsets.all(15),
                       elevation: 3,
                       child: Container(
-                        width: kIsWeb ? Get.width * .4 : Get.width * .8,
+                        width: kIsWeb && Get.width >= 600
+                            ? Get.width * .4
+                            : Get.width * .8,
                         padding: const EdgeInsets.symmetric(
                             vertical: 45, horizontal: 5),
                         child: Column(
@@ -99,14 +100,14 @@ class _Content extends StatelessWidget {
                                 height: 10,
                               ),
                               Text(
-                                profileController.role,
-                                style: robotoBold.copyWith(
-                                  color: orangeColor,
-                                  fontSize: 18,
+                                profileController.fullName,
+                                style: robotoMedium.copyWith(
+                                  color: blackColor,
+                                  fontSize: 16,
                                 ),
                               ),
                               const SizedBox(
-                                height: 15,
+                                height: 5,
                               ),
                               Text(
                                 profileController.email,
@@ -116,17 +117,17 @@ class _Content extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(
-                                height: 15,
+                                height: 10,
                               ),
                               Text(
-                                profileController.fullName,
-                                style: robotoMedium.copyWith(
-                                  color: blackColor,
-                                  fontSize: 16,
+                                profileController.role,
+                                style: robotoBold.copyWith(
+                                  color: orangeColor,
+                                  fontSize: 18,
                                 ),
                               ),
                               const SizedBox(
-                                height: 30,
+                                height: 20,
                               ),
                               ElevatedButton.icon(
                                 onPressed: () {
@@ -166,19 +167,6 @@ class _Content extends StatelessWidget {
   }
 
   Widget displayProfile() {
-    // return StreamBuilder<DocumentSnapshot>(
-    //     // stream: profileController.profilePhoto(),
-    //     builder: (context, snapshot) {
-    //   if (snapshot.connectionState == ConnectionState.waiting) {
-    //     return const CircleImage(
-    //       assetImage: 'assets/images/default_image.png',
-    //     );
-    //   }
-    //   if (snapshot.hasError || !snapshot.hasData) {
-    //     return const CircleImage(
-    //       assetImage: 'assets/images/default_image.png',
-    //     );
-    //   }
     return Stack(
       children: [
         ClipRRect(
@@ -186,7 +174,7 @@ class _Content extends StatelessWidget {
           child: CircleImage(
             height: kIsWeb ? 125 : 130,
             width: kIsWeb ? 125 : 130,
-            imageUrl: '${profileController.profilePhoto}',
+            imageUrl: profileController.profilePhoto,
           ),
         ),
         Positioned(
@@ -214,7 +202,6 @@ class _Content extends StatelessWidget {
             )),
       ],
     );
-    //});
   }
 
   Widget changePassword(BuildContext context) {
@@ -253,17 +240,18 @@ class _Content extends StatelessWidget {
                       iconPrefix: Icons.lock,
                       suffixIcon: IconButton(
                         onPressed: () {
-                          currentpwObscure.value = !currentpwObscure.value;
+                          profileController.isObscureCurrentPW!.value =
+                              !profileController.isObscureCurrentPW!.value;
                         },
                         icon: Icon(
-                          currentpwObscure.value
+                          profileController.isObscureCurrentPW!.value
                               ? Icons.visibility
                               : Icons.visibility_off,
                         ),
                       ),
                       labelText: 'Current Password',
                       validator: Validator().password,
-                      obscureText: currentpwObscure.value,
+                      obscureText: profileController.isObscureCurrentPW!.value,
                       onChanged: (value) {
                         return;
                       },
@@ -282,17 +270,18 @@ class _Content extends StatelessWidget {
                       iconPrefix: Icons.lock,
                       suffixIcon: IconButton(
                         onPressed: () {
-                          newPwObscure.value = !newPwObscure.value;
+                          profileController.isObscureNewPW!.value =
+                              !profileController.isObscureNewPW!.value;
                         },
                         icon: Icon(
-                          newPwObscure.value
+                          profileController.isObscureNewPW!.value
                               ? Icons.visibility
                               : Icons.visibility_off,
                         ),
                       ),
                       labelText: 'New Password',
                       validator: Validator().password,
-                      obscureText: newPwObscure.value,
+                      obscureText: profileController.isObscureNewPW!.value,
                       onChanged: (value) {
                         return;
                       },
@@ -313,7 +302,9 @@ class _Content extends StatelessWidget {
               height: 40,
               child: CustomButton(
                 onTap: () async {
-                  await profileController.changePassword(context);
+                  if (_changePassword.currentState!.validate()) {
+                    await profileController.changePassword(context);
+                  }
                 },
                 text: 'Save Password',
                 buttonColor: maroonColor,
