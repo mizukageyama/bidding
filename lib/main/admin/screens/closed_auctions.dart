@@ -147,28 +147,33 @@ class _Content extends StatelessWidget {
           ),
         ),
         DataCell(Text('₱ ${Format.amount(item.askingPrice)}')),
-        DataCell(item.winningBid == ''
-            ? Container(
-                height: 25,
-                width: 130,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2),
-                    color: greyColor), //greyColor To Selected
-                child: Text(
-                  'To Selected',
-                  style: robotoRegular.copyWith(color: whiteColor),
+        DataCell(
+          item.winningBid == ''
+              ? Container(
+                  height: 25,
+                  width: 130,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(2),
+                      color: greyColor), //greyColor To Selected
+                  child: Text(
+                    'To Selected',
+                    style: robotoRegular.copyWith(color: whiteColor),
+                  ),
+                  alignment: Alignment.center,
+                )
+              : Container(
+                  height: 25,
+                  width: 130,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(2),
+                      color: indigoColor),
+                  child: Text(
+                    'Winner Selected',
+                    style: robotoRegular.copyWith(color: whiteColor),
+                  ),
+                  alignment: Alignment.center,
                 ),
-                alignment: Alignment.center,
-              )
-            : Container(
-                height: 20,
-                width: 100,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2), color: indigoColor),
-                child: Text(
-                  'Winner Selected',
-                  style: robotoRegular.copyWith(color: whiteColor),
-                ))),
+        ),
         DataCell(
           FutureBuilder(
             future: item.getBids(),
