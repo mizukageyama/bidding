@@ -23,7 +23,7 @@ class BidsController extends GetxController {
   }
 
   void bindBidList(String itemId) {
-    if (user.userRole == 'Seller') {
+    if (user.userRole == 'Bidder' || user.userRole == 'Admin') {
       bids.bindStream(getBids(itemId));
     } else {
       bids.bindStream(getBidsforBidder(itemId));

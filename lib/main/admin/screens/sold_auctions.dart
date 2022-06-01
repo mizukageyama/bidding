@@ -1,6 +1,7 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/data_table_format.dart';
 import 'package:bidding/main/admin/controllers/sold_auction_controller.dart';
+import 'package:bidding/main/admin/screens/sold_view.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/mobile_body_sliver.dart';
@@ -40,7 +41,7 @@ class _Content extends StatelessWidget {
     return Container(
       height: Get.height,
       width: Get.width,
-      color: whiteColor,
+      color: const Color(0xFFF5F5F5),
       child: Column(
         children: [
           kIsWeb && Get.width >= 600
@@ -119,7 +120,7 @@ class _Content extends StatelessWidget {
       const DataColumn(label: Text('Posted By')),
       const DataColumn(label: Text('Asking Price')),
       const DataColumn(label: Text('Winning Bid')),
-      const DataColumn(label: Text('Winner Name')),
+      const DataColumn(label: Text('Winner')),
       const DataColumn(label: Text('Action'))
     ];
   }
@@ -155,7 +156,9 @@ class _Content extends StatelessWidget {
         ),
         DataCell(
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Get.to(() => SoldItemView(item: item));
+            },
             child: Text(
               'View',
               style: robotoMedium.copyWith(
@@ -173,7 +176,7 @@ class _Content extends StatelessWidget {
     return [
       const DataColumn(label: SizedBox(width: 190, child: Text('Item'))),
       const DataColumn(label: Text(kIsWeb ? 'Winning Bid' : 'Winning\n Bid')),
-      const DataColumn(label: Text(kIsWeb ? 'Winner Name' : 'Winner\n Name')),
+      const DataColumn(label: Text(kIsWeb ? 'Winner' : 'Winner\n Name')),
     ];
   }
 
@@ -184,7 +187,9 @@ class _Content extends StatelessWidget {
             cells: [
               DataCell(
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(() => SoldItemView(item: item));
+                  },
                   child: SizedBox(
                     width: 190,
                     child: Text(

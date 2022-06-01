@@ -12,7 +12,7 @@ class AppPages {
   AppPages._();
 
   //Note: Set sa initial screen na atong gusto itest
-  static const iNITIAL = Routes.CLOSED_AUCTIONS;
+  static const iNITIAL = Routes.SPLASH;
 
   static final routes = [
     GetPage(

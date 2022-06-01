@@ -1,10 +1,11 @@
-import 'package:bidding/components/category_chip.dart';
+import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/display_info_section.dart';
-import 'package:bidding/components/display_price.dart';
-import 'package:bidding/components/item_info_left_column.dart';
+import 'package:bidding/models/_models.dart';
 import 'package:bidding/models/item_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
+import 'package:bidding/shared/constants/firebase.dart';
+import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:bidding/shared/layout/test_side_menu.dart';
@@ -13,24 +14,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class OpenClosedItemView extends StatelessWidget {
-  //const OpenClosedItemView({Key? key, required this.item}) : super(key: key);
-  final Item item = Item(
-    itemId: 'MsRyfhQOhK2IwiSaNT94',
-    sellerId: 'K0ASoOxiUSSGDX9CoNE8Yfr7Ll33',
-    title: 'Raspberry Pi, and Arduino Sensors',
-    description:
-        'TAKE ALL Electronic Parts Raspberry Pi, Arduino Sensors, Diodes, LED. These are the Electronic Parts: Raspberry Pi, Arduino Sensors, Diodes, LED, and etc.',
-    winningBid: '',
-    askingPrice: 200,
-    category: ['Arduino', 'Electronics'],
-    condition: 'Good as New',
-    brand: '',
-    endDate: Timestamp(0, 1652000),
-    images: [
-      'https://firebasestorage.googleapis.com/v0/b/bidding-7c695.appspot.com/o/item_images%2FMsRyfhQOhK2IwiSaNT94%2FRaspberry%20Pi-PI4%20MODEL%20B_1GB-30152779-01.jpg?alt=media&token=3b8ef48f-ab0b-4acd-8e6a-ef879c967fd0',
-      'https://firebasestorage.googleapis.com/v0/b/bidding-7c695.appspot.com/o/item_images%2FMsRyfhQOhK2IwiSaNT94%2FRPi3-1024x768.jpg?alt=media&token=ef01c579-368e-4298-b952-543a2ab21519'
-    ],
-  );
+  const OpenClosedItemView({Key? key, required this.item}) : super(key: key);
+  final Item item;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +26,7 @@ class OpenClosedItemView extends StatelessWidget {
             item: item,
           ),
           MobileSliver(
-            title: 'Item Info > Item Title Here',
+            title: 'Item Info > ${item.title}',
             body: _Content(
               item: item,
             ),
@@ -86,7 +71,7 @@ class _Content extends StatelessWidget {
                       ),
                       Flexible(
                         child: Text(
-                          'Item Info > Item Title Here',
+                          'Item Info > ${item.title}',
                           textAlign: TextAlign.start,
                           style: const TextStyle(
                               color: whiteColor,
@@ -148,11 +133,14 @@ class _Content extends StatelessWidget {
 }
 
 class _RightColumn extends StatelessWidget {
-  const _RightColumn({Key? key, required this.item}) : super(key: key);
+  _RightColumn({Key? key, required this.item}) : super(key: key);
+  final BidsController bidsController = Get.put(BidsController());
   final Item item;
 
   @override
   Widget build(BuildContext context) {
+    bidsController.bindBidList(item.itemId);
+
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Column(
@@ -203,16 +191,13 @@ class _RightColumn extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          DisplayInfo(
-            title: 'Highest Approved Bid',
-            content: '₱ ${Format.amount(1000)}',
-            isPrice: true,
-          ),
+          DateTime.now().isAfter(item.endDate.toDate()) && item.winningBid != ''
+              ? _displaySelectedWinner()
+              : Obx(() => _displayPrice()),
           const SizedBox(
             height: 5,
           ),
           const Divider(),
-
           const SizedBox(
             height: 5,
           ),
@@ -224,13 +209,40 @@ class _RightColumn extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    DisplayInfo(
-                        title: 'Item Posted By', content: 'Anne Curtis Smith'),
+                    Text('Item Posted By',
+                        style: robotoMedium.copyWith(
+                          color: blackColor,
+                          fontSize: 14,
+                        )),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    FutureBuilder(
+                        future: item.getSellerInfo(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return Text(
+                              item.sellerInfo!.fullName,
+                              style: robotoRegular.copyWith(
+                                color: greyColor,
+                                fontSize: 14,
+                              ),
+                            );
+                          }
+                          return Text(
+                            '',
+                            style: robotoRegular.copyWith(
+                              color: greyColor,
+                              fontSize: 14,
+                            ),
+                          );
+                        }),
                     const SizedBox(
                       height: 8,
                     ),
                     Text(
-                      Format.date(item.endDate),
+                      Format.date(item.datePosted),
                       style: robotoRegular.copyWith(color: greyColor),
                     ),
                   ],
@@ -256,7 +268,7 @@ class _RightColumn extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            countdownTimer(item.endDate),
+                            _countdownTimer(item.endDate),
                             const SizedBox(
                               height: 5,
                             ),
@@ -278,50 +290,107 @@ class _RightColumn extends StatelessWidget {
             height: 5,
           ),
           const Divider(),
-          // Text(
-          //   'Item ${DateTime.now().isBefore(item.endDate.toDate()) ? 'will be' : 'was'} closed: ${Format.date(item.endDate)}',
-          //   style: robotoRegular.copyWith(color: greyColor),
-          // ),
         ],
       ),
     );
   }
-}
 
-Widget countdownTimer(Timestamp dt) {
-  return CountdownTimer(
-    endTime: dt.millisecondsSinceEpoch + 1000 * 30,
-    widgetBuilder: (_, time) {
-      if (time == null) {
-        return const SizedBox(
-          height: 0,
+  Widget _displayPrice() {
+    if (bidsController.isDoneLoading.value && bidsController.bids.isNotEmpty) {
+      int index = bidsController.approvedBid(bidsController.bids);
+      if (index != -1) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            DisplayInfo(
+              title: 'Highest Approved Bid',
+              content: '₱ ${Format.amount(bidsController.bids[index].amount)}',
+              isPrice: true,
+            ),
+          ],
         );
+      } else {
+        return const InfoDisplay(
+            message: 'No approved from the bids at the moment.');
       }
-      int days = time.days ?? 0;
-      int daysToHours = days * 24;
-      int hours = time.hours ?? 0;
-      int overallHours = hours + daysToHours;
-      int minutes = time.min ?? 0;
-      int seconds = time.sec ?? 0;
+    } else if (bidsController.isDoneLoading.value &&
+        bidsController.bids.isEmpty) {
+      return const InfoDisplay(message: 'No bids for this item at the moment.');
+    }
+    return const SizedBox(
+      width: 24,
+      height: 24,
+      child: CircularProgressIndicator(
+        color: maroonColor,
+      ),
+    );
+  }
 
-      if (days == 0) {
+  Widget _displaySelectedWinner() {
+    return FutureBuilder(
+        future: item.getWinnerInfo(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DisplayInfo(
+                  isPrice: true,
+                  title: 'Selected Winner',
+                  content: '₱ ${Format.amount(item.winningBidInfo!.amount)}',
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text('by ${item.winningBidInfo!.bidderInfo!.fullName}')
+              ],
+            );
+          }
+          return const SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(
+                color: maroonColor,
+              ));
+        });
+  }
+
+  Widget _countdownTimer(Timestamp dt) {
+    return CountdownTimer(
+      endTime: dt.millisecondsSinceEpoch + 1000 * 30,
+      widgetBuilder: (_, time) {
+        if (time == null) {
+          return const SizedBox(
+            height: 0,
+          );
+        }
+        int days = time.days ?? 0;
+        int daysToHours = days * 24;
+        int hours = time.hours ?? 0;
+        int overallHours = hours + daysToHours;
+        int minutes = time.min ?? 0;
+        int seconds = time.sec ?? 0;
+
+        if (days == 0) {
+          return Text(
+            '${overallHours < 10 ? '0$overallHours' : overallHours} '
+            ': ${minutes < 10 ? '0$minutes' : minutes} : ${seconds < 10 ? '0$seconds' : seconds} left',
+            style: robotoMedium.copyWith(
+              color: maroonColor,
+              fontSize: 17,
+            ),
+          );
+        }
+
         return Text(
-          '${overallHours < 10 ? '0$overallHours' : overallHours} '
-          ': ${minutes < 10 ? '0$minutes' : minutes} : ${seconds < 10 ? '0$seconds' : seconds} left',
+          '$days ${days > 1 ? 'days' : 'day'} and\n$minutes : $seconds left',
           style: robotoMedium.copyWith(
             color: maroonColor,
             fontSize: 17,
           ),
         );
-      }
-
-      return Text(
-        '$days ${days > 1 ? 'days' : 'day'} and\n$minutes : $seconds left',
-        style: robotoMedium.copyWith(
-          color: maroonColor,
-          fontSize: 17,
-        ),
-      );
-    },
-  );
+      },
+    );
+  }
 }

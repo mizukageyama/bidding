@@ -55,10 +55,10 @@ class AuthController extends GetxController {
   void onInit() {
     log.i('onInit | Auth Controller is ready');
     //delay to give splash screen 3 sec
-    // Future.delayed(const Duration(seconds: 3), () {
-    //   ever(firebaseUser, _setInitialScreen);
-    //   firebaseUser.bindStream(user);
-    // });
+    Future.delayed(const Duration(seconds: 3), () {
+      ever(firebaseUser, _setInitialScreen);
+      firebaseUser.bindStream(user);
+    });
     super.onInit();
   }
 

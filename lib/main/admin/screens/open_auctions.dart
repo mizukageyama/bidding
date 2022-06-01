@@ -1,7 +1,7 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/data_table_format.dart';
 import 'package:bidding/main/admin/controllers/open_auction_controller.dart';
-import 'package:bidding/main/admin/screens/item_viewer.dart';
+import 'package:bidding/main/admin/screens/open_closed_view.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/mobile_body_sliver.dart';
@@ -101,7 +101,7 @@ class _Content extends StatelessWidget {
     } else if (_openAuction.isDoneLoading.value &&
         _openAuction.openItems.isEmpty) {
       return const Center(
-          child: InfoDisplay(message: 'No ongoing auction at the moment'));
+          child: InfoDisplay(message: 'No ongoing auctions at the moment.'));
     }
     return const Center(
       child: SizedBox(
@@ -133,7 +133,7 @@ class _Content extends StatelessWidget {
     return _openAuction.openItems.map((item) {
       return DataRow(cells: [
         DataCell(SizedBox(width: 200, child: Text(item.title))),
-        DataCell(Text(Format.dateShort(item.endDate))),
+        DataCell(Text(Format.dateShort(item.datePosted))),
         DataCell(Text(Format.dateShort(item.endDate))),
         DataCell(
           FutureBuilder(
@@ -168,7 +168,7 @@ class _Content extends StatelessWidget {
         DataCell(
           InkWell(
             onTap: () {
-              Get.to(() => ItemViewer(isSoldItem: false, item: item));
+              Get.to(() => OpenClosedItemView(item: item));
             },
             child: Text(
               'View',
@@ -202,10 +202,7 @@ class _Content extends StatelessWidget {
               DataCell(
                 InkWell(
                   onTap: () {
-                    Get.to(() => ItemViewer(
-                          isSoldItem: false,
-                          item: item,
-                        ));
+                    Get.to(() => OpenClosedItemView(item: item));
                   },
                   child: SizedBox(
                     width: 190,

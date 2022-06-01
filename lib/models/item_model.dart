@@ -13,10 +13,11 @@ class Item {
   final String condition;
   final String brand;
   final Timestamp endDate;
-  //final Timestamp datePosted;
+  final Timestamp datePosted;
   final String winningBid;
   final List<String> images;
   UserModel? sellerInfo;
+  Bid? winningBidInfo;
   List<Bid> bids = List.empty(growable: true);
 
   Item({
@@ -24,7 +25,7 @@ class Item {
     required this.sellerId,
     required this.title,
     required this.description,
-    //required this.datePosted,
+    required this.datePosted,
     required this.winningBid,
     required this.askingPrice,
     required this.category,
@@ -42,7 +43,7 @@ class Item {
       description: json['description'] as String,
       askingPrice: double.parse('${json['asking_price']}'),
       category: List<String>.from(json['category'] ?? []),
-      //datePosted: json['date_posted'] as Timestamp,
+      datePosted: json['date_posted'] as Timestamp,
       condition: json['condition'] as String,
       brand: json['brand'] as String,
       endDate: json['end_date'] as Timestamp,
@@ -57,7 +58,7 @@ class Item {
         'title': title,
         'description': description,
         'asking_price': askingPrice,
-        //'date_posted': datePosted,
+        'date_posted': datePosted,
         'category': category,
         'condition': condition,
         'brand': brand,
@@ -79,6 +80,15 @@ class Item {
         .doc(sellerId)
         .get()
         .then((doc) => UserModel.fromJson(doc.data()!));
+  }
+
+  Future<void> getWinnerInfo() async {
+    winningBidInfo = await firestore
+        .collection('bids')
+        .doc(winningBid)
+        .get()
+        .then((doc) => Bid.fromJson(doc.data()!));
+    await winningBidInfo!.getBidderInfo();
   }
 
   Future<void> getBids() async {
