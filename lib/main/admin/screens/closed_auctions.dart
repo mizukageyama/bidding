@@ -70,9 +70,53 @@ class _Content extends StatelessWidget {
                   height: 0,
                   width: 0,
                 ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: kIsWeb ? 20 : 12,
+                horizontal: kIsWeb ? 120 : 12, //change
+              ),
+              child: searchBar(),
+            ),
+          ),
           Flexible(child: Obx(() => showTableReport()))
         ],
       ),
+    );
+  }
+
+  Widget searchBar() {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: SizedBox(
+            height: 45,
+            child: InputField(
+              labelText: 'Search here...',
+              keyboardType: TextInputType.multiline,
+              onChanged: (value) {
+                return;
+              },
+              onSaved: (value) => {},
+              controller: TextEditingController(),
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        SizedBox(
+          width: 110,
+          height: 45,
+          child: CustomButton(
+            onTap: () {},
+            text: 'Search',
+            buttonColor: maroonColor,
+            fontSize: 16,
+          ),
+        ),
+      ],
     );
   }
 
@@ -154,10 +198,9 @@ class _Content extends StatelessWidget {
                   height: 25,
                   width: 130,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(2),
-                      color: greyColor), //greyColor To Selected
+                      borderRadius: BorderRadius.circular(2), color: greyColor),
                   child: Text(
-                    'To Selected',
+                    'To Select',
                     style: robotoRegular.copyWith(color: whiteColor),
                   ),
                   alignment: Alignment.center,
@@ -167,7 +210,7 @@ class _Content extends StatelessWidget {
                   width: 130,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(2),
-                      color: indigoColor),
+                      color: greenColor),
                   child: Text(
                     'Winner Selected',
                     style: robotoRegular.copyWith(color: whiteColor),
