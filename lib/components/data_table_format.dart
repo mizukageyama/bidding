@@ -18,8 +18,9 @@ class DataTableFormat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DataTable(
-      columnSpacing: kIsWeb ? 50 : 20,
+    return DataTable2(
+      dataRowColor: MaterialStateColor.resolveWith((states) => whiteColor),
+      minWidth: kIsWeb && Get.width >= 600 ? 1200 : Get.width,
       showBottomBorder: true,
       dataTextStyle: robotoRegular,
       headingRowColor: MaterialStateColor.resolveWith((states) => maroonColor),

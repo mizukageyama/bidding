@@ -51,6 +51,7 @@ dev_dependencies:
   flutter_countdown_timer: ^4.1.0
   carousel_slider: ^4.1.1
   uuid: ^3.0.6
+  data_table_2: ^2.2.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

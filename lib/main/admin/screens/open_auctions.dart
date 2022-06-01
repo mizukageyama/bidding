@@ -33,7 +33,6 @@ class OpenAuctionScreen extends StatelessWidget {
 
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
-  final _horizontalScrollController = ScrollController();
   final OpenAuctionController _openAuction = Get.put(OpenAuctionController());
 
   @override
@@ -69,15 +68,6 @@ class _Content extends StatelessWidget {
                   height: 0,
                   width: 0,
                 ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: kIsWeb ? 20 : 12,
-                horizontal: kIsWeb ? 170 : 12, //change
-              ),
-              child: searchBar(),
-            ),
-          ),
           Flexible(child: Obx(() => showTableReport()))
         ],
       ),
@@ -121,26 +111,29 @@ class _Content extends StatelessWidget {
 
   Widget showTableReport() {
     if (_openAuction.isDoneLoading.value && _openAuction.openItems.isNotEmpty) {
-      return Scrollbar(
-        controller: _horizontalScrollController,
-        isAlwaysShown: true,
-        scrollbarOrientation: ScrollbarOrientation.bottom,
-        child: SingleChildScrollView(
-            controller: _horizontalScrollController,
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 25, horizontal: kIsWeb ? 10 : 3),
+      return Padding(
+        padding: const EdgeInsets.symmetric(
+            vertical: 25, horizontal: kIsWeb ? 25 : 3),
+        child: Column(
+          children: [
+            searchBar(),
+            const SizedBox(
+              height: 24,
+            ),
+            Flexible(
               child: Container(
-                  height: Get.height,
-                  color: whiteColor,
-                  child: DataTableFormat(
-                    columns: _createColumns(),
-                    columnsMobile: _createColumnsMobile(),
-                    rows: _createRows(),
-                    rowsMobile: _createRowsMobile(),
-                  )),
-            )),
+                height: Get.height,
+                color: whiteColor,
+                child: DataTableFormat(
+                  columns: _createColumns(),
+                  columnsMobile: _createColumnsMobile(),
+                  rows: _createRows(),
+                  rowsMobile: _createRowsMobile(),
+                ),
+              ),
+            ),
+          ],
+        ),
       );
     } else if (_openAuction.isDoneLoading.value &&
         _openAuction.openItems.isEmpty) {

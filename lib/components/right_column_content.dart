@@ -191,12 +191,17 @@ class RightColumnContent extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          Text(
-            'Date Posted: ${Format.date(item.datePosted)}',
-            style: robotoRegular.copyWith(color: greyColor),
-          ),
-          const SizedBox(
-            height: 15,
+          Visibility(
+              visible: !isBidder,
+              child: DisplayInfo(
+                content: Format.date(item.datePosted),
+                title: 'Date Posted',
+              )),
+          Visibility(
+            visible: !isBidder,
+            child: const SizedBox(
+              height: 15,
+            ),
           ),
           Text(
             'Item ${DateTime.now().isBefore(item.endDate.toDate()) ? 'will be' : 'was'} closed: ${Format.date(item.endDate)}',
