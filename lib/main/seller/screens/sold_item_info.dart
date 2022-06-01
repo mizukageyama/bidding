@@ -152,6 +152,10 @@ class _RightColumn extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
+          DisplayInfo(title: 'Condition', content: item.condition),
+          const SizedBox(
+            height: 15,
+          ),
           item.brand == ''
               ? const SizedBox(
                   height: 0,
