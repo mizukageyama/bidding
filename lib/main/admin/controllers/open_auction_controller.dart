@@ -42,13 +42,12 @@ class OpenAuctionController extends GetxController {
 
   //Search Functions
   void filterItems() {
-    print('search is clicked');
     filtered.clear();
     if (titleKeyword.text == '') {
       filtered.assignAll(openItems);
     } else {
       for (final item in openItems) {
-        if (item.brand
+        if (item.title
             .toLowerCase()
             .contains(titleKeyword.text.toLowerCase())) {
           filtered.add(item);
