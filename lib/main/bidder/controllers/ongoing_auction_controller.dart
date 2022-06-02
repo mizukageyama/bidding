@@ -3,12 +3,18 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
 import 'package:bidding/shared/services/_services.dart';
+import 'package:flutter/material.dart';
 
 class OngoingAuctionController extends GetxController {
   final log = getLogger('Ongoing Auction Controller');
 
   final RxList<Item> itemList = RxList.empty(growable: true);
+  final RxList<Item> filtered = RxList.empty(growable: true);
   final RxBool isDoneLoading = false.obs;
+
+  //Filter Data
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController titleKeyword = TextEditingController();
 
   @override
   void onInit() {
@@ -16,15 +22,15 @@ class OngoingAuctionController extends GetxController {
     itemList.bindStream(getAuctionedItems());
     Future.delayed(const Duration(seconds: 3), () {
       isDoneLoading.value = true;
+      filtered.assignAll(itemList);
     });
-    ever(itemList, (itemList) => recentList);
   }
 
   Stream<List<Item>> getAuctionedItems() {
     log.i('Streaming Item List');
     return firestore
         .collection('items')
-        .orderBy('end_date', descending: true)
+        .orderBy('end_date')
         .where('end_date', isGreaterThan: Timestamp.now())
         .snapshots(includeMetadataChanges: true)
         .map((query) {
@@ -34,14 +40,27 @@ class OngoingAuctionController extends GetxController {
     });
   }
 
-  Iterable<Item> recentList() {
-    int count = 2;
-    if (Get.width >= 600 && Get.width < 1200) {
-      count = 3;
-    } else if (Get.width >= 1200) {
-      count = 4;
+  //Search Functions
+  void filterItems() {
+    filtered.clear();
+    if (titleKeyword.text == '') {
+      filtered.assignAll(itemList);
+    } else {
+      for (final item in itemList) {
+        if (item.title
+            .toLowerCase()
+            .contains(titleKeyword.text.toLowerCase())) {
+          filtered.add(item);
+        }
+      }
     }
-    return itemList.getRange(
-        0, itemList.length < count ? itemList.length : count);
+  }
+
+  void refreshItem() {
+    print('refresh is clicked');
+    formKey.currentState!.reset();
+    titleKeyword.clear();
+    filtered.clear();
+    filtered.assignAll(itemList);
   }
 }

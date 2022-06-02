@@ -76,6 +76,9 @@ class _Content extends StatelessWidget {
             ),
             child: searchBar(),
           ),
+          const SizedBox(
+            height: 10,
+          ),
           Expanded(child: Obx(() => showItems())),
         ],
       ),
@@ -90,19 +93,8 @@ class _Content extends StatelessWidget {
           physics: const AlwaysScrollableScrollPhysics(),
           shrinkWrap: true,
           children: [
-            const Text(
-              'AUCTIONED ITEMS',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w500,
-                fontSize: 17,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
             ResponsiveItemGrid(
-              item: itemListController.itemList,
+              item: itemListController.filtered,
             ),
           ]);
     } else if (itemListController.isDoneLoading.value &&
@@ -124,16 +116,15 @@ class _Content extends StatelessWidget {
       children: [
         Expanded(
           flex: 2,
-          child: SizedBox(
-            height: 45,
+          child: Form(
+            key: itemListController.formKey,
             child: InputField(
-              labelText: 'Search item here...',
-              keyboardType: TextInputType.multiline,
-              onChanged: (value) {
-                return;
-              },
-              onSaved: (value) => {},
-              controller: TextEditingController(),
+              hideLabelTyping: true,
+              labelText: 'Search here...',
+              onChanged: (value) =>
+                  itemListController.titleKeyword.text = value,
+              onSaved: (value) => itemListController.titleKeyword.text = value!,
+              controller: itemListController.titleKeyword,
             ),
           ),
         ),
@@ -141,11 +132,28 @@ class _Content extends StatelessWidget {
           width: 10,
         ),
         SizedBox(
-          width: 120,
+          width: 110,
           height: 45,
           child: CustomButton(
-            onTap: () {},
+            onTap: () {
+              itemListController.filterItems();
+            },
             text: 'Search',
+            buttonColor: maroonColor,
+            fontSize: 16,
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        SizedBox(
+          width: 110,
+          height: 45,
+          child: CustomButton(
+            onTap: () {
+              itemListController.refreshItem();
+            },
+            text: 'Refresh',
             buttonColor: maroonColor,
             fontSize: 16,
           ),
@@ -156,21 +164,20 @@ class _Content extends StatelessWidget {
 }
 
 class ResponsiveItemGrid extends GetResponsiveView {
-  ResponsiveItemGrid({Key? key, required this.item, this.firstRowOnly = false})
+  ResponsiveItemGrid({Key? key, required this.item})
       : super(key: key, alwaysUseBuilder: false);
 
   final RxList<Item> item;
-  final bool firstRowOnly;
 
   @override
   Widget? phone() => ItemLayoutGrid(
-      perColumn: 2, item: item, isSoldItem: false, oneRow: firstRowOnly);
+      perColumn: 2, item: item, isSoldItem: false, oneRow: false);
 
   @override
   Widget? tablet() => ItemLayoutGrid(
-      perColumn: 3, item: item, isSoldItem: false, oneRow: firstRowOnly);
+      perColumn: 3, item: item, isSoldItem: false, oneRow: false);
 
   @override
   Widget? desktop() => ItemLayoutGrid(
-      perColumn: 4, item: item, isSoldItem: false, oneRow: firstRowOnly);
+      perColumn: 4, item: item, isSoldItem: false, oneRow: false);
 }

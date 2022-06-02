@@ -14,7 +14,7 @@ class ItemLayoutGrid extends StatelessWidget {
   final List<TrackSize> sizePerColumn = List.empty(growable: true);
   final List<TrackSize> sizePerRow = List.empty(growable: true);
   final int perColumn;
-  final List<dynamic> item;
+  final RxList<dynamic> item;
   final bool isSoldItem;
   final bool oneRow;
 
@@ -22,21 +22,29 @@ class ItemLayoutGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     int rowLength = getRowLength(item.length, perColumn, oneRow);
     getSizes(rowLength);
-
-    return LayoutGrid(
-      columnGap: 15,
-      columnSizes: sizePerColumn,
-      rowGap: 15,
-      rowSizes: sizePerRow,
-      children: [
-        for (var i = 0; i < (oneRow ? perColumn : item.length); i++)
-          Obx(
-            () => ItemCard(
-              item: item[i],
-              isSoldItem: isSoldItem,
+    return Obx(
+      () => LayoutGrid(
+        columnGap: 15,
+        columnSizes: sizePerColumn,
+        rowGap: 15,
+        rowSizes: sizePerRow,
+        children: [
+          for (var i = 0;
+              i <
+                  (oneRow
+                      ? item.length > perColumn
+                          ? perColumn
+                          : item.length
+                      : item.length);
+              i++)
+            Obx(
+              () => ItemCard(
+                item: item[i],
+                isSoldItem: isSoldItem,
+              ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 

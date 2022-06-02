@@ -2,6 +2,7 @@ import 'package:bidding/components/_components.dart';
 import 'package:bidding/main/bidder/controllers/bidder_side_menu_controller.dart';
 import 'package:bidding/main/bidder/controllers/ongoing_auction_controller.dart';
 import 'package:bidding/main/bidder/screens/_bidder_screens.dart';
+import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/bidder/side_menu.dart';
@@ -173,9 +174,8 @@ class _Content extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            ResponsiveItemGrid(
+            _ResponsiveItemGrid(
               item: itemListController.itemList,
-              firstRowOnly: true,
             ),
           ]);
     } else if (itemListController.isDoneLoading.value &&
@@ -195,4 +195,23 @@ class _Content extends StatelessWidget {
       ),
     );
   }
+}
+
+class _ResponsiveItemGrid extends GetResponsiveView {
+  _ResponsiveItemGrid({Key? key, required this.item})
+      : super(key: key, alwaysUseBuilder: false);
+
+  final RxList<Item> item;
+
+  @override
+  Widget? phone() =>
+      ItemLayoutGrid(perColumn: 2, item: item, isSoldItem: false, oneRow: true);
+
+  @override
+  Widget? tablet() =>
+      ItemLayoutGrid(perColumn: 3, item: item, isSoldItem: false, oneRow: true);
+
+  @override
+  Widget? desktop() =>
+      ItemLayoutGrid(perColumn: 4, item: item, isSoldItem: false, oneRow: true);
 }
