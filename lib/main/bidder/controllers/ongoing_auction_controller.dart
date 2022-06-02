@@ -57,7 +57,6 @@ class OngoingAuctionController extends GetxController {
   }
 
   void refreshItem() {
-    print('refresh is clicked');
     formKey.currentState!.reset();
     titleKeyword.clear();
     filtered.clear();

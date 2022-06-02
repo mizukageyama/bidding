@@ -26,8 +26,7 @@ class ManageItem extends GetxController {
   static TextEditingController descriptionController = TextEditingController();
   static TextEditingController brandController = TextEditingController();
   static TextEditingController askingPriceController = TextEditingController();
-  static final RxSet<String> category = <String>{}.obs;
-  static late final RxString cond = ''.obs;
+  static RxString cond = ''.obs;
 
   final AddItemController addItemController = Get.put(AddItemController());
 
@@ -43,13 +42,14 @@ class ManageItem extends GetxController {
       'description': descriptionController.text,
       'brand': brandController.text,
       'asking_price': double.parse(askingPriceController.text),
-      'category': List<String>.from(category),
       'condition': cond.value,
     }).then((value) {
       //TO DO: Success Dialog
       titleController.clear();
       descriptionController.clear();
       brandController.clear();
+      askingPriceController.clear();
+      cond.value = '';
     });
   }
 
@@ -80,7 +80,6 @@ class ManageItem extends GetxController {
         }
       });
       dismissDialog();
-
       Get.back();
     } catch (e) {
       dismissDialog();
@@ -115,7 +114,6 @@ class ManageItem extends GetxController {
     descriptionController.text = item.description;
     brandController.text = item.brand;
     askingPriceController.text = '${item.askingPrice}';
-    //category = item.category as RxSet<String>;
     cond.value = item.condition;
 
     return SimpleDialog(
@@ -144,7 +142,6 @@ class ManageItem extends GetxController {
                       InputField(
                         controller: titleController,
                         labelText: 'Title',
-                        keyboardType: TextInputType.multiline,
                         onChanged: (value) {
                           return;
                         },
@@ -167,7 +164,6 @@ class ManageItem extends GetxController {
                       const SizedBox(
                         height: 15,
                       ),
-                      //row asking price condition
                       InputField(
                         controller: askingPriceController,
                         labelText: 'Asking Price',
@@ -176,7 +172,7 @@ class ManageItem extends GetxController {
                           return;
                         },
                         onSaved: (value) => askingPriceController.text = value!,
-                        validator: Validator().notEmpty,
+                        validator: Validator().number,
                       ),
                       const SizedBox(
                         height: 15,
@@ -196,7 +192,6 @@ class ManageItem extends GetxController {
                       const SizedBox(
                         height: 15,
                       ),
-
                       InputField(
                         controller: brandController,
                         labelText: 'Brand (Optional)',
@@ -220,7 +215,6 @@ class ManageItem extends GetxController {
                             if (_editFormkey.currentState!.validate()) {
                               await updateItem(item);
                               _editFormkey.currentState!.reset();
-
                               dismissDialog();
                             }
                           },

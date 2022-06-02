@@ -1,6 +1,8 @@
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/attached_photos_controller.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:bidding/shared/services/dialogs.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class GalleryView extends StatelessWidget {
@@ -142,13 +144,36 @@ class GalleryView extends StatelessWidget {
     return Container(
       width: double.infinity,
       color: Colors.white,
-      child: Image.network(
-        apController.fetchedImages[index],
-        fit: BoxFit.contain,
-        errorBuilder: (context, error, stackTrace) {
-          return Image.asset('assets/images/default_image.png',
-              fit: BoxFit.cover);
+      child: InkWell(
+        onTap: () {
+          showPhotoDialog(apController.fetchedImages[index]);
         },
+        child: Image.network(
+          apController.fetchedImages[index],
+          fit: BoxFit.contain,
+          errorBuilder: (context, error, stackTrace) {
+            return Image.asset('assets/images/default_image.png',
+                fit: BoxFit.cover);
+          },
+        ),
+      ),
+    );
+  }
+
+  void showPhotoDialog(String image) {
+    Get.dialog(
+      Dialog(
+        child: SizedBox(
+          width: Get.width * .7,
+          child: Image.network(
+            image,
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              return Image.asset('assets/images/default_image.png',
+                  fit: BoxFit.cover);
+            },
+          ),
+        ),
       ),
     );
   }
