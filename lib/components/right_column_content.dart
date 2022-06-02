@@ -31,51 +31,54 @@ class RightColumnContent extends StatelessWidget {
         children: [
           Visibility(
             visible: !isBidder,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
-                  onTap: () async {
-                    await ManageItem.edit(context, item);
-                  },
-                  child: const Icon(
-                    Icons.edit,
-                    color: blackColor,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      await ManageItem.edit(context, item);
+                    },
+                    child: const Icon(
+                      Icons.edit,
+                      color: blackColor,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                InkWell(
-                  onTap: () async {
-                    await ManageItem.delete(item.itemId);
-                  },
-                  child: const Icon(
-                    Icons.delete,
-                    color: blackColor,
+                  const SizedBox(
+                    width: 10,
                   ),
-                ),
-                Visibility(
-                  visible: (!isBidder &&
-                      DateTime.now().isAfter(item.endDate.toDate())),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      CustomButton(
-                        onTap: () async {
-                          await ManageItem.reOpen(context, item.itemId);
-                        },
-                        buttonColor: maroonColor,
-                        text: 'Reopen Item',
-                      ),
-                    ],
+                  InkWell(
+                    onTap: () async {
+                      await ManageItem.delete(item.itemId);
+                    },
+                    child: const Icon(
+                      Icons.delete,
+                      color: blackColor,
+                    ),
                   ),
-                ),
-              ],
+                  Visibility(
+                    visible: (!isBidder &&
+                        DateTime.now().isAfter(item.endDate.toDate())),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        CustomButton(
+                          onTap: () async {
+                            await ManageItem.reOpen(context, item.itemId);
+                          },
+                          buttonColor: maroonColor,
+                          text: 'Reopen Item',
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Text(
