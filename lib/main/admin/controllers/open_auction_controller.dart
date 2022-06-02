@@ -3,20 +3,27 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
 import 'package:bidding/shared/services/_services.dart';
+import 'package:flutter/material.dart';
 
 class OpenAuctionController extends GetxController {
   final log = getLogger('Open Auction Controller');
 
   final RxList<Item> openItems = RxList.empty(growable: true);
+  final RxList<Item> filtered = RxList.empty(growable: true);
   final RxBool isDoneLoading = false.obs;
+
+  //Filter Data
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController titleKeyword = TextEditingController();
 
   @override
   void onInit() {
+    super.onInit();
     openItems.bindStream(getOpenAuctions());
     Future.delayed(const Duration(seconds: 3), () {
       isDoneLoading.value = true;
+      filtered.assignAll(openItems);
     });
-    super.onInit();
   }
 
   Stream<List<Item>> getOpenAuctions() {
@@ -31,5 +38,29 @@ class OpenAuctionController extends GetxController {
         return Item.fromJson(item.data());
       }).toList();
     });
+  }
+
+  //Search Functions
+  void filterItems() {
+    print('search is clicked');
+    filtered.clear();
+    if (titleKeyword.text == '') {
+      filtered.assignAll(openItems);
+    } else {
+      for (final item in openItems) {
+        if (item.brand
+            .toLowerCase()
+            .contains(titleKeyword.text.toLowerCase())) {
+          filtered.add(item);
+        }
+      }
+    }
+  }
+
+  void refreshItem() {
+    formKey.currentState!.reset();
+    titleKeyword.clear();
+    filtered.clear();
+    filtered.assignAll(openItems);
   }
 }

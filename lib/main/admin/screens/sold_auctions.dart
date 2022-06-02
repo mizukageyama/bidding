@@ -1,11 +1,11 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/data_table_format.dart';
 import 'package:bidding/main/admin/controllers/sold_auction_controller.dart';
+import 'package:bidding/main/admin/screens/side_menu.dart';
 import 'package:bidding/main/admin/screens/sold_view.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/mobile_body_sliver.dart';
-import 'package:bidding/shared/layout/test_side_menu.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +17,14 @@ class SoldAuctionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        drawer: TestSideMenu(),
+        drawer: AdminSideMenu(),
         body: ResponsiveView(
           _Content(),
           MobileSliver(
             title: 'Sold Auctions',
             body: _Content(),
           ),
-          TestSideMenu(),
+          AdminSideMenu(),
         ),
       ),
     );
@@ -33,7 +33,7 @@ class SoldAuctionScreen extends StatelessWidget {
 
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
-  final SoldAuctionController _soldAuction = Get.put(SoldAuctionController());
+  final SoldAuctionController _soldAuction = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -79,16 +79,14 @@ class _Content extends StatelessWidget {
       children: [
         Expanded(
           flex: 2,
-          child: SizedBox(
-            height: 45,
+          child: Form(
+            key: _soldAuction.formKey,
             child: InputField(
+              hideLabelTyping: true,
               labelText: 'Search here...',
-              keyboardType: TextInputType.multiline,
-              onChanged: (value) {
-                return;
-              },
-              onSaved: (value) => {},
-              controller: TextEditingController(),
+              onChanged: (value) => _soldAuction.titleKeyword.text = value,
+              onSaved: (value) => _soldAuction.titleKeyword.text = value!,
+              controller: _soldAuction.titleKeyword,
             ),
           ),
         ),
@@ -96,14 +94,60 @@ class _Content extends StatelessWidget {
           width: 10,
         ),
         SizedBox(
-          width: 110,
+          width: kIsWeb ? 110 : 50,
           height: 45,
-          child: CustomButton(
-            onTap: () {},
-            text: 'Search',
-            buttonColor: maroonColor,
-            fontSize: 16,
-          ),
+          child: kIsWeb
+              ? CustomButton(
+                  onTap: () {
+                    _soldAuction.filterItems();
+                  },
+                  text: 'Search',
+                  buttonColor: maroonColor,
+                  fontSize: 16,
+                )
+              : ElevatedButton(
+                  onPressed: () {
+                    _soldAuction.filterItems();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: maroonColor,
+                  ),
+                  child: const Icon(
+                    Icons.search,
+                    color: whiteColor,
+                  ),
+                ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        SizedBox(
+          width: kIsWeb ? 110 : 50,
+          height: 45,
+          child: kIsWeb
+              ? CustomButton(
+                  onTap: () {
+                    _soldAuction.refreshItem();
+                  },
+                  text: 'Refresh',
+                  buttonColor: maroonColor,
+                  fontSize: 16,
+                )
+              : ElevatedButton(
+                  onPressed: () {
+                    _soldAuction.refreshItem();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: greyColor, //maroonColor
+                  ),
+                  child: const Align(
+                    alignment: Alignment.center,
+                    child: Icon(
+                      Icons.refresh,
+                      color: whiteColor,
+                    ),
+                  ),
+                ),
         ),
       ],
     );

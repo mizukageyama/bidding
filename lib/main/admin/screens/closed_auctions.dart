@@ -2,12 +2,11 @@ import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/data_table_format.dart';
 import 'package:bidding/main/admin/controllers/closed_auction_controller.dart';
 import 'package:bidding/main/admin/screens/open_closed_view.dart';
+import 'package:bidding/main/admin/screens/side_menu.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/mobile_body_sliver.dart';
-import 'package:bidding/shared/layout/test_side_menu.dart';
 import 'package:bidding/shared/services/format.dart';
-import 'package:bidding/shared/services/validator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -18,14 +17,14 @@ class ClosedAuctionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        drawer: TestSideMenu(),
+        drawer: AdminSideMenu(),
         body: ResponsiveView(
           _Content(),
           MobileSliver(
             title: 'Closed Auctions',
             body: _Content(),
           ),
-          TestSideMenu(),
+          AdminSideMenu(),
         ),
       ),
     );
@@ -34,8 +33,7 @@ class ClosedAuctionScreen extends StatelessWidget {
 
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
-  final ClosedAuctionController _closedAuction =
-      Get.put(ClosedAuctionController());
+  final ClosedAuctionController _closedAuction = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -96,31 +94,57 @@ class _Content extends StatelessWidget {
           width: 10,
         ),
         SizedBox(
-          width: 110,
+          width: kIsWeb ? 110 : 50,
           height: 45,
-          child: CustomButton(
-            onTap: () {
-              _closedAuction.filterItems();
-            },
-            text: 'Search',
-            buttonColor: maroonColor,
-            fontSize: 16,
-          ),
+          child: kIsWeb
+              ? CustomButton(
+                  onTap: () {
+                    _closedAuction.filterItems();
+                  },
+                  text: 'Search',
+                  buttonColor: maroonColor,
+                  fontSize: 16,
+                )
+              : ElevatedButton(
+                  onPressed: () {
+                    _closedAuction.filterItems();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: maroonColor, //maroonColor
+                  ),
+                  child: const Icon(
+                    Icons.search,
+                    color: whiteColor,
+                  ),
+                ),
         ),
         const SizedBox(
           width: 10,
         ),
         SizedBox(
-          width: 110,
+          width: kIsWeb ? 110 : 50,
           height: 45,
-          child: CustomButton(
-            onTap: () {
-              _closedAuction.refreshItem();
-            },
-            text: 'Refresh',
-            buttonColor: maroonColor,
-            fontSize: 16,
-          ),
+          child: kIsWeb
+              ? CustomButton(
+                  onTap: () {
+                    _closedAuction.refreshItem();
+                  },
+                  text: 'Refresh',
+                  buttonColor: maroonColor,
+                  fontSize: 16,
+                )
+              : ElevatedButton(
+                  onPressed: () {
+                    _closedAuction.refreshItem();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: greyColor, //maroonColor
+                  ),
+                  child: const Icon(
+                    Icons.refresh,
+                    color: whiteColor,
+                  ),
+                ),
         ),
       ],
     );
@@ -207,10 +231,11 @@ class _Content extends StatelessWidget {
                   height: 25,
                   width: 130,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(2), color: greyColor),
+                      borderRadius: BorderRadius.circular(2),
+                      color: const Color.fromARGB(241, 241, 243, 255)),
                   child: Text(
                     'To Select',
-                    style: robotoRegular.copyWith(color: whiteColor),
+                    style: robotoRegular.copyWith(color: blackColor),
                   ),
                   alignment: Alignment.center,
                 )

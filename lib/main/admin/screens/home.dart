@@ -1,3 +1,5 @@
+import 'package:bidding/main/admin/screens/side_menu.dart';
+import 'package:bidding/main/bidder/side_menu.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/mobile_body_sliver.dart';
@@ -12,14 +14,14 @@ class AdminHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        drawer: TestSideMenu(),
+        drawer: AdminSideMenu(),
         body: ResponsiveView(
           const _Content(),
           const MobileSliver(
             title: 'Admin Dashboard',
             body: _Content(),
           ),
-          TestSideMenu(),
+          AdminSideMenu(),
         ),
       ),
     );

@@ -1,3 +1,8 @@
+import 'package:bidding/main/admin/screens/closed_auctions.dart';
+import 'package:bidding/main/admin/screens/home.dart';
+import 'package:bidding/main/admin/screens/open_auctions.dart';
+import 'package:bidding/main/admin/screens/side_menu.dart';
+import 'package:bidding/main/admin/screens/sold_auctions.dart';
 import 'package:bidding/main/bidder/screens/_bidder_screens.dart';
 import 'package:bidding/main/bidder/side_menu.dart';
 import 'package:bidding/main/seller/screens/_seller_screens.dart';
@@ -72,6 +77,44 @@ List<MenuItem> bidderSideMenuItem = [
     function: () => Get.offAll(
       () => ProfileScreen(
         sideMenu: BidderSideMenu(),
+      ),
+    ),
+  ),
+  MenuItem(
+    name: 'Logout',
+    icon: Icons.logout,
+    function: () => authController.signOut(),
+  ),
+];
+
+//Admin Side Menu Options
+List<MenuItem> adminSideMenuItem = [
+  MenuItem(
+    name: 'Dashboard',
+    icon: Icons.dashboard,
+    function: () => Get.offAll(() => const AdminHome()),
+  ),
+  MenuItem(
+    name: 'Open Auctions',
+    iconPath: 'assets/icons/icon_raise.png',
+    function: () => Get.offAll(() => const OpenAuctionScreen()),
+  ),
+  MenuItem(
+    name: 'Closed Auctions',
+    icon: Icons.close_rounded,
+    function: () => Get.offAll(() => const ClosedAuctionScreen()),
+  ),
+  MenuItem(
+    name: 'Sold Auctions',
+    iconPath: 'assets/icons/icon_auction.png',
+    function: () => Get.offAll(() => const SoldAuctionScreen()),
+  ),
+  MenuItem(
+    name: 'My Profile',
+    icon: Icons.settings,
+    function: () => Get.offAll(
+      () => ProfileScreen(
+        sideMenu: AdminSideMenu(),
       ),
     ),
   ),

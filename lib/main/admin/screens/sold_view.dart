@@ -1,10 +1,10 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/display_info_section.dart';
+import 'package:bidding/main/admin/screens/side_menu.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/mobile_body_sliver.dart';
-import 'package:bidding/shared/layout/test_side_menu.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,7 @@ class SoldItemView extends StatelessWidget {
               item: item,
             ),
           ),
-          TestSideMenu(),
+          AdminSideMenu(),
         ),
       ),
     );
