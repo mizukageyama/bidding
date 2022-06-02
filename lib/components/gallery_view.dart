@@ -18,7 +18,7 @@ class GalleryView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(15),
       child: images.length == 1
-          ? buildImage(0, context)
+          ? buildImage(0)
           : Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -31,7 +31,7 @@ class GalleryView extends StatelessWidget {
                           carouselController: apController.crslController,
                           itemCount: apController.fetchedImages.length,
                           itemBuilder: (context, index, realIndex) {
-                            return buildImage(index, context);
+                            return buildImage(index);
                           },
                           options: CarouselOptions(
                               initialPage: apController.selectedIndex.value,
@@ -140,7 +140,7 @@ class GalleryView extends StatelessWidget {
     );
   }
 
-  Widget buildImage(int index, BuildContext context) {
+  Widget buildImage(int index) {
     return Container(
       width: double.infinity,
       color: Colors.white,
