@@ -7,6 +7,7 @@ import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:bidding/shared/layout/test_side_menu.dart';
 import 'package:bidding/shared/services/format.dart';
+import 'package:bidding/shared/services/validator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -80,16 +81,14 @@ class _Content extends StatelessWidget {
       children: [
         Expanded(
           flex: 2,
-          child: SizedBox(
-            height: 45,
+          child: Form(
+            key: _closedAuction.formKey,
             child: InputField(
+              hideLabelTyping: true,
               labelText: 'Search here...',
-              keyboardType: TextInputType.multiline,
-              onChanged: (value) {
-                return;
-              },
-              onSaved: (value) => {},
-              controller: TextEditingController(),
+              onChanged: (value) => _closedAuction.titleKeyword.text = value,
+              onSaved: (value) => _closedAuction.titleKeyword.text = value!,
+              controller: _closedAuction.titleKeyword,
             ),
           ),
         ),
@@ -100,8 +99,25 @@ class _Content extends StatelessWidget {
           width: 110,
           height: 45,
           child: CustomButton(
-            onTap: () {},
+            onTap: () {
+              _closedAuction.filterItems();
+            },
             text: 'Search',
+            buttonColor: maroonColor,
+            fontSize: 16,
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        SizedBox(
+          width: 110,
+          height: 45,
+          child: CustomButton(
+            onTap: () {
+              _closedAuction.refreshItem();
+            },
+            text: 'Refresh',
             buttonColor: maroonColor,
             fontSize: 16,
           ),
@@ -169,7 +185,7 @@ class _Content extends StatelessWidget {
   }
 
   List<DataRow> _createRows() {
-    return _closedAuction.closedItems.map((item) {
+    return _closedAuction.filtered.map((item) {
       return DataRow(cells: [
         DataCell(SizedBox(width: 200, child: Text(item.title))),
         DataCell(Text(Format.dateShort(item.endDate))),
@@ -259,7 +275,7 @@ class _Content extends StatelessWidget {
   }
 
   List<DataRow> _createRowsMobile() {
-    return _closedAuction.closedItems
+    return _closedAuction.filtered
         .map(
           (item) => DataRow(
             cells: [
