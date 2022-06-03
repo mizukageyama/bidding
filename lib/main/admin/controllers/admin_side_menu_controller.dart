@@ -12,11 +12,11 @@ class AdminSideMenuController extends GetxController {
   final UserModel user = _authController.userModel.value!;
   final RxString activeMenu = 'Dashboard'.obs;
 
-  final OpenAuctionController _openAuction =
+  final OpenAuctionController openAuction =
       Get.put(OpenAuctionController(), permanent: true);
-  final ClosedAuctionController _closedAuction =
+  final ClosedAuctionController closedAuction =
       Get.put(ClosedAuctionController(), permanent: true);
-  final SoldAuctionController _soldAuction =
+  final SoldAuctionController soldAuction =
       Get.put(SoldAuctionController(), permanent: true);
 
   @override

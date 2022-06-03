@@ -1,4 +1,7 @@
+import 'package:bidding/main/admin/controllers/admin_side_menu_controller.dart';
+import 'package:bidding/main/admin/screens/open_auctions.dart';
 import 'package:bidding/main/admin/screens/side_menu.dart';
+import 'package:bidding/main/bidder/controllers/bidder_side_menu_controller.dart';
 import 'package:bidding/main/bidder/side_menu.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
@@ -49,7 +52,7 @@ class _Content extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: const [
                       Text(
-                        'Admin Dashboard',
+                        'Dashboard',
                         textAlign: TextAlign.start,
                         style: TextStyle(
                             color: whiteColor,
@@ -64,7 +67,216 @@ class _Content extends StatelessWidget {
                   height: 0,
                   width: 0,
                 ),
-          //diria ang sulod
+          Expanded(
+              child: ListView(
+                  padding: const EdgeInsets.all(15),
+                  shrinkWrap: true,
+                  children: [
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  children: [
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            color: pinkColor,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 50, horizontal: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      kIsWeb
+                                          ? 'View item\nand its status'
+                                          : 'View items and its status',
+                                      style: robotoBold.copyWith(
+                                          color: whiteColor,
+                                          fontSize: kIsWeb ? 45 : 41),
+                                      overflow: TextOverflow.fade,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  'See the University of Mindanao\'s Auction Community.',
+                                  style: robotoMedium.copyWith(
+                                      color: whiteColor, fontSize: 15),
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  onTap: () {
+                                    AdminSideMenuController menu = Get.find();
+                                    menu.changeActiveItem('Open Auctions');
+                                    Get.to(() => const OpenAuctionScreen());
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: whiteColor)),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          'See Ongoing Auctions',
+                                          style: robotoMedium.copyWith(
+                                              color: whiteColor, fontSize: 14),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_forward,
+                                          color: whiteColor,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            'Application Data',
+                            style: robotoRegular.copyWith(
+                              color: greyColor,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: 149,
+                                  decoration: BoxDecoration(
+                                    color: fadeColor,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Ongoing Auctions',
+                                          style: robotoMedium.copyWith(
+                                              color: whiteColor, fontSize: 16),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        const SizedBox(height: 30),
+                                        Center(
+                                          child: Text(
+                                            '--',
+                                            style: robotoMedium.copyWith(
+                                                color: whiteColor,
+                                                fontSize: 30),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Expanded(
+                                child: Container(
+                                  height: 149,
+                                  decoration: BoxDecoration(
+                                    color: orangeColor,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Closed Auctions',
+                                          style: robotoMedium.copyWith(
+                                              color: whiteColor, fontSize: 16),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        const SizedBox(height: 30),
+                                        Center(
+                                          child: Text(
+                                            '--',
+                                            style: robotoMedium.copyWith(
+                                                color: whiteColor,
+                                                fontSize: 30),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Expanded(
+                                child: Container(
+                                  height: 149,
+                                  decoration: BoxDecoration(
+                                    color: maroonColor,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Sold Auctions',
+                                          style: robotoMedium.copyWith(
+                                              color: whiteColor, fontSize: 16),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        const SizedBox(height: 30),
+                                        Center(
+                                          child: Text(
+                                            '10',
+                                            style: robotoMedium.copyWith(
+                                                color: whiteColor,
+                                                fontSize: 30),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ]),
+                  ],
+                ),
+              ])),
         ],
       ),
     );

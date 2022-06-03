@@ -75,10 +75,9 @@ class _Content extends StatelessWidget {
                 children: [
                   Column(children: [
                     Container(
-                      height: 320,
                       color: pinkColor,
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 20),
+                          vertical: 50, horizontal: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
