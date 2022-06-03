@@ -169,10 +169,10 @@ class _Content extends StatelessWidget {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (kIsWeb && Get.width >= 900) {
                         return customTableRow(
-                            boughtItemsController.soldItems[index]);
+                            boughtItemsController.soldItems[index], context);
                       }
                       return mobileVersion(
-                          boughtItemsController.soldItems[index]);
+                          boughtItemsController.soldItems[index], context);
                     }
                     return const SizedBox(
                       height: 0,
@@ -260,7 +260,7 @@ class _Content extends StatelessWidget {
         ));
   }
 
-  Widget customTableRow(SoldItem item) {
+  Widget customTableRow(SoldItem item, BuildContext context) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Row(
@@ -320,7 +320,9 @@ class _Content extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      showTransactionInfo(context, item);
+                    },
                     child: Text(
                       'View',
                       style: robotoRegularUnderlined.copyWith(
@@ -370,7 +372,7 @@ class _Content extends StatelessWidget {
         ));
   }
 
-  Widget mobileVersion(SoldItem item) {
+  Widget mobileVersion(SoldItem item, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: Row(
@@ -401,7 +403,9 @@ class _Content extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    showTransactionInfo(context, item);
+                  },
                   child: Text('View',
                       style: robotoRegularUnderlined.copyWith(
                           color: orangeColor, fontSize: 15)),
@@ -410,5 +414,20 @@ class _Content extends StatelessWidget {
             ),
           ]),
     );
+  }
+
+  void showTransactionInfo(BuildContext context, SoldItem item) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const SimpleDialog(
+              contentPadding: EdgeInsets.symmetric(
+                vertical: 30,
+                horizontal: kIsWeb ? 50 : 30,
+              ),
+              children: [
+                //TO DO: Make the Dialog UI here
+              ]);
+        });
   }
 }
