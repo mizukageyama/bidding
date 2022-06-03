@@ -1,4 +1,5 @@
 import 'package:bidding/components/_components.dart';
+import 'package:bidding/components/display_info_section.dart';
 import 'package:bidding/main/bidder/controllers/bought_items_controller.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
@@ -408,7 +409,7 @@ class _Content extends StatelessWidget {
                   },
                   child: Text('View',
                       style: robotoRegularUnderlined.copyWith(
-                          color: orangeColor, fontSize: 15)),
+                          color: maroonColor, fontSize: 15)),
                 ),
               ),
             ),
@@ -421,62 +422,64 @@ class _Content extends StatelessWidget {
         context: context,
         builder: (context) {
           return SimpleDialog(
-              contentPadding: const EdgeInsets.symmetric(
+              contentPadding: EdgeInsets.symmetric(
                 vertical: 30,
-                horizontal: kIsWeb ? 50 : 30,
+                horizontal: kIsWeb && Get.width >= 600 ? 50 : 30,
               ),
               children: [
                 Text(
                   'Transaction Info',
-                  style: robotoMedium.copyWith(color: blackColor, fontSize: 20),
+                  style: robotoMedium.copyWith(color: blackColor, fontSize: 18),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      width: 120,
+                    ImageView(
+                      width: 90,
                       height: 90,
-                      child: ImageView(
-                        imageUrl: item.images[0],
-                      ),
+                      imageUrl: item.images[0],
                     ),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Item #',
-                            style: robotoRegular.copyWith(
-                                color: blackColor, fontSize: 15),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            item.itemId,
-                            style: robotoRegular.copyWith(
-                                color: greyColor, fontSize: kIsWeb ? 13 : 11.5),
-                            textAlign: TextAlign.justify,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Seller',
-                            style: robotoRegular.copyWith(
-                                color: blackColor, fontSize: 15),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            item.buyer?.fullName,
-                            style: robotoRegular.copyWith(
-                                color: greyColor, fontSize: 13),
-                          ),
-                        ]),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Item #',
+                              style: robotoRegular.copyWith(
+                                  color: blackColor, fontSize: 15),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              item.itemId,
+                              style: robotoRegular.copyWith(
+                                  color: greyColor,
+                                  fontSize: kIsWeb ? 13 : 11.5),
+                              textAlign: TextAlign.justify,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Seller',
+                              style: robotoRegular.copyWith(
+                                  color: blackColor, fontSize: 15),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              item.buyer?.fullName,
+                              style: robotoRegular.copyWith(
+                                  color: greyColor, fontSize: 13),
+                            ),
+                          ]),
+                    ),
                   ],
                 ),
                 const SizedBox(
@@ -508,36 +511,23 @@ class _Content extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                Text(
-                  'Asking Price',
-                  style:
-                      robotoRegular.copyWith(color: blackColor, fontSize: 15),
+                CategoryChip(
+                  items: item.category,
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 15,
                 ),
-                Text(
-                  '₱ ${Format.amount(item.askingPrice)}',
-                  style: robotoRegular.copyWith(
-                    color: greyColor,
-                    fontSize: 16,
-                  ),
+                DisplayInfo(
+                  title: 'Asking Price',
+                  content: '₱ ${Format.amount(item.askingPrice)}',
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                Text(
-                  'Bought At',
-                  style:
-                      robotoRegular.copyWith(color: blackColor, fontSize: 15),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  '₱ ${Format.amount(item.soldAt)}',
-                  style:
-                      robotoMedium.copyWith(color: orangeColor, fontSize: 18),
+                DisplayInfo(
+                  title: 'Bought At',
+                  content: '₱ ${Format.amount(item.soldAt)}',
+                  isPrice: true,
                 ),
                 const SizedBox(
                   height: 5,

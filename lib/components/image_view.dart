@@ -18,7 +18,7 @@ class ImageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image.network(
       imageUrl,
-      fit: BoxFit.contain,
+      fit: BoxFit.cover,
       width: width,
       height: height,
       errorBuilder: (context, error, stackTrace) {
