@@ -121,8 +121,9 @@ class _Content extends StatelessWidget {
             child: InputField(
               hideLabelTyping: true,
               labelText: 'Search here...',
-              onChanged: (value) =>
-                  itemListController.titleKeyword.text = value,
+              onChanged: (value) {
+                return;
+              },
               onSaved: (value) => itemListController.titleKeyword.text = value!,
               controller: itemListController.titleKeyword,
             ),

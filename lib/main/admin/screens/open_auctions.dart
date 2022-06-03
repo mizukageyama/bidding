@@ -84,7 +84,9 @@ class _Content extends StatelessWidget {
             child: InputField(
               hideLabelTyping: true,
               labelText: 'Search here...',
-              onChanged: (value) => _openAuction.titleKeyword.text = value,
+              onChanged: (value) {
+                return;
+              },
               onSaved: (value) => _openAuction.titleKeyword.text = value!,
               controller: _openAuction.titleKeyword,
             ),
@@ -208,7 +210,7 @@ class _Content extends StatelessWidget {
   }
 
   List<DataRow> _createRows() {
-    return _openAuction.openItems.map((item) {
+    return _openAuction.filtered.map((item) {
       return DataRow(cells: [
         DataCell(SizedBox(width: 200, child: Text(item.title))),
         DataCell(Text(Format.dateShort(item.datePosted))),
@@ -273,7 +275,7 @@ class _Content extends StatelessWidget {
   }
 
   List<DataRow> _createRowsMobile() {
-    return _openAuction.openItems
+    return _openAuction.filtered
         .map(
           (item) => DataRow(
             cells: [

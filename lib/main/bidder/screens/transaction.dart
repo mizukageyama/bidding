@@ -420,13 +420,186 @@ class _Content extends StatelessWidget {
     showDialog(
         context: context,
         builder: (context) {
-          return const SimpleDialog(
-              contentPadding: EdgeInsets.symmetric(
+          return SimpleDialog(
+              contentPadding: const EdgeInsets.symmetric(
                 vertical: 30,
                 horizontal: kIsWeb ? 50 : 30,
               ),
               children: [
-                //TO DO: Make the Dialog UI here
+                Text(
+                  'Transaction Info',
+                  style: robotoMedium.copyWith(color: blackColor, fontSize: 20),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 120,
+                      height: 90,
+                      child: ImageView(
+                        imageUrl: item.images[0],
+                      ),
+                    ),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Item #',
+                            style: robotoRegular.copyWith(
+                                color: blackColor, fontSize: 15),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            item.itemId,
+                            style: robotoRegular.copyWith(
+                                color: greyColor, fontSize: kIsWeb ? 13 : 11.5),
+                            textAlign: TextAlign.justify,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'Seller',
+                            style: robotoRegular.copyWith(
+                                color: blackColor, fontSize: 15),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            item.buyer?.fullName,
+                            style: robotoRegular.copyWith(
+                                color: greyColor, fontSize: 13),
+                          ),
+                        ]),
+                  ],
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                const Divider(),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  item.title,
+                  style: robotoBold.copyWith(
+                    color: maroonColor,
+                    fontSize: 20,
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                SizedBox(
+                  width: 520,
+                  child: Text(
+                    item.description,
+                    style:
+                        robotoRegular.copyWith(color: greyColor, fontSize: 15),
+                    textAlign: TextAlign.justify,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'Asking Price',
+                  style:
+                      robotoRegular.copyWith(color: blackColor, fontSize: 15),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  '₱ ${Format.amount(item.askingPrice)}',
+                  style: robotoRegular.copyWith(
+                    color: greyColor,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'Bought At',
+                  style:
+                      robotoRegular.copyWith(color: blackColor, fontSize: 15),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  '₱ ${Format.amount(item.soldAt)}',
+                  style:
+                      robotoMedium.copyWith(color: orangeColor, fontSize: 18),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                const Divider(),
+                const SizedBox(
+                  height: 5,
+                ),
+                Wrap(
+                  runSpacing: 5,
+                  children: [
+                    Text(
+                      'Posted:',
+                      style: robotoRegular.copyWith(color: greyColor),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      Format.date(item.datePosted),
+                      style: robotoRegular.copyWith(color: greyColor),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Wrap(
+                  runSpacing: 5,
+                  children: [
+                    Text(
+                      'Closed:',
+                      style: robotoRegular.copyWith(color: greyColor),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      Format.date(item.endDate),
+                      style: robotoRegular.copyWith(color: greyColor),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Wrap(
+                  runSpacing: 5,
+                  children: [
+                    Text(
+                      'Mark as Sold:',
+                      style: robotoRegular.copyWith(color: greyColor),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      Format.date(item.dateSold),
+                      style: robotoRegular.copyWith(color: greyColor),
+                    )
+                  ],
+                ),
               ]);
         });
   }
