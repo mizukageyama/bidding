@@ -84,7 +84,9 @@ class _Content extends StatelessWidget {
             child: InputField(
               hideLabelTyping: true,
               labelText: 'Search here...',
-              onChanged: (value) => _soldAuction.titleKeyword.text = value,
+              onChanged: (value) {
+                return;
+              },
               onSaved: (value) => _soldAuction.titleKeyword.text = value!,
               controller: _soldAuction.titleKeyword,
             ),
@@ -207,7 +209,7 @@ class _Content extends StatelessWidget {
   }
 
   List<DataRow> _createRows() {
-    return _soldAuction.soldAuction.map((item) {
+    return _soldAuction.filtered.map((item) {
       return DataRow(cells: [
         DataCell(SizedBox(width: 200, child: Text(item.title))),
         DataCell(Text(Format.dateShort(item.dateSold))),
@@ -262,7 +264,7 @@ class _Content extends StatelessWidget {
   }
 
   List<DataRow> _createRowsMobile() {
-    return _soldAuction.soldAuction
+    return _soldAuction.filtered
         .map(
           (item) => DataRow(
             cells: [
