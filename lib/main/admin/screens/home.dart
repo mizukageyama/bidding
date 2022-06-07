@@ -1,12 +1,12 @@
 import 'package:bidding/main/admin/controllers/admin_side_menu_controller.dart';
+import 'package:bidding/main/admin/controllers/closed_auction_controller.dart';
+import 'package:bidding/main/admin/controllers/open_auction_controller.dart';
+import 'package:bidding/main/admin/controllers/sold_auction_controller.dart';
 import 'package:bidding/main/admin/screens/open_auctions.dart';
 import 'package:bidding/main/admin/screens/side_menu.dart';
-import 'package:bidding/main/bidder/controllers/bidder_side_menu_controller.dart';
-import 'package:bidding/main/bidder/side_menu.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/mobile_body_sliver.dart';
-import 'package:bidding/shared/layout/test_side_menu.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -36,6 +36,10 @@ class _Content extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final OpenAuctionController openListController = Get.find();
+    final SoldAuctionController soldItemsController = Get.find();
+    final ClosedAuctionController closedItemsController = Get.find();
+
     return Container(
       height: Get.height,
       width: Get.width,
@@ -184,14 +188,17 @@ class _Content extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 30),
                                         Center(
-                                          child: Text(
-                                            '--',
+                                            child: Obx(
+                                          () => Text(
+                                            openListController.oCount == 0
+                                                ? '--'
+                                                : '${openListController.oCount}',
                                             style: robotoMedium.copyWith(
                                                 color: whiteColor,
                                                 fontSize: 30),
                                             textAlign: TextAlign.left,
                                           ),
-                                        ),
+                                        )),
                                       ],
                                     ),
                                   ),
@@ -221,14 +228,17 @@ class _Content extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 30),
                                         Center(
-                                          child: Text(
-                                            '--',
+                                            child: Obx(
+                                          () => Text(
+                                            closedItemsController.cCount == 0
+                                                ? '--'
+                                                : '${closedItemsController.cCount}',
                                             style: robotoMedium.copyWith(
                                                 color: whiteColor,
                                                 fontSize: 30),
                                             textAlign: TextAlign.left,
                                           ),
-                                        ),
+                                        )),
                                       ],
                                     ),
                                   ),
@@ -258,12 +268,15 @@ class _Content extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 30),
                                         Center(
-                                          child: Text(
-                                            '10',
-                                            style: robotoMedium.copyWith(
-                                                color: whiteColor,
-                                                fontSize: 30),
-                                            textAlign: TextAlign.left,
+                                          child: Obx(
+                                            () => Text(
+                                              soldItemsController.sCount == 0
+                                                  ? '--'
+                                                  : '${soldItemsController.sCount}',
+                                              style: robotoMedium.copyWith(
+                                                  color: whiteColor,
+                                                  fontSize: 30),
+                                            ),
                                           ),
                                         ),
                                       ],

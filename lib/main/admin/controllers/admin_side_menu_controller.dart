@@ -25,6 +25,7 @@ class AdminSideMenuController extends GetxController {
     Get.delete<OpenAuctionController>(force: true);
     Get.delete<ClosedAuctionController>(force: true);
     Get.delete<SoldAuctionController>(force: true);
+
     super.dispose();
   }
 

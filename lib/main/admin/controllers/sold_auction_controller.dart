@@ -11,6 +11,8 @@ class SoldAuctionController extends GetxController {
   final RxList<SoldItem> filtered = RxList.empty(growable: true);
   final RxBool isDoneLoading = false.obs;
 
+  final RxInt soldItemCount = 0.obs;
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController titleKeyword = TextEditingController();
 
@@ -36,6 +38,8 @@ class SoldAuctionController extends GetxController {
       }).toList();
     });
   }
+
+  get sCount => soldAuction.length;
 
   void filterItems() {
     filtered.clear();

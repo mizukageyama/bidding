@@ -12,6 +12,8 @@ class OpenAuctionController extends GetxController {
   final RxList<Item> filtered = RxList.empty(growable: true);
   final RxBool isDoneLoading = false.obs;
 
+  final RxInt openItemCount = 0.obs;
+
   //Filter Data
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController titleKeyword = TextEditingController();
@@ -39,6 +41,8 @@ class OpenAuctionController extends GetxController {
       }).toList();
     });
   }
+
+  get oCount => openItems.length;
 
   //Search Functions
   void filterItems() {

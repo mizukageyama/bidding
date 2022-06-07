@@ -97,7 +97,7 @@ class _Content extends StatelessWidget {
         ),
         SizedBox(
           width: kIsWeb ? 110 : 50,
-          height: 45,
+          height: 50,
           child: kIsWeb
               ? CustomButton(
                   onTap: () {
@@ -117,6 +117,7 @@ class _Content extends StatelessWidget {
                   child: const Icon(
                     Icons.search,
                     color: whiteColor,
+                    size: 25,
                   ),
                 ),
         ),

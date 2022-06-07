@@ -13,6 +13,8 @@ class ClosedAuctionController extends GetxController {
       RxList.empty(growable: true); //display - holds filter
   final RxBool isDoneLoading = false.obs;
 
+  final RxInt closedItemCount = 0.obs;
+
   //Filter Data
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController titleKeyword = TextEditingController();
@@ -40,6 +42,8 @@ class ClosedAuctionController extends GetxController {
       }).toList();
     });
   }
+
+  get cCount => closedItems.length;
 
   void filterItems() {
     filtered.clear();
