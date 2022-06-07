@@ -92,7 +92,7 @@ class _Content extends StatelessWidget {
                   height: 0,
                   width: 0,
                 ),
-          Expanded(
+          Flexible(
             child: Padding(
               padding: const EdgeInsets.all(kIsWeb ? 20 : 12),
               child: Container(
@@ -125,22 +125,24 @@ class _Content extends StatelessWidget {
                             ),
                           ),
                           Get.width >= 600
-                              ? Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(
-                                      width: 3,
-                                    ),
-                                    Expanded(
-                                      flex: kIsWeb ? 3 : 2,
-                                      child: Text(
-                                        'Bid Date',
-                                        style: robotoMedium.copyWith(
-                                            color: blackColor),
+                              ? Flexible(
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        width: 3,
                                       ),
-                                    ),
-                                  ],
+                                      Expanded(
+                                        flex: kIsWeb ? 3 : 2,
+                                        child: Text(
+                                          'Bid Date',
+                                          style: robotoMedium.copyWith(
+                                              color: blackColor),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 )
                               : const SizedBox(
                                   width: 0,

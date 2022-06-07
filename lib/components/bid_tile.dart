@@ -116,21 +116,23 @@ class BidTile extends StatelessWidget {
             ),
           ),
           Get.width >= 600
-              ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      width: 3,
-                    ),
-                    Expanded(
-                      flex: kIsWeb ? 3 : 2,
-                      child: Text(
-                        Format.date(bid.bidDate),
-                        style: robotoRegular.copyWith(color: greyColor),
+              ? Flexible(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        width: 3,
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        flex: kIsWeb ? 3 : 2,
+                        child: Text(
+                          Format.date(bid.bidDate),
+                          style: robotoRegular.copyWith(color: greyColor),
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               : const SizedBox(
                   width: 0,
