@@ -217,7 +217,7 @@ class _Content extends StatelessWidget {
         DataCell(
           InkWell(
             onTap: () {
-              //showTransactionInfo(context, item);
+              showTransactionInfo(context, item);
             },
             child: Text(
               'View',
@@ -250,7 +250,7 @@ class _Content extends StatelessWidget {
               DataCell(
                 InkWell(
                   onTap: () {
-                    //  showTransactionInfo(context, item);
+                    showTransactionInfo(context, item);
                   },
                   child: SizedBox(
                     width: 190,
@@ -327,7 +327,7 @@ class _Content extends StatelessWidget {
                               height: 5,
                             ),
                             Text(
-                              item.buyer?.fullName,
+                              item.sellerInfo?.fullName,
                               style: robotoRegular.copyWith(
                                   color: greyColor, fontSize: 13),
                             ),
