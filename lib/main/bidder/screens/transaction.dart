@@ -77,46 +77,55 @@ class _Content extends StatelessWidget {
                 alignment: WrapAlignment.center,
                 children: [
                   Column(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Your successful transactions',
-                        style: robotoMedium.copyWith(
-                            color: blackColor, fontSize: kIsWeb ? 16 : 16),
-                        textAlign: TextAlign.justify,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
                       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                        Text(
-                          'Date',
-                          style: robotoMedium.copyWith(
-                              color: blackColor, fontSize: kIsWeb ? 16 : 16),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        SizedBox(
-                          child: getDate(context),
-                        ),
-                        Container(
+                        InkWell(
+                          onTap: () async {
+                            DateTime? selected = await showDatePicker(
+                              context: context,
+                              initialDate:
+                                  boughtItemsController.selectedDate.value,
+                              firstDate: DateTime(2010),
+                              lastDate: DateTime(2025),
+                            );
+
+                            if (selected != null) {
+                              boughtItemsController.date.value =
+                                  DateFormat.yMMMd().format(selected);
+                              boughtItemsController.filterDate();
+                            }
+                          },
+                          child: Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 2),
-                            width: 125,
                             height: 35,
                             decoration: BoxDecoration(
                                 border: Border.all(),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Center(
-                              child: Obx(
-                                () => Text(
-                                    boughtItemsController.date.value == ''
-                                        ? 'Select Date'
-                                        : boughtItemsController
-                                            .date.value), //filteredItem
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.calendar_today,
+                                    size: 25,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Obx(
+                                    () => Text(
+                                        boughtItemsController.date.value == ''
+                                            ? 'Select Date'
+                                            : boughtItemsController
+                                                .date.value), //filteredItem
+                                  ),
+                                ],
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                         IconButton(
                           onPressed: () {
                             boughtItemsController.refreshItem();
@@ -162,30 +171,6 @@ class _Content extends StatelessWidget {
     );
   }
 
-  Widget getDate(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomRight,
-      child: IconButton(
-        onPressed: () async {
-          DateTime? selected = await showDatePicker(
-            context: context,
-            initialDate: boughtItemsController.selectedDate.value,
-            firstDate: DateTime(2010),
-            lastDate: DateTime(2025),
-          );
-
-          if (selected != null) {
-            boughtItemsController.date.value =
-                DateFormat.yMMMd().format(selected);
-            boughtItemsController.filterDate();
-          }
-        },
-        icon: const Icon(Icons.calendar_today),
-        iconSize: 25,
-      ),
-    );
-  }
-
   Widget showTransactionList(BuildContext context) {
     if (boughtItemsController.isDoneLoading.value &&
         boughtItemsController.soldItems.isNotEmpty) {
@@ -193,9 +178,20 @@ class _Content extends StatelessWidget {
         context: context,
         removeTop: true,
         child: ListView.builder(
-            itemCount: boughtItemsController.filtered.length,
+            itemCount: boughtItemsController.filtered.isEmpty
+                ? 1
+                : boughtItemsController.filtered.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
+              if (boughtItemsController.emptySearchResult) {
+                return Center(
+                  child: Padding(
+                      padding:
+                          const EdgeInsets.only(top: 25, left: 10, right: 10),
+                      child: Text(boughtItemsController
+                          .emptySearchResultSearchResultMessage)),
+                );
+              }
               return FutureBuilder(
                   future: boughtItemsController.filtered[index].getBuyerInfo(),
                   builder: (context, snapshot) {
