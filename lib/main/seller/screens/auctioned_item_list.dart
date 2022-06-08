@@ -60,7 +60,6 @@ class _Content extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                             fontSize: 15),
                       ),
-                      //searchBar()
                     ],
                   ),
                 )

@@ -21,6 +21,7 @@ class AddItemController extends GetxController {
   final uuid = const Uuid();
 
   //Input Data From Item Form
+  final GlobalKey<FormState> addItemFormKey = GlobalKey<FormState>();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController askingPriceController = TextEditingController();
@@ -39,7 +40,7 @@ class AddItemController extends GetxController {
   final RxList<XFile> itemImages = RxList<XFile>();
   final RxList<String> itemImageUrls = RxList.empty(growable: true);
 
-  Future<void> postItem(GlobalKey<FormState> key) async {
+  Future<void> postItem() async {
     if (itemImages.isNotEmpty) {
       if (date.isEmpty || time.isEmpty) {
         showSimpleDialog(
@@ -49,20 +50,7 @@ class AddItemController extends GetxController {
           onTapFunc: () => dismissDialog(),
         );
       } else {
-        final bool result = await addItemSale();
-        if (result) {
-          key.currentState!.reset();
-          clearControllers();
-          SellerSideMenuController menu = Get.find();
-          menu.changeActiveItem('Auctioned Items');
-          Get.to(() => const AuctionedItemListScreen());
-        } else {
-          showSimpleDialog(
-            title: 'Add Item for Auction Failed',
-            description: 'An error occurred. Please try again later.',
-            onTapFunc: () => dismissDialog(),
-          );
-        }
+        await addItemsUsingBatch();
       }
     } else {
       showSimpleDialog(
@@ -70,6 +58,66 @@ class AddItemController extends GetxController {
         description: 'Please provide photos of your item.',
         onTapFunc: () => dismissDialog(),
       );
+    }
+  }
+
+  Future<void> addItemsUsingBatch() async {
+    showLoading();
+
+    final String generatedItemId = uuid.v4();
+    final bool uploadingSuccess = await uploadImages(generatedItemId);
+    if (uploadingSuccess) {
+      log.i('Photos are successfully uploaded');
+
+      final batch = firestore.batch();
+      Timestamp endTimeStamp = Timestamp.fromDate(endDateValue());
+
+      //add item
+      final itemRef = firestore.collection('items').doc(generatedItemId);
+
+      Map<String, dynamic> itemData = {
+        'item_id': generatedItemId,
+        'seller_id': user.userID,
+        'title': titleController.text.trim(),
+        'description': descriptionController.text.trim(),
+        'asking_price': double.parse(askingPriceController.text),
+        'brand': brandController.text,
+        'date_posted': Timestamp.now(),
+        'end_date': endTimeStamp,
+        'category': List<String>.from(category),
+        'condition': condition.value,
+        'images': itemImageUrls,
+      };
+
+      batch.set(itemRef, itemData);
+
+      // Commit the batch
+      batch.commit().then((_) async {
+        dismissDialog();
+        showSimpleDialog(
+            title: 'Item Added Successfully',
+            description:
+                'The item is posted and immediately available in the application.',
+            onTapFunc: () {
+              addItemFormKey.currentState!.reset();
+              clearControllers();
+              SellerSideMenuController menu = Get.find();
+              menu.changeActiveItem('Auctioned Items');
+              Get.to(() => const AuctionedItemListScreen());
+            });
+      }).catchError((onError) {
+        log.i('Unable to delete item and its bid');
+        dismissDialog();
+        showErrorDialog(
+          errorTitle: 'Add Item for Auction Failed',
+          errorDescription: 'An error occurred. Please try again later.',
+        );
+      });
+    } else {
+      showErrorDialog(
+          errorTitle: 'An error occured',
+          errorDescription:
+              'Something went wrong while uploading item photos. Please try again later.');
     }
   }
 

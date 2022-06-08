@@ -16,6 +16,8 @@ class OngoingAuctionController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController titleKeyword = TextEditingController();
 
+  final RxBool filtering = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -42,6 +44,7 @@ class OngoingAuctionController extends GetxController {
 
   //Search Functions
   void filterItems() {
+    filtering.value = true;
     filtered.clear();
     if (titleKeyword.text == '') {
       filtered.assignAll(itemList);
@@ -57,9 +60,18 @@ class OngoingAuctionController extends GetxController {
   }
 
   void refreshItem() {
+    filtering.value = false;
     formKey.currentState!.reset();
     titleKeyword.clear();
     filtered.clear();
     filtered.assignAll(itemList);
+  }
+
+  get emptySearchResult {
+    return filtered.isEmpty && filtering.value;
+  }
+
+  get emptySearchResultSearchResultMessage {
+    return 'No item found with ${titleKeyword.text} in title';
   }
 }

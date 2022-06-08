@@ -44,46 +44,73 @@ class ManageItem extends GetxController {
       'asking_price': double.parse(askingPriceController.text),
       'condition': cond.value,
     }).then((value) {
-      //TO DO: Success Dialog
+      dismissDialog();
+      showSimpleDialog(
+          title: 'Item Updated Successfully',
+          description:
+              'The information of your auctioned item has been updated.');
       titleController.clear();
       descriptionController.clear();
       brandController.clear();
       askingPriceController.clear();
       cond.value = '';
+    }).catchError((_) {
+      dismissDialog();
+      showErrorDialog(
+          errorTitle: 'An error occured',
+          errorDescription:
+              'Something went wrong while updating the information of your item. Please try again later.');
     });
   }
 
   //DELETE SELECTED AUCTIONED ITEM
-  static Future<void> delete(String itemId) async {
+  static Future<void> deleteUsingBatch(String itemId) async {
     showLoading();
-    await firestore
-        .collection('items')
-        .doc(itemId)
-        .delete()
-        .then((value) => deleteBids(itemId))
-        .catchError((error) {
+    final batch = firestore.batch();
+
+    //delete item
+    final itemRef = firestore.collection('items').doc(itemId);
+    batch.delete(itemRef);
+
+    //delete its bids child
+    final bidsRef = firestore.collection('bids');
+    final List<DocumentSnapshot> bids = await bidsRef
+        .where('item_id', isEqualTo: itemId)
+        .get()
+        .then((snapshot) => snapshot.docs);
+
+    for (DocumentSnapshot ds in bids) {
+      ds.reference.delete();
+    }
+
+    // Commit the batch
+    batch.commit().then((_) async {
+      await deleteItemImages(itemId).then((value) {
+        log.i('Success deleting its photos on storage');
+      }).catchError((onError) {
+        log.i('Should notify admin about the item photos that wasn\'t deleted');
+      });
       dismissDialog();
-      log.i("Failed to delete item");
+      showSimpleDialog(
+          title: 'Item Deleted Successfully',
+          description: 'The selected auctioned item has been deleted.');
+    }).catchError((onError) {
+      log.i('Unable to delete item and its bid');
+      dismissDialog();
+      showErrorDialog(
+          errorTitle: 'An error occured',
+          errorDescription:
+              'Something went wrong while deleting your item. Please try again later.');
     });
   }
 
-  static Future<void> deleteBids(String itemId) async {
-    try {
-      firestore.collection('bids').get().then((snapshot) {
-        List<DocumentSnapshot> allDocs = snapshot.docs;
-        List<DocumentSnapshot> filteredDocs = allDocs.where((document) {
-          final data = document.data() as Map<String, dynamic>;
-          return data['item_id'] == itemId;
-        }).toList();
-        for (DocumentSnapshot ds in filteredDocs) {
-          ds.reference.delete();
-        }
-      });
-      dismissDialog();
-      Get.back();
-    } catch (e) {
-      dismissDialog();
-    }
+  //Delete Storage Images
+  static Future<void> deleteItemImages(String itemId) async {
+    await storage.ref("item_images/$itemId").listAll().then((value) {
+      for (var element in value.items) {
+        storage.ref(element.fullPath).delete();
+      }
+    });
   }
 
   //RE-OPEN CLOSED ITEM
@@ -200,7 +227,6 @@ class ManageItem extends GetxController {
                           return;
                         },
                         onSaved: (value) => brandController.text = value!,
-                        validator: Validator().notEmpty,
                       ),
                       const SizedBox(
                         height: 15,
@@ -215,7 +241,6 @@ class ManageItem extends GetxController {
                             if (_editFormkey.currentState!.validate()) {
                               await updateItem(item);
                               _editFormkey.currentState!.reset();
-                              dismissDialog();
                             }
                           },
                         ),

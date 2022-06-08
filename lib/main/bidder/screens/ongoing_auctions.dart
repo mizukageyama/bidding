@@ -88,6 +88,12 @@ class _Content extends StatelessWidget {
   Widget showItems() {
     if (itemListController.isDoneLoading.value &&
         itemListController.itemList.isNotEmpty) {
+      if (itemListController.emptySearchResult) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 25, left: 10, right: 10),
+          child: Text(itemListController.emptySearchResultSearchResultMessage),
+        );
+      }
       return ListView(
           padding: const EdgeInsets.all(kIsWeb ? 25 : 12),
           physics: const AlwaysScrollableScrollPhysics(),
@@ -126,6 +132,7 @@ class _Content extends StatelessWidget {
               },
               onSaved: (value) => itemListController.titleKeyword.text = value!,
               controller: itemListController.titleKeyword,
+              maxLines: 1,
             ),
           ),
         ),
