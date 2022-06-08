@@ -43,7 +43,7 @@ class _Content extends StatelessWidget {
     return Container(
       height: Get.height,
       width: Get.width,
-      color: whiteColor,
+      color: const Color(0xFFF5F5F5),
       child: Column(
         children: [
           kIsWeb && Get.width >= 600
@@ -71,38 +71,13 @@ class _Content extends StatelessWidget {
                   height: 0,
                   width: 0,
                 ),
-          Flexible(child: Obx(() => showTransactionList(context)))
+          Flexible(child: Obx(() => showTransactionTable(context))),
         ],
       ),
     );
   }
 
-  //filter DateSold
-  Widget getDate(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomRight,
-      child: IconButton(
-        onPressed: () async {
-          DateTime? selected = await showDatePicker(
-            context: context,
-            initialDate: boughtItems.selectedDate.value,
-            firstDate: DateTime(2010),
-            lastDate: DateTime(2025),
-          );
-
-          if (selected != null) {
-            boughtItems.date.value = DateFormat.yMMMd().format(selected);
-            boughtItems.filterDate();
-          }
-        },
-        icon: const Icon(Icons.calendar_today),
-        iconSize: 25,
-      ),
-    );
-  }
-
-  //transaction Data
-  Widget showTransactionList(BuildContext context) {
+  Widget showTransactionTable(BuildContext context) {
     if (boughtItems.isDoneLoading.value && boughtItems.soldItems.isNotEmpty) {
       return Padding(
         padding: const EdgeInsets.symmetric(
@@ -110,61 +85,86 @@ class _Content extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Your Successful Transactions...',
-              style: robotoMedium.copyWith(
-                  color: blackColor, fontSize: kIsWeb ? 16 : 16),
-              textAlign: TextAlign.justify,
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              Text(
-                'Date',
-                style: robotoMedium.copyWith(
-                    color: blackColor, fontSize: kIsWeb ? 16 : 16),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              SizedBox(
-                child: getDate(context),
-              ),
-              Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                  width: 125,
-                  height: 35,
-                  decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Center(
-                    child: Obx(
-                      () => Text(boughtItems.date.value == ''
-                          ? 'Select Date'
-                          : boughtItems.date.value),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                InkWell(
+                  onTap: () async {
+                    DateTime? selected = await showDatePicker(
+                      context: context,
+                      initialDate: boughtItems.selectedDate.value,
+                      firstDate: DateTime(2010),
+                      lastDate: DateTime(2025),
+                    );
+
+                    if (selected != null) {
+                      boughtItems.date.value =
+                          DateFormat.yMMMd().format(selected);
+                      boughtItems.filterDate();
+                    }
+                  },
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                    height: 35,
+                    decoration: BoxDecoration(
+                        color: whiteColor,
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Center(
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.calendar_today,
+                            size: 25,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Obx(
+                            () => Text(boughtItems.date.value == ''
+                                ? 'Select Date'
+                                : boughtItems.date.value), //filteredItem
+                          ),
+                        ],
+                      ),
                     ),
-                  )),
-              IconButton(
-                hoverColor: maroonColor,
-                tooltip: 'refresh',
-                onPressed: () {
-                  boughtItems.refreshItem();
-                },
-                icon: const Icon(Icons.refresh),
-                iconSize: 25,
-              ),
-            ]),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    boughtItems.refreshItem();
+                  },
+                  icon: const Icon(Icons.refresh),
+                  iconSize: 25,
+                ),
+              ],
+            ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             Flexible(
               child: Container(
-                height: Get.height,
                 color: whiteColor,
-                child: DataTableFormat(
-                  columns: _createColumns(),
-                  columnsMobile: _createColumnsMobile(),
-                  rows: _createRows(context),
-                  rowsMobile: _createRowsMobile(context),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    DataTableFormat(
+                      columns: _createColumns(),
+                      columnsMobile: _createColumnsMobile(),
+                      rows: _createRows(context),
+                      rowsMobile: _createRowsMobile(context),
+                    ),
+                    Visibility(
+                      visible: boughtItems.emptySearchResult,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 25, horizontal: 10),
+                        child: Text(
+                            boughtItems.emptySearchResultSearchResultMessage),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -241,7 +241,7 @@ class _Content extends StatelessWidget {
   }
 
   List<DataRow> _createRowsMobile(BuildContext context) {
-    return boughtItems.soldItems
+    return boughtItems.filtered
         .map(
           (item) => DataRow(
             cells: [
@@ -445,5 +445,29 @@ class _Content extends StatelessWidget {
                 ),
               ]);
         });
+  }
+
+  //filter DateSold
+  Widget getDate(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: IconButton(
+        onPressed: () async {
+          DateTime? selected = await showDatePicker(
+            context: context,
+            initialDate: boughtItems.selectedDate.value,
+            firstDate: DateTime(2010),
+            lastDate: DateTime(2025),
+          );
+
+          if (selected != null) {
+            boughtItems.date.value = DateFormat.yMMMd().format(selected);
+            boughtItems.filterDate();
+          }
+        },
+        icon: const Icon(Icons.calendar_today),
+        iconSize: 25,
+      ),
+    );
   }
 }

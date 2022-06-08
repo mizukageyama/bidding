@@ -15,6 +15,8 @@ class BoughtItemsController extends GetxController {
   final Rx<DateTime> selectedDate = DateTime.now().obs;
   final RxString date = ''.obs;
 
+  final RxBool filtering = false.obs;
+
   @override
   void onInit() {
     soldItems.bindStream(getBoughtItemsBidder());
@@ -42,6 +44,7 @@ class BoughtItemsController extends GetxController {
   // filtered Date
   void filterDate() {
     print('filter date is click');
+    filtering.value = true;
     filtered.clear();
     if (date.value == '') {
       filtered.assignAll(soldItems);
@@ -58,8 +61,17 @@ class BoughtItemsController extends GetxController {
   //refreshDate
   void refreshItem() {
     print('refresh is click');
+    filtering.value = false;
     date.value = '';
     filtered.clear();
     filtered.assignAll(soldItems);
+  }
+
+  get emptySearchResult {
+    return filtered.isEmpty && filtering.value;
+  }
+
+  get emptySearchResultSearchResultMessage {
+    return 'No item found that is sold in ${date.value}.';
   }
 }

@@ -170,9 +170,9 @@ class _Content extends StatelessWidget {
             ),
             Flexible(
               child: Container(
-                height: Get.height,
                 color: whiteColor,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     DataTableFormat(
                       columns: _createColumns(),
@@ -180,17 +180,15 @@ class _Content extends StatelessWidget {
                       rows: _createRows(),
                       rowsMobile: _createRowsMobile(),
                     ),
-                    _soldAuction.emptySearchResult
-                        ? Padding(
-                            padding: const EdgeInsets.only(
-                                top: 25, left: 10, right: 10),
-                            child: Text(_soldAuction
-                                .emptySearchResultSearchResultMessage),
-                          )
-                        : const SizedBox(
-                            height: 0,
-                            width: 0,
-                          ),
+                    Visibility(
+                      visible: _soldAuction.emptySearchResult,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 25, horizontal: 10),
+                        child: Text(
+                            _soldAuction.emptySearchResultSearchResultMessage),
+                      ),
+                    ),
                   ],
                 ),
               ),
