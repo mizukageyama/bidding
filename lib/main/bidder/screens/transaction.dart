@@ -236,7 +236,7 @@ class _Content extends StatelessWidget {
     return [
       const DataColumn(label: SizedBox(width: 190, child: Text('Item'))),
       const DataColumn(label: Text(kIsWeb ? 'Date Sold' : 'Date\nSold')),
-      const DataColumn(label: Text('Action')),
+      const DataColumn(label: Text('Bought At')),
     ];
   }
 
@@ -245,8 +245,6 @@ class _Content extends StatelessWidget {
         .map(
           (item) => DataRow(
             cells: [
-              DataCell(SizedBox(width: 200, child: Text(item.title))),
-              DataCell(Text(Format.dateShort(item.dateSold))),
               DataCell(
                 InkWell(
                   onTap: () {
@@ -263,6 +261,8 @@ class _Content extends StatelessWidget {
                   ),
                 ),
               ),
+              DataCell(Text(Format.dateShort(item.dateSold))),
+              DataCell(Text('₱ ${Format.amount(item.soldAt)}')),
             ],
           ),
         )
