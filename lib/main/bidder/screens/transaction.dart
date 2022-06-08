@@ -1,4 +1,5 @@
 import 'package:bidding/components/_components.dart';
+import 'package:bidding/components/data_table_format.dart';
 import 'package:bidding/components/display_info_section.dart';
 import 'package:bidding/main/bidder/controllers/bought_items_controller.dart';
 import 'package:bidding/models/sold_item.dart';
@@ -35,7 +36,7 @@ class TransactionScreen extends StatelessWidget {
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
 
-  final BoughtItemsController boughtItemsController = Get.find();
+  final BoughtItemsController boughtItems = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -70,98 +71,13 @@ class _Content extends StatelessWidget {
                   height: 0,
                   width: 0,
                 ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Wrap(
-                alignment: WrapAlignment.center,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Your successful transactions',
-                        style: robotoMedium.copyWith(
-                            color: blackColor, fontSize: kIsWeb ? 16 : 16),
-                        textAlign: TextAlign.justify,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                        Text(
-                          'Date',
-                          style: robotoMedium.copyWith(
-                              color: blackColor, fontSize: kIsWeb ? 16 : 16),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        SizedBox(
-                          child: getDate(context),
-                        ),
-                        Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 2),
-                            width: 125,
-                            height: 35,
-                            decoration: BoxDecoration(
-                                border: Border.all(),
-                                borderRadius: BorderRadius.circular(5)),
-                            child: Center(
-                              child: Obx(
-                                () => Text(
-                                    boughtItemsController.date.value == ''
-                                        ? 'Select Date'
-                                        : boughtItemsController
-                                            .date.value), //filteredItem
-                              ),
-                            )),
-                        IconButton(
-                          onPressed: () {
-                            boughtItemsController.refreshItem();
-                          },
-                          icon: const Icon(Icons.refresh),
-                          iconSize: 25,
-                        ),
-                      ]),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        height: Get.height * .8,
-                        width: Get.width,
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: blackColor),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(12),
-                          ),
-                        ),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              kIsWeb && Get.width >= 900
-                                  ? header()
-                                  : phoneHeaderVersion(),
-                              Flexible(
-                                child: Obx(
-                                  (() => showTransactionList(context)),
-                                ),
-                              ),
-                            ]),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+          Flexible(child: Obx(() => showTransactionList(context)))
         ],
       ),
     );
   }
 
+  //filter DateSold
   Widget getDate(BuildContext context) {
     return Align(
       alignment: Alignment.bottomRight,
@@ -169,15 +85,14 @@ class _Content extends StatelessWidget {
         onPressed: () async {
           DateTime? selected = await showDatePicker(
             context: context,
-            initialDate: boughtItemsController.selectedDate.value,
+            initialDate: boughtItems.selectedDate.value,
             firstDate: DateTime(2010),
             lastDate: DateTime(2025),
           );
 
           if (selected != null) {
-            boughtItemsController.date.value =
-                DateFormat.yMMMd().format(selected);
-            boughtItemsController.filterDate();
+            boughtItems.date.value = DateFormat.yMMMd().format(selected);
+            boughtItems.filterDate();
           }
         },
         icon: const Icon(Icons.calendar_today),
@@ -186,40 +101,81 @@ class _Content extends StatelessWidget {
     );
   }
 
+  //transaction Data
   Widget showTransactionList(BuildContext context) {
-    if (boughtItemsController.isDoneLoading.value &&
-        boughtItemsController.soldItems.isNotEmpty) {
-      return MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: ListView.builder(
-            itemCount: boughtItemsController.filtered.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return FutureBuilder(
-                  future: boughtItemsController.filtered[index].getBuyerInfo(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (kIsWeb && Get.width >= 900) {
-                        return customTableRow(
-                            boughtItemsController.filtered[index], context);
-                      }
-                      return mobileVersion(
-                          boughtItemsController.filtered[index], context);
-                    }
-                    return const SizedBox(
-                      height: 0,
-                      width: 0,
-                    );
-                  });
-            }),
+    if (boughtItems.isDoneLoading.value && boughtItems.soldItems.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(
+            vertical: 25, horizontal: kIsWeb ? 25 : 3),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Your Successful Transactions...',
+              style: robotoMedium.copyWith(
+                  color: blackColor, fontSize: kIsWeb ? 16 : 16),
+              textAlign: TextAlign.justify,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              Text(
+                'Date',
+                style: robotoMedium.copyWith(
+                    color: blackColor, fontSize: kIsWeb ? 16 : 16),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              SizedBox(
+                child: getDate(context),
+              ),
+              Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                  width: 125,
+                  height: 35,
+                  decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Center(
+                    child: Obx(
+                      () => Text(boughtItems.date.value == ''
+                          ? 'Select Date'
+                          : boughtItems.date.value),
+                    ),
+                  )),
+              IconButton(
+                hoverColor: maroonColor,
+                tooltip: 'refresh',
+                onPressed: () {
+                  boughtItems.refreshItem();
+                },
+                icon: const Icon(Icons.refresh),
+                iconSize: 25,
+              ),
+            ]),
+            const SizedBox(
+              height: 10,
+            ),
+            Flexible(
+              child: Container(
+                height: Get.height,
+                color: whiteColor,
+                child: DataTableFormat(
+                  columns: _createColumns(),
+                  columnsMobile: _createColumnsMobile(),
+                  rows: _createRows(context),
+                  rowsMobile: _createRowsMobile(context),
+                ),
+              ),
+            ),
+          ],
+        ),
       );
-    } else if (boughtItemsController.isDoneLoading.value &&
-        boughtItemsController.soldItems.isEmpty) {
+    } else if (boughtItems.isDoneLoading.value &&
+        boughtItems.soldItems.isEmpty) {
       return const Center(
-          child: InfoDisplay(message: 'You have not purchase an items yet'));
+          child: InfoDisplay(message: 'No ongoing auctions at the moment.'));
     }
-
     return const Center(
       child: SizedBox(
         width: 20,
@@ -229,224 +185,88 @@ class _Content extends StatelessWidget {
     );
   }
 
-  Widget header() {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text('Item',
-                    style: robotoMedium.copyWith(
-                        color: blackColor, fontSize: kIsWeb ? 17 : 16)),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text('Seller',
-                    style: robotoMedium.copyWith(
-                        color: blackColor, fontSize: kIsWeb ? 17 : 16)),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text('Date Sold',
-                    style: robotoMedium.copyWith(
-                        color: blackColor, fontSize: kIsWeb ? 17 : 16)),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Text('Asking Price',
-                    style: robotoMedium.copyWith(
-                        color: blackColor, fontSize: kIsWeb ? 17 : 16)),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text('Bought At',
-                    style: robotoMedium.copyWith(
-                        color: blackColor, fontSize: kIsWeb ? 17 : 16)),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text('Action',
-                    style: robotoMedium.copyWith(
-                        color: blackColor, fontSize: kIsWeb ? 17 : 16)),
-              ),
-            ),
-          ],
-        ));
+  List<DataColumn> _createColumns() {
+    return [
+      const DataColumn(label: Text('Item')),
+      const DataColumn(label: Text('Seller')),
+      const DataColumn(label: Text('Date Sold')),
+      const DataColumn(label: Text('Asking Price')),
+      const DataColumn(label: Text('Bought At')),
+      const DataColumn(label: Text('Action'))
+    ];
   }
 
-  Widget customTableRow(SoldItem item, BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(item.title,
-                      style: robotoLight.copyWith(
-                          color: greyColor, fontSize: kIsWeb ? 15 : 16)),
-                ),
+  List<DataRow> _createRows(BuildContext context) {
+    return boughtItems.filtered.map((item) {
+      return DataRow(cells: [
+        DataCell(SizedBox(width: 200, child: Text(item.title))),
+        DataCell(
+          FutureBuilder(
+            future: item.getSellerInfo(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Text(item.sellerInfo!.fullName);
+              }
+              return const Text('     ');
+            },
+          ),
+        ),
+        DataCell(Text(Format.dateShort(item.dateSold))),
+        DataCell(Text('₱ ${Format.amount(item.askingPrice)}')),
+        DataCell(Text('₱ ${Format.amount(item.soldAt)}')),
+        DataCell(
+          InkWell(
+            onTap: () {
+              //showTransactionInfo(context, item);
+            },
+            child: Text(
+              'View',
+              style: robotoMedium.copyWith(
+                color: maroonColor,
               ),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(item.buyerName,
-                      style: robotoLight.copyWith(
-                          color: greyColor, fontSize: kIsWeb ? 15 : 16)),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    Format.date(item.dateSold),
-                    style: robotoLight.copyWith(
-                        color: greyColor, fontSize: kIsWeb ? 15 : 16),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Text(
-                    '₱ ${Format.amount(item.askingPrice)}',
-                    style: robotoLight.copyWith(
-                        color: greyColor, fontSize: kIsWeb ? 15 : 16),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text('₱ ${Format.amount(item.soldAt)}',
-                      style: robotoLight.copyWith(
-                          color: greyColor, fontSize: kIsWeb ? 15 : 16)),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: InkWell(
-                    onTap: () {
-                      showTransactionInfo(context, item);
-                    },
+            ),
+          ),
+        ),
+      ]);
+    }).toList();
+  }
+
+//Mobile Version
+  List<DataColumn> _createColumnsMobile() {
+    return [
+      const DataColumn(label: SizedBox(width: 190, child: Text('Item'))),
+      const DataColumn(label: Text(kIsWeb ? 'Date Sold' : 'Date\nSold')),
+      const DataColumn(label: Text('Action')),
+    ];
+  }
+
+  List<DataRow> _createRowsMobile(BuildContext context) {
+    return boughtItems.soldItems
+        .map(
+          (item) => DataRow(
+            cells: [
+              DataCell(SizedBox(width: 200, child: Text(item.title))),
+              DataCell(Text(Format.dateShort(item.dateSold))),
+              DataCell(
+                InkWell(
+                  onTap: () {
+                    //  showTransactionInfo(context, item);
+                  },
+                  child: SizedBox(
+                    width: 190,
                     child: Text(
-                      'View',
-                      style: robotoRegularUnderlined.copyWith(
-                          color: brownColor, fontSize: kIsWeb ? 15 : 16),
+                      item.title,
+                      style: robotoMedium.copyWith(
+                        color: Colors.blue,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ]));
-  }
-
-//Mobile Version
-  Widget phoneHeaderVersion() {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Text('Item',
-                    style:
-                        robotoMedium.copyWith(color: blackColor, fontSize: 16)),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Text('Date Sold',
-                    style:
-                        robotoMedium.copyWith(color: blackColor, fontSize: 16)),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Text('Action',
-                    style:
-                        robotoMedium.copyWith(color: blackColor, fontSize: 16)),
-              ),
-            ),
-          ],
-        ));
-  }
-
-  Widget mobileVersion(SoldItem item, BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Text(
-                  item.title,
-                  style: robotoLight.copyWith(color: greyColor, fontSize: 15),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Text(
-                  Format.date(item.dateSold),
-                  style: robotoLight.copyWith(color: greyColor, fontSize: 15),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: InkWell(
-                  onTap: () {
-                    showTransactionInfo(context, item);
-                  },
-                  child: Text('View',
-                      style: robotoRegularUnderlined.copyWith(
-                          color: maroonColor, fontSize: 15)),
-                ),
-              ),
-            ),
-          ]),
-    );
+            ],
+          ),
+        )
+        .toList();
   }
 
   void showTransactionInfo(BuildContext context, SoldItem item) {
