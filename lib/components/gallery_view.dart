@@ -1,8 +1,6 @@
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/attached_photos_controller.dart';
 import 'package:bidding/shared/layout/_layout.dart';
-import 'package:bidding/shared/services/dialogs.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class GalleryView extends StatelessWidget {

@@ -54,36 +54,48 @@ class ManageItem extends GetxController {
   }
 
   //DELETE SELECTED AUCTIONED ITEM
-  static Future<void> delete(String itemId) async {
+  static Future<void> deleteUsingBatch(String itemId) async {
     showLoading();
-    await firestore
-        .collection('items')
-        .doc(itemId)
-        .delete()
-        .then((value) => deleteBids(itemId))
-        .catchError((error) {
-      dismissDialog();
-      log.i("Failed to delete item");
-    });
-  }
+    final batch = firestore.batch();
 
-  static Future<void> deleteBids(String itemId) async {
-    try {
-      firestore.collection('bids').get().then((snapshot) {
-        List<DocumentSnapshot> allDocs = snapshot.docs;
-        List<DocumentSnapshot> filteredDocs = allDocs.where((document) {
-          final data = document.data() as Map<String, dynamic>;
-          return data['item_id'] == itemId;
-        }).toList();
-        for (DocumentSnapshot ds in filteredDocs) {
-          ds.reference.delete();
-        }
+    //delete item
+    final itemRef = firestore.collection('items').doc(itemId);
+    batch.delete(itemRef);
+
+    //delete its bids child
+    final bidsRef = firestore.collection('bids');
+    final List<DocumentSnapshot> bids = await bidsRef
+        .where('item_id', isEqualTo: itemId)
+        .get()
+        .then((snapshot) => snapshot.docs);
+
+    for (DocumentSnapshot ds in bids) {
+      ds.reference.delete();
+    }
+
+    // Commit the batch
+    batch.commit().then((_) async {
+      print('Success Deleting item and its bid!');
+      await deleteItemImages(itemId).then((value) {
+        print('Success Deleting its photos on storage');
+      }).catchError((onError) {
+        print('Should notify admin about the item photos that wasn\'t deleted');
       });
       dismissDialog();
       Get.back();
-    } catch (e) {
+    }).catchError((onError) {
+      print('Unable to Delete item and its bid');
       dismissDialog();
-    }
+    });
+  }
+
+  //Delete Storage Images
+  static Future<void> deleteItemImages(String itemId) async {
+    await storage.ref("item_images/$itemId").listAll().then((value) {
+      for (var element in value.items) {
+        storage.ref(element.fullPath).delete();
+      }
+    });
   }
 
   //RE-OPEN CLOSED ITEM

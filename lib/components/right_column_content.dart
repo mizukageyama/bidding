@@ -50,7 +50,7 @@ class RightColumnContent extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () async {
-                      await ManageItem.delete(item.itemId);
+                      await ManageItem.deleteUsingBatch(item.itemId);
                     },
                     child: const Icon(
                       Icons.delete,

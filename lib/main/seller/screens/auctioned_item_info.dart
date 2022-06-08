@@ -47,9 +47,13 @@ class _Content extends StatelessWidget {
   final AuctionedItemController aController = Get.find();
 
   Item getItem() {
-    List<Item> item =
-        aController.itemList.where((item) => item.itemId == id).toList();
-    return item[0];
+    List<Item> items = aController.itemList
+        .where((itemElement) => itemElement.itemId == id)
+        .toList();
+    if (items.isEmpty) {
+      return item;
+    }
+    return items[0];
   }
 
   @override
@@ -137,7 +141,7 @@ class _Content extends StatelessWidget {
                         images: item.images,
                       ),
                       RightColumn(
-                          item: item,
+                          item: getItem(),
                           controller: bidsController,
                           isBidder: false)
                     ],

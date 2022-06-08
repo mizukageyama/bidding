@@ -473,6 +473,7 @@ class _Content extends StatelessWidget {
                       width: 90,
                       height: 90,
                       imageUrl: item.images[0],
+                      isContained: false,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 15),
