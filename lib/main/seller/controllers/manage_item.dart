@@ -44,12 +44,22 @@ class ManageItem extends GetxController {
       'asking_price': double.parse(askingPriceController.text),
       'condition': cond.value,
     }).then((value) {
-      //TO DO: Success Dialog
+      dismissDialog();
+      showSimpleDialog(
+          title: 'Item Updated Successfully',
+          description:
+              'The information of your auctioned item has been updated.');
       titleController.clear();
       descriptionController.clear();
       brandController.clear();
       askingPriceController.clear();
       cond.value = '';
+    }).catchError((_) {
+      dismissDialog();
+      showErrorDialog(
+          errorTitle: 'An error occured',
+          errorDescription:
+              'Something went wrong while updating the information of your item. Please try again later.');
     });
   }
 
@@ -75,17 +85,22 @@ class ManageItem extends GetxController {
 
     // Commit the batch
     batch.commit().then((_) async {
-      print('Success Deleting item and its bid!');
       await deleteItemImages(itemId).then((value) {
-        print('Success Deleting its photos on storage');
+        log.i('Success deleting its photos on storage');
       }).catchError((onError) {
-        print('Should notify admin about the item photos that wasn\'t deleted');
+        log.i('Should notify admin about the item photos that wasn\'t deleted');
       });
       dismissDialog();
-      Get.back();
+      showSimpleDialog(
+          title: 'Item Deleted Successfully',
+          description: 'The selected auctioned item has been deleted.');
     }).catchError((onError) {
-      print('Unable to Delete item and its bid');
+      log.i('Unable to delete item and its bid');
       dismissDialog();
+      showErrorDialog(
+          errorTitle: 'An error occured',
+          errorDescription:
+              'Something went wrong while deleting your item. Please try again later.');
     });
   }
 
@@ -212,7 +227,6 @@ class ManageItem extends GetxController {
                           return;
                         },
                         onSaved: (value) => brandController.text = value!,
-                        validator: Validator().notEmpty,
                       ),
                       const SizedBox(
                         height: 15,
@@ -227,7 +241,6 @@ class ManageItem extends GetxController {
                             if (_editFormkey.currentState!.validate()) {
                               await updateItem(item);
                               _editFormkey.currentState!.reset();
-                              dismissDialog();
                             }
                           },
                         ),

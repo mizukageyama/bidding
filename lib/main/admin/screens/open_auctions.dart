@@ -168,11 +168,26 @@ class _Content extends StatelessWidget {
               child: Container(
                 height: Get.height,
                 color: whiteColor,
-                child: DataTableFormat(
-                  columns: _createColumns(),
-                  columnsMobile: _createColumnsMobile(),
-                  rows: _createRows(),
-                  rowsMobile: _createRowsMobile(),
+                child: Column(
+                  children: [
+                    DataTableFormat(
+                      columns: _createColumns(),
+                      columnsMobile: _createColumnsMobile(),
+                      rows: _createRows(),
+                      rowsMobile: _createRowsMobile(),
+                    ),
+                    _openAuction.emptySearchResult
+                        ? Padding(
+                            padding: const EdgeInsets.only(
+                                top: 25, left: 10, right: 10),
+                            child: Text(_openAuction
+                                .emptySearchResultSearchResultMessage),
+                          )
+                        : const SizedBox(
+                            height: 0,
+                            width: 0,
+                          ),
+                  ],
                 ),
               ),
             ),

@@ -36,7 +36,6 @@ class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
 
   final AddItemController addItemController = Get.put(AddItemController());
-  final _addItemFormkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +109,7 @@ class _Content extends StatelessWidget {
                               ),
                             ),
                             Form(
-                              key: _addItemFormkey,
+                              key: addItemController.addItemFormKey,
                               child: Wrap(
                                 children: [
                                   Container(
@@ -383,10 +382,11 @@ class _Content extends StatelessWidget {
                                           width: 110,
                                           child: CustomButton(
                                             onTap: () async {
-                                              if (_addItemFormkey.currentState!
+                                              if (addItemController
+                                                  .addItemFormKey.currentState!
                                                   .validate()) {
                                                 await addItemController
-                                                    .postItem(_addItemFormkey);
+                                                    .postItem();
                                               }
                                             },
                                             text: 'Post Item',
