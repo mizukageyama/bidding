@@ -1,7 +1,7 @@
 import 'package:bidding/main/admin/screens/closed_auctions.dart';
 import 'package:bidding/main/admin/screens/home.dart';
 import 'package:bidding/main/admin/screens/open_auctions.dart';
-import 'package:bidding/main/admin/screens/side_menu.dart';
+import 'package:bidding/main/admin/side_menu.dart';
 import 'package:bidding/main/admin/screens/sold_auctions.dart';
 import 'package:bidding/main/bidder/screens/_bidder_screens.dart';
 import 'package:bidding/main/bidder/side_menu.dart';

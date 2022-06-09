@@ -1,6 +1,10 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/data_table_format.dart';
 import 'package:bidding/components/display_info_section.dart';
+import 'package:bidding/components/table_header_tile.dart';
+import 'package:bidding/components/table_header_tile_mobile.dart';
+import 'package:bidding/components/table_row_tile.dart';
+import 'package:bidding/components/table_row_tile_mobile.dart';
 import 'package:bidding/main/bidder/controllers/bought_items_controller.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
@@ -124,7 +128,7 @@ class _Content extends StatelessWidget {
                           Obx(
                             () => Text(boughtItems.date.value == ''
                                 ? 'Select Date'
-                                : boughtItems.date.value), //filteredItem
+                                : boughtItems.date.value),
                           ),
                         ],
                       ),
@@ -145,16 +149,38 @@ class _Content extends StatelessWidget {
             ),
             Flexible(
               child: Container(
+                height: Get.height,
                 color: whiteColor,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    DataTableFormat(
-                      columns: _createColumns(),
-                      columnsMobile: _createColumnsMobile(),
-                      rows: _createRows(context),
-                      rowsMobile: _createRowsMobile(context),
-                    ),
+                    kIsWeb && context.width >= 900 ? header() : headerMobile(),
+                    ListView.separated(
+                        itemCount: boughtItems.filtered.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return FutureBuilder(
+                              future:
+                                  boughtItems.filtered[index].getSellerInfo(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  if (kIsWeb && context.width >= 900) {
+                                    return row(
+                                        boughtItems.filtered[index], context);
+                                  }
+                                  return rowMobile(
+                                      boughtItems.filtered[index], context);
+                                }
+                                return const SizedBox(
+                                  height: 0,
+                                  width: 0,
+                                );
+                              });
+                        },
+                        separatorBuilder: (context, index) {
+                          return const Divider();
+                        }),
                     Visibility(
                       visible: boughtItems.emptySearchResult,
                       child: Padding(
@@ -164,7 +190,7 @@ class _Content extends StatelessWidget {
                           content: 'No item found that is sold in ',
                           title: boughtItems.searchKey,
                           message: '',
-                        ), //No item found that is sold in
+                        ),
                       ),
                     ),
                   ],
@@ -189,98 +215,60 @@ class _Content extends StatelessWidget {
     );
   }
 
-  List<DataColumn> _createColumns() {
-    return [
-      const DataColumn(label: Text('Item')),
-      const DataColumn(label: Text('Seller')),
-      const DataColumn(label: Text('Date Sold')),
-      const DataColumn(label: Text('Asking Price')),
-      const DataColumn(label: Text('Bought At')),
-      const DataColumn(label: Text('Action'))
-    ];
+  Widget headerMobile() {
+    return const TableHeaderTileMobile(
+      headerText: [
+        'Item',
+        'Date Sold',
+        'Bought At',
+      ],
+    );
   }
 
-  List<DataRow> _createRows(BuildContext context) {
-    return boughtItems.filtered.map((item) {
-      return DataRow(cells: [
-        DataCell(SizedBox(width: 200, child: Text(item.title))),
-        DataCell(
-          FutureBuilder(
-            future: item.getSellerInfo(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Text(item.sellerInfo!.fullName);
-              }
-              return const Text('     ');
-            },
-          ),
-        ),
-        DataCell(Text(Format.dateShort(item.dateSold))),
-        DataCell(Text('₱ ${Format.amount(item.askingPrice)}')),
-        DataCell(Text('₱ ${Format.amount(item.soldAt)}')),
-        DataCell(
-          InkWell(
-            onTap: () {
-              showTransactionInfo(context, item);
-            },
-            child: Text(
-              'View',
-              style: robotoMedium.copyWith(
-                color: maroonColor,
-              ),
-            ),
-          ),
-        ),
-      ]);
-    }).toList();
+  Widget header() {
+    return const TableHeaderTile(
+      headerText: [
+        'Item',
+        'Seller',
+        'Date Sold',
+        'Date Posted',
+        'Asking Price',
+        'Bought At',
+        'Action',
+      ],
+    );
   }
 
-//Mobile Version
-  List<DataColumn> _createColumnsMobile() {
-    return [
-      const DataColumn(label: SizedBox(width: 190, child: Text('Item'))),
-      const DataColumn(label: Text(kIsWeb ? 'Date Sold' : 'Date\nSold')),
-      const DataColumn(label: Text('Bought At')),
-    ];
+  Widget rowMobile(SoldItem item, BuildContext context) {
+    return TableRowTileMobile(
+      rowData: [
+        item.images[0],
+        item.title,
+        Format.dateShort(item.dateSold),
+        '₱ ${Format.amountShort(item.soldAt)}',
+      ],
+      functionTap: () {
+        showTransactionInfo(context, item);
+      },
+    );
   }
 
-  List<DataRow> _createRowsMobile(BuildContext context) {
-    return boughtItems.filtered
-        .map(
-          (item) => DataRow(
-            cells: [
-              DataCell(
-                InkWell(
-                  onTap: () {
-                    showTransactionInfo(context, item);
-                  },
-                  child: SizedBox(
-                    width: 190,
-                    child: Text(
-                      item.title,
-                      style: robotoMedium.copyWith(
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              DataCell(Text(
-                Format.dateShort(item.dateSold),
-                style: robotoRegular.copyWith(
-                  color: blackColor,
-                ),
-              )),
-              DataCell(Text(
-                '₱ ${Format.amountShort(item.soldAt)}',
-                style: robotoRegular.copyWith(
-                  color: blackColor,
-                ),
-              )),
-            ],
-          ),
-        )
-        .toList();
+  Widget row(SoldItem item, BuildContext context) {
+    return TableRowTile(
+      rowData: [
+        item.images[0],
+        item.title,
+        item.sellerInfo?.fullName,
+        Format.dateShort(item.dateSold),
+        Format.dateShort(item.datePosted),
+        '₱ ${Format.amountShort(item.askingPrice)}',
+        '₱ ${Format.amountShort(item.soldAt)}',
+        'View',
+      ],
+      functionTap: () {
+        showTransactionInfo(context, item);
+      },
+    );
   }
 
   void showTransactionInfo(BuildContext context, SoldItem item) {

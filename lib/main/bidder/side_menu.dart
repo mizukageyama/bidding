@@ -17,7 +17,7 @@ class BidderSideMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: Get.width >= 600 ? double.infinity : Get.width * .65,
-      height: Get.height,
+      height: double.infinity,
       color: indigoColor,
       child: SingleChildScrollView(
         controller: scrollController,
