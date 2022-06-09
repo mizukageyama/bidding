@@ -1,7 +1,7 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/data_table_format.dart';
 import 'package:bidding/main/admin/controllers/sold_auction_controller.dart';
-import 'package:bidding/main/admin/screens/side_menu.dart';
+import 'package:bidding/main/admin/side_menu.dart';
 import 'package:bidding/main/admin/screens/sold_view.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';

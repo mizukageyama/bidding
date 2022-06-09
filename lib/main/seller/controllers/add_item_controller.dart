@@ -87,6 +87,7 @@ class AddItemController extends GetxController {
         'category': List<String>.from(category),
         'condition': condition.value,
         'images': itemImageUrls,
+        'winning_bid': '',
       };
 
       batch.set(itemRef, itemData);

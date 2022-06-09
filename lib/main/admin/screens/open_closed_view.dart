@@ -1,6 +1,6 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/display_info_section.dart';
-import 'package:bidding/main/admin/screens/side_menu.dart';
+import 'package:bidding/main/admin/side_menu.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/models/item_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';

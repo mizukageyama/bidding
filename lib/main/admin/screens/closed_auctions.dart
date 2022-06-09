@@ -2,7 +2,7 @@ import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/data_table_format.dart';
 import 'package:bidding/main/admin/controllers/closed_auction_controller.dart';
 import 'package:bidding/main/admin/screens/open_closed_view.dart';
-import 'package:bidding/main/admin/screens/side_menu.dart';
+import 'package:bidding/main/admin/side_menu.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/mobile_body_sliver.dart';
