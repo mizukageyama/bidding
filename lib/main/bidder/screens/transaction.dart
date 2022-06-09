@@ -160,8 +160,11 @@ class _Content extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 25, horizontal: 10),
-                        child: Text(
-                            boughtItems.emptySearchResultSearchResultMessage),
+                        child: NoDisplaySearchResult(
+                          content: 'No item found that is sold in ',
+                          title: boughtItems.searchKey,
+                          message: '',
+                        ), //No item found that is sold in
                       ),
                     ),
                   ],
@@ -174,7 +177,8 @@ class _Content extends StatelessWidget {
     } else if (boughtItems.isDoneLoading.value &&
         boughtItems.soldItems.isEmpty) {
       return const Center(
-          child: InfoDisplay(message: 'No ongoing auctions at the moment.'));
+          child: InfoDisplay(
+              message: 'You dont have any item purchase to display.'));
     }
     return const Center(
       child: SizedBox(
@@ -261,8 +265,18 @@ class _Content extends StatelessWidget {
                   ),
                 ),
               ),
-              DataCell(Text(Format.dateShort(item.dateSold))),
-              DataCell(Text('₱ ${Format.amount(item.soldAt)}')),
+              DataCell(Text(
+                Format.dateShort(item.dateSold),
+                style: robotoRegular.copyWith(
+                  color: blackColor,
+                ),
+              )),
+              DataCell(Text(
+                '₱ ${Format.amountShort(item.soldAt)}',
+                style: robotoRegular.copyWith(
+                  color: blackColor,
+                ),
+              )),
             ],
           ),
         )

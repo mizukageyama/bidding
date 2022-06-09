@@ -89,9 +89,15 @@ class _Content extends StatelessWidget {
     if (itemListController.isDoneLoading.value &&
         itemListController.itemList.isNotEmpty) {
       if (itemListController.emptySearchResult) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 25, left: 10, right: 10),
-          child: Text(itemListController.emptySearchResultSearchResultMessage),
+        return Flexible(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
+            child: NoDisplaySearchResult(
+              content: 'No item found with ',
+              title: '"${itemListController.searchKey}"',
+              message: ' in title',
+            ),
+          ),
         );
       }
       return ListView(
@@ -140,31 +146,55 @@ class _Content extends StatelessWidget {
           width: 10,
         ),
         SizedBox(
-          width: 110,
           height: 45,
-          child: CustomButton(
-            onTap: () {
-              itemListController.filterItems();
-            },
-            text: 'Search',
-            buttonColor: maroonColor,
-            fontSize: 16,
-          ),
+          child: kIsWeb && Get.width >= 600
+              ? CustomButton(
+                  onTap: () {
+                    itemListController.filterItems();
+                  },
+                  text: 'Search',
+                  buttonColor: maroonColor,
+                  fontSize: 16,
+                )
+              : ElevatedButton(
+                  onPressed: () {
+                    itemListController.refreshItem();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: maroonColor,
+                  ),
+                  child: const Icon(
+                    Icons.search,
+                    color: whiteColor,
+                  ),
+                ),
         ),
         const SizedBox(
           width: 10,
         ),
         SizedBox(
-          width: 110,
           height: 45,
-          child: CustomButton(
-            onTap: () {
-              itemListController.refreshItem();
-            },
-            text: 'Refresh',
-            buttonColor: maroonColor,
-            fontSize: 16,
-          ),
+          child: kIsWeb && Get.width >= 600
+              ? CustomButton(
+                  onTap: () {
+                    itemListController.refreshItem();
+                  },
+                  text: 'Refresh',
+                  buttonColor: maroonColor,
+                  fontSize: 16,
+                )
+              : ElevatedButton(
+                  onPressed: () {
+                    itemListController.refreshItem();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: maroonColor,
+                  ),
+                  child: const Icon(
+                    Icons.refresh,
+                    color: whiteColor,
+                  ),
+                ),
         ),
       ],
     );

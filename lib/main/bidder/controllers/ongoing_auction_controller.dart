@@ -71,7 +71,7 @@ class OngoingAuctionController extends GetxController {
     return filtered.isEmpty && filtering.value;
   }
 
-  get emptySearchResultSearchResultMessage {
-    return 'No item found with ${titleKeyword.text} in title';
+  get searchKey {
+    return titleKeyword.text;
   }
 }

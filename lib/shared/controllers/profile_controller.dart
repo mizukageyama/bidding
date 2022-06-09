@@ -35,6 +35,8 @@ class ProfileController extends GetxController {
 
   get profilePhoto => _authController.info.value?.profilePhoto ?? '';
 
+  get initials => '${user.firstName[0]}${user.lastName[0]}';
+
   void selectProfileImage() async {
     imageSelected = await imagePicker.pickImageOnWeb(imagePath);
     if (imageSelected != null || imagePath.value != '') {

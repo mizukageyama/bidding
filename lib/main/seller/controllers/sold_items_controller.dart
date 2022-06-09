@@ -71,7 +71,7 @@ class SoldItemsController extends GetxController {
     return filtered.isEmpty && filtering.value;
   }
 
-  get emptySearchResultSearchResultMessage {
+  get searchKey {
     return titleKeyword.text;
   }
 }

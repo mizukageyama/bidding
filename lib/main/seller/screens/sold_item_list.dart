@@ -1,7 +1,6 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/data_table_format.dart';
 import 'package:bidding/components/display_info_section.dart';
-import 'package:bidding/components/info_display_noresult.dart';
 import 'package:bidding/main/seller/controllers/sold_items_controller.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
@@ -98,9 +97,8 @@ class _Content extends StatelessWidget {
           width: 10,
         ),
         SizedBox(
-          width: kIsWeb ? 110 : 50,
-          height: 50,
-          child: kIsWeb
+          height: 45,
+          child: kIsWeb && Get.width >= 600
               ? CustomButton(
                   onTap: () {
                     soldItemsController.filterItems();
@@ -119,7 +117,6 @@ class _Content extends StatelessWidget {
                   child: const Icon(
                     Icons.search,
                     color: whiteColor,
-                    size: 25,
                   ),
                 ),
         ),
@@ -127,9 +124,8 @@ class _Content extends StatelessWidget {
           width: 10,
         ),
         SizedBox(
-          width: kIsWeb ? 110 : 50,
           height: 45,
-          child: kIsWeb
+          child: kIsWeb && Get.width >= 600
               ? CustomButton(
                   onTap: () {
                     soldItemsController.refreshItem();
@@ -165,18 +161,18 @@ class _Content extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Your Sold Items...',
-              style: robotoMedium.copyWith(
-                  color: blackColor, fontSize: kIsWeb ? 16 : 16),
-              textAlign: TextAlign.justify,
-            ),
-            const SizedBox(
-              height: 24,
-            ),
+            // Text(
+            //   'Your Sold Items...',
+            //   style: robotoMedium.copyWith(
+            //       color: blackColor, fontSize: kIsWeb ? 16 : 16),
+            //   textAlign: TextAlign.justify,
+            // ),
+            // const SizedBox(
+            //   height: 24,
+            // ),
             searchBar(),
             const SizedBox(
-              height: 15,
+              height: 20,
             ),
             Flexible(
               child: Container(
@@ -196,9 +192,8 @@ class _Content extends StatelessWidget {
                                   top: 30, left: 10, right: 10),
                               child: NoDisplaySearchResult(
                                 content: 'No item found with ',
-                                title: soldItemsController
-                                    .emptySearchResultSearchResultMessage,
-                                message: ' in title!',
+                                title: '"${soldItemsController.searchKey}"',
+                                message: ' in title',
                               ),
                             )
                           : const SizedBox(
@@ -276,7 +271,7 @@ class _Content extends StatelessWidget {
     return [
       const DataColumn(label: SizedBox(width: 190, child: Text('Item'))),
       const DataColumn(label: Text(kIsWeb ? 'Date Sold' : 'Date\nSold')),
-      const DataColumn(label: Text('Action')),
+      const DataColumn(label: Text('Bought At')),
     ];
   }
 
@@ -301,8 +296,20 @@ class _Content extends StatelessWidget {
                   ),
                 ),
               ),
-              DataCell(Text(Format.dateShort(item.dateSold))),
-              DataCell(Text('₱ ${Format.amount(item.soldAt)}')),
+              DataCell(Text(
+                Format.dateShort(item.dateSold),
+                style: robotoRegular.copyWith(
+                  color: blackColor,
+                ),
+              )),
+              DataCell(
+                Text(
+                  '₱ ${Format.amountShort(item.soldAt)}',
+                  style: robotoRegular.copyWith(
+                    color: blackColor,
+                  ),
+                ),
+              ),
             ],
           ),
         )

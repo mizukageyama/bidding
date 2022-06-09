@@ -71,7 +71,7 @@ class BoughtItemsController extends GetxController {
     return filtered.isEmpty && filtering.value;
   }
 
-  get emptySearchResultSearchResultMessage {
-    return 'No item found that is sold in ${date.value}.';
+  get searchKey {
+    return date.value;
   }
 }

@@ -97,9 +97,8 @@ class _Content extends StatelessWidget {
           width: 10,
         ),
         SizedBox(
-          width: kIsWeb ? 110 : 50,
           height: 45,
-          child: kIsWeb
+          child: kIsWeb && Get.width >= 600
               ? CustomButton(
                   onTap: () {
                     _closedAuction.filterItems();
@@ -125,9 +124,8 @@ class _Content extends StatelessWidget {
           width: 10,
         ),
         SizedBox(
-          width: kIsWeb ? 110 : 50,
           height: 45,
-          child: kIsWeb
+          child: kIsWeb && Get.width >= 600
               ? CustomButton(
                   onTap: () {
                     _closedAuction.refreshItem();
@@ -141,7 +139,7 @@ class _Content extends StatelessWidget {
                     _closedAuction.refreshItem();
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: greyColor, //maroonColor
+                    primary: maroonColor, //maroonColor
                   ),
                   child: const Icon(
                     Icons.refresh,
@@ -182,8 +180,11 @@ class _Content extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 25, horizontal: 10),
-                        child: Text(_closedAuction
-                            .emptySearchResultSearchResultMessage),
+                        child: NoDisplaySearchResult(
+                          content: 'No item found with ',
+                          title: '"${_closedAuction.searchKey}"',
+                          message: ' in title',
+                        ),
                       ),
                     ),
                   ],

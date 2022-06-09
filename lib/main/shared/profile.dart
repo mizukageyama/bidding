@@ -175,6 +175,7 @@ class _Content extends StatelessWidget {
             height: kIsWeb ? 125 : 130,
             width: kIsWeb ? 125 : 130,
             imageUrl: profileController.profilePhoto,
+            initial: profileController.initials,
           ),
         ),
         Positioned(

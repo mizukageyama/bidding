@@ -29,9 +29,13 @@ class CircleImage extends StatelessWidget {
         width: kIsWeb ? width : 70,
         errorBuilder: (context, error, stackTrace) {
           if (initial == '') {
-            return Image.asset(
-              assetImage,
-              fit: BoxFit.cover,
+            return SizedBox(
+              height: kIsWeb ? height : 70,
+              width: kIsWeb ? width : 70,
+              child: Image.asset(
+                assetImage,
+                fit: BoxFit.cover,
+              ),
             );
           }
           return Container(
