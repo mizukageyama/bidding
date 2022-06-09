@@ -143,7 +143,7 @@ class _Content extends StatelessWidget {
                     soldItemsController.refreshItem();
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: greyColor,
+                    primary: maroonColor,
                   ),
                   child: const Icon(
                     Icons.refresh,

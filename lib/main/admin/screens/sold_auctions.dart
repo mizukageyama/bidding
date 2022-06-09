@@ -1,8 +1,14 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/data_table_format.dart';
+import 'package:bidding/components/table_header_tile.dart';
+import 'package:bidding/components/table_header_tile_mobile.dart';
+import 'package:bidding/components/table_row_tile.dart';
+import 'package:bidding/components/table_row_tile_mobile.dart';
 import 'package:bidding/main/admin/controllers/sold_auction_controller.dart';
 import 'package:bidding/main/admin/side_menu.dart';
 import 'package:bidding/main/admin/screens/sold_view.dart';
+import 'package:bidding/models/_models.dart';
+import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/mobile_body_sliver.dart';
@@ -68,7 +74,7 @@ class _Content extends StatelessWidget {
                   height: 0,
                   width: 0,
                 ),
-          Flexible(child: Obx(() => showTableReport()))
+          Flexible(child: Obx(() => showTableReport(context)))
         ],
       ),
     );
@@ -154,7 +160,7 @@ class _Content extends StatelessWidget {
     );
   }
 
-  Widget showTableReport() {
+  Widget showTableReport(BuildContext context) {
     if (_soldAuction.isDoneLoading.value &&
         _soldAuction.soldAuction.isNotEmpty) {
       return Padding(
@@ -172,11 +178,24 @@ class _Content extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    DataTableFormat(
-                      columns: _createColumns(),
-                      columnsMobile: _createColumnsMobile(),
-                      rows: _createRows(),
-                      rowsMobile: _createRowsMobile(),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: kIsWeb && context.width >= 900
+                          ? header()
+                          : headerMobile(),
+                    ),
+                    Flexible(
+                      child: ListView.builder(
+                        itemCount: _soldAuction.filtered.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          if (kIsWeb && context.width >= 900) {
+                            return row(_soldAuction.filtered[index], context);
+                          }
+                          return rowMobile(
+                              _soldAuction.filtered[index], context);
+                        },
+                      ),
                     ),
                     Visibility(
                       visible: _soldAuction.emptySearchResult,
@@ -211,121 +230,105 @@ class _Content extends StatelessWidget {
     );
   }
 
-  List<DataColumn> _createColumns() {
-    return [
-      const DataColumn(label: Text('Item')),
-      const DataColumn(label: Text('Date Sold')),
-      const DataColumn(label: Text('Posted By')),
-      const DataColumn(label: Text('Asking Price')),
-      const DataColumn(label: Text('Winning Bid')),
-      const DataColumn(label: Text('Winner')),
-      const DataColumn(label: Text('Action'))
-    ];
+  Widget headerMobile() {
+    return const TableHeaderTileMobile(
+      headerText: [
+        'Item',
+        'Winning \nBid',
+        'Winner \nName',
+      ],
+    );
   }
 
-  List<DataRow> _createRows() {
-    return _soldAuction.filtered.map((item) {
-      return DataRow(cells: [
-        DataCell(SizedBox(width: 200, child: Text(item.title))),
-        DataCell(Text(Format.dateShort(item.dateSold))),
-        DataCell(
-          FutureBuilder(
-            future: item.getSellerInfo(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Text(item.sellerInfo!.fullName);
-              }
-              return const Text('     ');
-            },
+  Widget rowMobile(SoldItem item, BuildContext context) {
+    return TableRowTileMobile(rowData: [
+      ImageView(
+        imageUrl: item.images[0],
+      ),
+      InkWell(
+        onTap: () => Get.to(() => SoldItemView(item: item)),
+        child: Text(
+          item.title,
+          style: robotoMedium.copyWith(
+            color: Colors.blue,
           ),
         ),
-        DataCell(Text('₱ ${Format.amount(item.askingPrice)}')),
-        DataCell(Text('₱ ${Format.amount(item.soldAt)}')),
-        DataCell(
-          FutureBuilder(
-            future: item.getBuyerInfo(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Text(item.buyerName);
-              }
-              return const Text('     ');
-            },
-          ),
+      ),
+      Text(
+        '₱ ${Format.amountShort(item.soldAt)}',
+        style: robotoRegular.copyWith(
+          color: blackColor,
         ),
-        DataCell(
-          InkWell(
-            onTap: () {
-              Get.to(() => SoldItemView(item: item));
-            },
-            child: Text(
-              'View',
-              style: robotoMedium.copyWith(
-                color: maroonColor,
+      ),
+      FutureBuilder(
+        future: item.getBuyerInfo(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Text(
+              item.buyerName,
+              style: robotoRegular.copyWith(
+                color: blackColor,
               ),
+            );
+          }
+          return const Text('     ');
+        },
+      ),
+    ]);
+  }
+
+  Widget header() {
+    return const TableHeaderTile(
+      headerText: [
+        'Item',
+        'Date Sold',
+        'Posted By',
+        'Asking Price',
+        'Winning Bid',
+        'Winning Name',
+        'Action',
+      ],
+    );
+  }
+
+  Widget row(SoldItem item, BuildContext context) {
+    return TableRowTile(
+      rowData: [
+        ImageView(
+          imageUrl: item.images[0],
+        ),
+        Text(item.title),
+        Text(Format.dateShort(item.dateSold)),
+        FutureBuilder(
+          future: item.getSellerInfo(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Text(item.sellerInfo!.fullName);
+            }
+            return const Text('     ');
+          },
+        ),
+        Text('₱ ${Format.amount(item.askingPrice)}'),
+        Text('₱ ${Format.amount(item.soldAt)}'),
+        FutureBuilder(
+          future: item.getBuyerInfo(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Text(item.sellerInfo!.fullName);
+            }
+            return const Text('     ');
+          },
+        ),
+        InkWell(
+          onTap: () => Get.to(() => SoldItemView(item: item)),
+          child: Text(
+            'View',
+            style: robotoMedium.copyWith(
+              color: maroonColor,
             ),
           ),
-        ),
-      ]);
-    }).toList();
-  }
-
-  //Data Mobile
-  List<DataColumn> _createColumnsMobile() {
-    return [
-      const DataColumn(label: SizedBox(width: 190, child: Text('Item'))),
-      const DataColumn(label: Text(kIsWeb ? 'Winning Bid' : 'Winning\n Bid')),
-      const DataColumn(label: Text(kIsWeb ? 'Winner' : 'Winner\n Name')),
-    ];
-  }
-
-  List<DataRow> _createRowsMobile() {
-    return _soldAuction.filtered
-        .map(
-          (item) => DataRow(
-            cells: [
-              DataCell(
-                InkWell(
-                  onTap: () {
-                    Get.to(() => SoldItemView(item: item));
-                  },
-                  child: SizedBox(
-                    width: 190,
-                    child: Text(
-                      item.title,
-                      style: robotoMedium.copyWith(
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              DataCell(
-                Text(
-                  '₱ ${Format.amountShort(item.soldAt)}',
-                  style: robotoRegular.copyWith(
-                    color: blackColor,
-                  ),
-                ),
-              ),
-              DataCell(
-                FutureBuilder(
-                  future: item.getBuyerInfo(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return Text(
-                        item.buyerName,
-                        style: robotoRegular.copyWith(
-                          color: blackColor,
-                        ),
-                      );
-                    }
-                    return const Text('     ');
-                  },
-                ),
-              ),
-            ],
-          ),
         )
-        .toList();
+      ],
+    );
   }
 }
