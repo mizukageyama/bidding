@@ -154,8 +154,14 @@ class _Content extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    kIsWeb && context.width >= 900 ? header() : headerMobile(),
-                    ListView.separated(
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: kIsWeb && context.width >= 900
+                          ? header()
+                          : headerMobile(),
+                    ),
+                    Flexible(
+                      child: ListView.builder(
                         itemCount: boughtItems.filtered.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
@@ -178,9 +184,8 @@ class _Content extends StatelessWidget {
                                 );
                               });
                         },
-                        separatorBuilder: (context, index) {
-                          return const Divider();
-                        }),
+                      ),
+                    ),
                     Visibility(
                       visible: boughtItems.emptySearchResult,
                       child: Padding(
@@ -242,32 +247,48 @@ class _Content extends StatelessWidget {
   Widget rowMobile(SoldItem item, BuildContext context) {
     return TableRowTileMobile(
       rowData: [
-        item.images[0],
-        item.title,
-        Format.dateShort(item.dateSold),
-        '₱ ${Format.amountShort(item.soldAt)}',
+        ImageView(
+          imageUrl: item.images[0],
+          isContained: false,
+        ),
+        InkWell(
+          onTap: () => showTransactionInfo(context, item),
+          child: Text(
+            item.title,
+            style: robotoMedium.copyWith(
+              color: Colors.blue,
+            ),
+          ),
+        ),
+        Text(Format.dateShort(item.dateSold)),
+        Text('₱ ${Format.amountShort(item.soldAt)}'),
       ],
-      functionTap: () {
-        showTransactionInfo(context, item);
-      },
     );
   }
 
   Widget row(SoldItem item, BuildContext context) {
     return TableRowTile(
       rowData: [
-        item.images[0],
-        item.title,
-        item.sellerInfo?.fullName,
-        Format.dateShort(item.dateSold),
-        Format.dateShort(item.datePosted),
-        '₱ ${Format.amountShort(item.askingPrice)}',
-        '₱ ${Format.amountShort(item.soldAt)}',
-        'View',
+        ImageView(
+          imageUrl: item.images[0],
+          isContained: false,
+        ),
+        Text(item.title),
+        Text(item.sellerInfo?.fullName),
+        Text(Format.dateShort(item.dateSold)),
+        Text(Format.dateShort(item.datePosted)),
+        Text('₱ ${Format.amountShort(item.askingPrice)}'),
+        Text('₱ ${Format.amountShort(item.soldAt)}'),
+        InkWell(
+          onTap: () => showTransactionInfo(context, item),
+          child: Text(
+            'View',
+            style: robotoMedium.copyWith(
+              color: maroonColor,
+            ),
+          ),
+        ),
       ],
-      functionTap: () {
-        showTransactionInfo(context, item);
-      },
     );
   }
 

@@ -1,8 +1,13 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/data_table_format.dart';
+import 'package:bidding/components/table_header_tile.dart';
+import 'package:bidding/components/table_header_tile_mobile.dart';
+import 'package:bidding/components/table_row_tile.dart';
+import 'package:bidding/components/table_row_tile_mobile.dart';
 import 'package:bidding/main/admin/controllers/closed_auction_controller.dart';
 import 'package:bidding/main/admin/screens/open_closed_view.dart';
 import 'package:bidding/main/admin/side_menu.dart';
+import 'package:bidding/models/item_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/layout/mobile_body_sliver.dart';
@@ -68,7 +73,7 @@ class _Content extends StatelessWidget {
                   height: 0,
                   width: 0,
                 ),
-          Flexible(child: Obx(() => showTableReport()))
+          Flexible(child: Obx(() => showTableReport(context)))
         ],
       ),
     );
@@ -151,7 +156,7 @@ class _Content extends StatelessWidget {
     );
   }
 
-  Widget showTableReport() {
+  Widget showTableReport(BuildContext context) {
     if (_closedAuction.isDoneLoading.value &&
         _closedAuction.closedItems.isNotEmpty) {
       return Padding(
@@ -165,15 +170,29 @@ class _Content extends StatelessWidget {
             ),
             Flexible(
               child: Container(
+                height: Get.height,
                 color: whiteColor,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    DataTableFormat(
-                      columns: _createColumns(),
-                      columnsMobile: _createColumnsMobile(),
-                      rows: _createRows(),
-                      rowsMobile: _createRowsMobile(),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: kIsWeb && context.width >= 900
+                          ? header()
+                          : headerMobile(),
+                    ),
+                    Flexible(
+                      child: ListView.builder(
+                        itemCount: _closedAuction.filtered.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          if (kIsWeb && context.width >= 900) {
+                            return row(_closedAuction.filtered[index], context);
+                          }
+                          return rowMobile(
+                              _closedAuction.filtered[index], context);
+                        },
+                      ),
                     ),
                     Visibility(
                       visible: _closedAuction.emptySearchResult,
@@ -208,172 +227,128 @@ class _Content extends StatelessWidget {
     );
   }
 
-  List<DataColumn> _createColumns() {
-    return [
-      const DataColumn(label: Text('Item')),
-      const DataColumn(label: Text('Date Closed')),
-      const DataColumn(label: Text('Posted By')),
-      const DataColumn(label: Text('Asking Price')),
-      const DataColumn(label: Text('Status')),
-      const DataColumn(
-        label: Text(
-          'Highest Bid',
-        ),
-        tooltip: 'Current Highest Approved Bid',
-      ),
-      const DataColumn(label: Text('Action'))
-    ];
+  Widget headerMobile() {
+    return const TableHeaderTileMobile(
+      headerText: [
+        'Item',
+        'Asking Price',
+        'Highest Bid',
+      ],
+    );
   }
 
-  List<DataRow> _createRows() {
-    return _closedAuction.filtered.map((item) {
-      return DataRow(cells: [
-        DataCell(SizedBox(width: 200, child: Text(item.title))),
-        DataCell(Text(Format.dateShort(item.endDate))),
-        DataCell(
-          FutureBuilder(
-            future: item.getSellerInfo(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Text(item.sellerInfo!.fullName);
-              }
-              return const Text('     ');
-            },
-          ),
+  Widget header() {
+    return const TableHeaderTile(
+      headerText: [
+        'Item',
+        'Date Closed',
+        'Posted By',
+        'Asking Price',
+        'Status',
+        'Highest Bid',
+        'Action',
+      ],
+    );
+  }
+
+  Widget rowMobile(Item item, BuildContext context) {
+    return TableRowTileMobile(
+      rowData: [
+        ImageView(
+          imageUrl: item.images[0],
         ),
-        DataCell(Text('₱ ${Format.amount(item.askingPrice)}')),
-        DataCell(
-          item.winningBid == ''
-              ? Container(
-                  height: 25,
-                  width: 130,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(2),
-                      color: const Color.fromARGB(241, 241, 243, 255)),
-                  child: Text(
-                    'To Select',
-                    style: robotoRegular.copyWith(color: blackColor),
-                  ),
-                  alignment: Alignment.center,
-                )
-              : Container(
-                  height: 25,
-                  width: 130,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(2),
-                      color: greenColor),
-                  child: Text(
-                    'Winner Selected',
-                    style: robotoRegular.copyWith(color: whiteColor),
-                  ),
-                  alignment: Alignment.center,
-                ),
-        ),
-        DataCell(
-          FutureBuilder(
-            future: item.getBids(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (item.bids.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      '---',
-                    ),
-                  );
-                }
-                return Text('₱ ${Format.amount(item.bids[0].amount)}');
-              }
-              return const Text('     ');
-            },
-          ),
-        ),
-        DataCell(
-          InkWell(
-            onTap: () {
-              Get.to(() => OpenClosedItemView(item: item));
-            },
-            child: Text(
-              'View',
-              style: robotoMedium.copyWith(
-                color: maroonColor,
-              ),
+        InkWell(
+          onTap: () => Get.to(() => OpenClosedItemView(item: item)),
+          child: Text(
+            item.title,
+            style: robotoMedium.copyWith(
+              color: Colors.blue,
             ),
           ),
         ),
-      ]);
-    }).toList();
+        Text('₱ ${Format.amount(item.askingPrice)}'),
+        FutureBuilder(
+          future: item.getBids(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (item.bids.isEmpty) {
+                return const Text(
+                  '---',
+                );
+              }
+              return Text('₱ ${Format.amount(item.bids[0].amount)}');
+            }
+            return const Text('     ');
+          },
+        ),
+      ],
+    );
   }
 
-  //Data Mobile
-  List<DataColumn> _createColumnsMobile() {
-    return [
-      const DataColumn(label: SizedBox(width: 190, child: Text('Item'))),
-      const DataColumn(label: Text(kIsWeb ? 'Asking Price' : 'Asking\n Price')),
-      const DataColumn(
-        label: Text(kIsWeb ? 'Highest Bid' : 'Highest\nBid'),
-        tooltip: 'Current Highest Approved Bid',
-      ),
-    ];
-  }
-
-  List<DataRow> _createRowsMobile() {
-    return _closedAuction.filtered
-        .map(
-          (item) => DataRow(
-            cells: [
-              DataCell(
-                InkWell(
-                  onTap: () {
-                    Get.to(() => OpenClosedItemView(item: item));
-                  },
-                  child: SizedBox(
-                    width: 190,
-                    child: Text(
-                      item.title,
-                      style: robotoMedium.copyWith(
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
+  Widget row(Item item, BuildContext context) {
+    return TableRowTile(
+      rowData: [
+        ImageView(
+          imageUrl: item.images[0],
+        ),
+        Text(item.title),
+        Text(Format.dateShort(item.endDate)),
+        FutureBuilder(
+          future: item.getSellerInfo(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Text(item.sellerInfo!.fullName);
+            }
+            return const Text('     ');
+          },
+        ),
+        Text('₱ ${Format.amount(item.askingPrice)}'),
+        item.winningBid == ''
+            ? Container(
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(2),
+                    color: const Color.fromARGB(241, 241, 243, 255)),
+                child: Text(
+                  'To Select',
+                  style: robotoRegular.copyWith(color: blackColor),
+                  textAlign: TextAlign.center,
+                ),
+              )
+            : Container(
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(2), color: greenColor),
+                child: Text(
+                  'Winner Selected',
+                  style: robotoRegular.copyWith(color: whiteColor),
+                  textAlign: TextAlign.center,
                 ),
               ),
-              DataCell(
-                Text(
-                  '₱ ${Format.amountShort(item.askingPrice)}',
-                  style: robotoRegular.copyWith(
-                    color: blackColor,
-                  ),
-                ),
-              ),
-              DataCell(
-                FutureBuilder(
-                  future: item.getBids(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (item.bids.isEmpty) {
-                        return Center(
-                          child: Text(
-                            '---',
-                            style: robotoRegular.copyWith(
-                              color: blackColor,
-                            ),
-                          ),
-                        );
-                      }
-                      return Text(
-                        '₱ ${Format.amountShort(item.bids[0].amount)}',
-                        style: robotoRegular.copyWith(
-                          color: blackColor,
-                        ),
-                      );
-                    }
-                    return const Text('     ');
-                  },
-                ),
-              ),
-            ],
+        FutureBuilder(
+          future: item.getBids(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (item.bids.isEmpty) {
+                return const Text(
+                  '---',
+                );
+              }
+              return Text('₱ ${Format.amount(item.bids[0].amount)}');
+            }
+            return const Text('     ');
+          },
+        ),
+        InkWell(
+          onTap: () => Get.to(() => OpenClosedItemView(item: item)),
+          child: Text(
+            'View',
+            style: robotoMedium.copyWith(
+              color: maroonColor,
+            ),
           ),
         )
-        .toList();
+      ],
+    );
   }
 }
