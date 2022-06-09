@@ -23,3 +23,4 @@ export 'package:bidding/components/item_layout_grid.dart';
 export 'package:bidding/components/price_display_bidder.dart';
 export 'package:bidding/components/price_display_seller.dart';
 export 'package:bidding/components/right_column_content.dart';
+export 'package:bidding/components/info_display_noresult.dart';

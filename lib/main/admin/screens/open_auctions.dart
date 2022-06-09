@@ -96,9 +96,8 @@ class _Content extends StatelessWidget {
           width: 10,
         ),
         SizedBox(
-          width: kIsWeb ? 110 : 50,
-          height: 50,
-          child: kIsWeb
+          height: 45,
+          child: kIsWeb && Get.width >= 600
               ? CustomButton(
                   onTap: () {
                     _openAuction.filterItems();
@@ -117,7 +116,6 @@ class _Content extends StatelessWidget {
                   child: const Icon(
                     Icons.search,
                     color: whiteColor,
-                    size: 25,
                   ),
                 ),
         ),
@@ -125,9 +123,8 @@ class _Content extends StatelessWidget {
           width: 10,
         ),
         SizedBox(
-          width: kIsWeb ? 110 : 50,
           height: 45,
-          child: kIsWeb
+          child: kIsWeb && Get.width >= 600
               ? CustomButton(
                   onTap: () {
                     _openAuction.refreshItem();
@@ -141,7 +138,7 @@ class _Content extends StatelessWidget {
                     _openAuction.refreshItem();
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: greyColor,
+                    primary: maroonColor,
                   ),
                   child: const Icon(
                     Icons.refresh,
@@ -179,11 +176,13 @@ class _Content extends StatelessWidget {
                     Visibility(
                       visible: _openAuction.emptySearchResult,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 25, horizontal: 10),
-                        child: Text(
-                            _openAuction.emptySearchResultSearchResultMessage),
-                      ),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 25, horizontal: 10),
+                          child: NoDisplaySearchResult(
+                            content: 'No item found with ',
+                            title: '"${_openAuction.searchKey}"',
+                            message: ' in title',
+                          )),
                     )
                   ],
                 ),

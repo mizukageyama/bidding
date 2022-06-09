@@ -97,9 +97,8 @@ class _Content extends StatelessWidget {
           width: 10,
         ),
         SizedBox(
-          width: kIsWeb ? 110 : 50,
           height: 45,
-          child: kIsWeb
+          child: kIsWeb && Get.width >= 600
               ? CustomButton(
                   onTap: () {
                     _soldAuction.filterItems();
@@ -125,9 +124,8 @@ class _Content extends StatelessWidget {
           width: 10,
         ),
         SizedBox(
-          width: kIsWeb ? 110 : 50,
           height: 45,
-          child: kIsWeb
+          child: kIsWeb && Get.width >= 600
               ? CustomButton(
                   onTap: () {
                     _soldAuction.refreshItem();
@@ -141,7 +139,7 @@ class _Content extends StatelessWidget {
                     _soldAuction.refreshItem();
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: greyColor, //maroonColor
+                    primary: maroonColor, //maroonColor
                   ),
                   child: const Align(
                     alignment: Alignment.center,
@@ -185,8 +183,11 @@ class _Content extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 25, horizontal: 10),
-                        child: Text(
-                            _soldAuction.emptySearchResultSearchResultMessage),
+                        child: NoDisplaySearchResult(
+                          content: 'No item found with ',
+                          title: '"${_soldAuction.searchKey}"',
+                          message: ' in title',
+                        ),
                       ),
                     ),
                   ],
@@ -199,7 +200,7 @@ class _Content extends StatelessWidget {
     } else if (_soldAuction.isDoneLoading.value &&
         _soldAuction.soldAuction.isEmpty) {
       return const Center(
-          child: InfoDisplay(message: 'No ongoing auction at the moment'));
+          child: InfoDisplay(message: 'You have no Sold items yet'));
     }
     return const Center(
       child: SizedBox(
@@ -311,7 +312,12 @@ class _Content extends StatelessWidget {
                   future: item.getBuyerInfo(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
-                      return Text(item.buyerName);
+                      return Text(
+                        item.buyerName,
+                        style: robotoRegular.copyWith(
+                          color: blackColor,
+                        ),
+                      );
                     }
                     return const Text('     ');
                   },

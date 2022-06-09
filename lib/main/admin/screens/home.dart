@@ -95,10 +95,10 @@ class _Content extends StatelessWidget {
                                     Text(
                                       kIsWeb
                                           ? 'View item\nand its status'
-                                          : 'View items and its status',
+                                          : 'View items\nand its status',
                                       style: robotoBold.copyWith(
                                           color: whiteColor,
-                                          fontSize: kIsWeb ? 45 : 41),
+                                          fontSize: kIsWeb ? 45 : 42),
                                       overflow: TextOverflow.fade,
                                     ),
                                   ],
