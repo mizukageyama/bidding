@@ -235,7 +235,7 @@ class _Content extends StatelessWidget {
       headerText: [
         'Item',
         'Winning \nBid',
-        'Winner \nName',
+        'Winner',
       ],
     );
   }
@@ -285,7 +285,7 @@ class _Content extends StatelessWidget {
         'Posted By',
         'Asking Price',
         'Winning Bid',
-        'Winning Name',
+        'Winner',
         'Action',
       ],
     );
@@ -314,7 +314,12 @@ class _Content extends StatelessWidget {
           future: item.getBuyerInfo(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return Text(item.sellerInfo!.fullName);
+              return Text(
+                item.buyerName,
+                style: robotoRegular.copyWith(
+                  color: blackColor,
+                ),
+              );
             }
             return const Text('     ');
           },
