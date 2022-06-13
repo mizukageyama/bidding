@@ -174,6 +174,7 @@ class _Content extends StatelessWidget {
             ),
             Flexible(
               child: Container(
+                height: Get.height,
                 color: whiteColor,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

@@ -21,12 +21,19 @@ class OpenAuctionController extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
     openItems.bindStream(getOpenAuctions());
     Future.delayed(const Duration(seconds: 3), () {
       isDoneLoading.value = true;
       filtered.assignAll(openItems);
     });
+    ever(openItems, (openItems) => _updateList());
+    super.onInit();
+  }
+
+  void _updateList() {
+    if (!filtering.value) {
+      filtered.assignAll(openItems);
+    }
   }
 
   Stream<List<Item>> getOpenAuctions() {
