@@ -11,19 +11,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AdminHome extends StatelessWidget {
-  const AdminHome({Key? key}) : super(key: key);
+  AdminHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawerEnableOpenDragGesture: false,
         drawer: AdminSideMenu(),
         body: ResponsiveView(
-          const _Content(),
-          const MobileSliver(
-            title: 'Admin Dashboard',
-            body: _Content(),
-          ),
+          _Content(),
           AdminSideMenu(),
         ),
       ),
@@ -32,7 +29,7 @@ class AdminHome extends StatelessWidget {
 }
 
 class _Content extends StatelessWidget {
-  const _Content({Key? key}) : super(key: key);
+  _Content({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,31 +43,38 @@ class _Content extends StatelessWidget {
       color: whiteColor,
       child: Column(
         children: [
-          kIsWeb && Get.width >= 600
-              ? Container(
-                  color: maroonColor,
-                  height: 50,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Dashboard',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            color: whiteColor,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15),
-                      ),
-                    ],
+          Container(
+            color: maroonColor,
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Visibility(
+                  visible: Get.width < 600,
+                  child: IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    icon: const Icon(
+                      Icons.menu,
+                      color: whiteColor,
+                    ),
                   ),
-                )
-              : const SizedBox(
-                  height: 0,
-                  width: 0,
                 ),
+                Text(
+                  'Dashboard',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: whiteColor,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),
+                ),
+              ],
+            ),
+          ),
           Expanded(
               child: ListView(
                   padding: const EdgeInsets.all(15),
@@ -119,7 +123,7 @@ class _Content extends StatelessWidget {
                                   onTap: () {
                                     AdminSideMenuController menu = Get.find();
                                     menu.changeActiveItem('Open Auctions');
-                                    Get.to(() => const OpenAuctionScreen());
+                                    Get.to(() => OpenAuctionScreen());
                                   },
                                   child: Container(
                                     height: 40,

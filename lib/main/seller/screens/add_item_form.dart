@@ -12,19 +12,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AddItemForm extends StatelessWidget {
-  const AddItemForm({Key? key}) : super(key: key);
+  AddItemForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawerEnableOpenDragGesture: false,
         drawer: SellerSideMenu(),
         body: ResponsiveView(
           _Content(),
-          MobileSliver(
-            title: 'Add Item',
-            body: _Content(),
-          ),
           SellerSideMenu(),
         ),
       ),
@@ -34,7 +31,6 @@ class AddItemForm extends StatelessWidget {
 
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
-
   final AddItemController addItemController = Get.put(AddItemController());
 
   @override
@@ -45,31 +41,39 @@ class _Content extends StatelessWidget {
       color: whiteColor,
       child: Column(
         children: [
-          kIsWeb && Get.width >= 600
-              ? Container(
-                  color: maroonColor,
-                  height: 50,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Add Item',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          color: whiteColor,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ],
+          Container(
+            color: maroonColor,
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Visibility(
+                  visible: Get.width < 600,
+                  child: IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    icon: const Icon(
+                      Icons.menu,
+                      color: whiteColor,
+                    ),
                   ),
-                )
-              : const SizedBox(
-                  height: 0,
                 ),
+                Text(
+                  'Add Item',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    color: whiteColor,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15,
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             child: Center(
               child: ListView(

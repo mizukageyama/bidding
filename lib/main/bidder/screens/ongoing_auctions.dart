@@ -9,19 +9,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class OngoingAuctionScreen extends StatelessWidget {
-  const OngoingAuctionScreen({Key? key}) : super(key: key);
+  OngoingAuctionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawerEnableOpenDragGesture: false,
         drawer: BidderSideMenu(),
         body: ResponsiveView(
           _Content(),
-          MobileSliver(
-            title: 'Ongoing Auctions',
-            body: _Content(),
-          ),
           BidderSideMenu(),
         ),
       ),
@@ -42,31 +39,38 @@ class _Content extends StatelessWidget {
       color: whiteColor,
       child: Column(
         children: [
-          kIsWeb && Get.width >= 600
-              ? Container(
-                  color: maroonColor,
-                  height: 55,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Ongoing Auctions',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            color: whiteColor,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15),
-                      ),
-                    ],
+          Container(
+            color: maroonColor,
+            height: 55,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Visibility(
+                  visible: Get.width < 600,
+                  child: IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    icon: const Icon(
+                      Icons.menu,
+                      color: whiteColor,
+                    ),
                   ),
-                )
-              : const SizedBox(
-                  height: 0,
-                  width: 0,
                 ),
+                Text(
+                  'Ongoing Auctions',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: whiteColor,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(
               kIsWeb ? 20 : 12,

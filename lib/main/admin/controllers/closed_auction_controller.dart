@@ -27,7 +27,14 @@ class ClosedAuctionController extends GetxController {
       isDoneLoading.value = true;
       filtered.assignAll(closedItems);
     });
+    ever(closedItems, (closedItems) => _updateList());
     super.onInit();
+  }
+
+  void _updateList() {
+    if (!filtering.value) {
+      filtered.assignAll(closedItems);
+    }
   }
 
   Stream<List<Item>> getOpenAuctions() {

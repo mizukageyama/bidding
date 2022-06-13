@@ -10,22 +10,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class BidListScreen extends StatelessWidget {
-  const BidListScreen({Key? key, required this.id}) : super(key: key);
+  BidListScreen({Key? key, required this.id}) : super(key: key);
   final String id;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawerEnableOpenDragGesture: false,
         body: ResponsiveView(
           _Content(
             id: id,
-          ),
-          MobileSliver(
-            title: 'Bid History',
-            body: _Content(
-              id: id,
-            ),
           ),
           SellerSideMenu(),
         ),
@@ -36,7 +31,6 @@ class BidListScreen extends StatelessWidget {
 
 class _Content extends StatelessWidget {
   _Content({Key? key, required this.id}) : super(key: key);
-
   final AuctionedItemController aController = Get.find();
   final BidsController bidsController = Get.find();
   final String id;

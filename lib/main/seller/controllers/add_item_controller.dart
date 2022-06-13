@@ -104,7 +104,7 @@ class AddItemController extends GetxController {
               clearControllers();
               SellerSideMenuController menu = Get.find();
               menu.changeActiveItem('Auctioned Items');
-              Get.to(() => const AuctionedItemListScreen());
+              Get.to(() => AuctionedItemListScreen());
             });
       }).catchError((onError) {
         log.i('Unable to delete item and its bid');

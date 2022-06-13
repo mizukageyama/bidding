@@ -9,20 +9,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key, required this.sideMenu}) : super(key: key);
+  ProfileScreen({Key? key, required this.sideMenu}) : super(key: key);
   final Widget sideMenu;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawerEnableOpenDragGesture: false,
         drawer: sideMenu,
         body: ResponsiveView(
           _Content(),
-          MobileSliver(
-            title: 'Profile',
-            body: _Content(),
-          ),
           sideMenu,
         ),
       ),
@@ -32,7 +29,6 @@ class ProfileScreen extends StatelessWidget {
 
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
-
   final ProfileController profileController = Get.put(ProfileController());
 
   @override
@@ -42,31 +38,38 @@ class _Content extends StatelessWidget {
       width: Get.width,
       color: whiteColor,
       child: Column(children: [
-        kIsWeb && Get.width >= 600
-            ? Container(
-                color: maroonColor,
-                height: 50,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Text(
-                      'Profile',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          color: whiteColor,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15),
-                    ),
-                  ],
+        Container(
+          color: maroonColor,
+          height: 50,
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Visibility(
+                visible: Get.width < 600,
+                child: IconButton(
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  icon: const Icon(
+                    Icons.menu,
+                    color: whiteColor,
+                  ),
                 ),
-              )
-            : const SizedBox(
-                height: 0,
-                width: 0,
               ),
+              Text(
+                'Profile',
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    color: whiteColor,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15),
+              ),
+            ],
+          ),
+        ),
         Expanded(
           child: ListView(
               padding: const EdgeInsets.all(15),

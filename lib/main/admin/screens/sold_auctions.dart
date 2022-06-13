@@ -17,19 +17,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SoldAuctionScreen extends StatelessWidget {
-  const SoldAuctionScreen({Key? key}) : super(key: key);
+  SoldAuctionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawerEnableOpenDragGesture: false,
         drawer: AdminSideMenu(),
         body: ResponsiveView(
           _Content(),
-          MobileSliver(
-            title: 'Sold Auctions',
-            body: _Content(),
-          ),
           AdminSideMenu(),
         ),
       ),
@@ -49,31 +46,38 @@ class _Content extends StatelessWidget {
       color: const Color(0xFFF5F5F5),
       child: Column(
         children: [
-          kIsWeb && Get.width >= 600
-              ? Container(
-                  color: maroonColor,
-                  height: 50,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Sold Auctions',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            color: whiteColor,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15),
-                      ),
-                    ],
+          Container(
+            color: maroonColor,
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Visibility(
+                  visible: Get.width < 600,
+                  child: IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    icon: const Icon(
+                      Icons.menu,
+                      color: whiteColor,
+                    ),
                   ),
-                )
-              : const SizedBox(
-                  height: 0,
-                  width: 0,
                 ),
+                const Text(
+                  'Sold Auctions',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: whiteColor,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),
+                ),
+              ],
+            ),
+          ),
           Flexible(child: Obx(() => showTableReport(context)))
         ],
       ),
@@ -174,6 +178,7 @@ class _Content extends StatelessWidget {
             ),
             Flexible(
               child: Container(
+                height: Get.height,
                 color: whiteColor,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

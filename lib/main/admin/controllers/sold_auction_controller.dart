@@ -19,12 +19,19 @@ class SoldAuctionController extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
     soldAuction.bindStream(getSoldAuction());
     Future.delayed(const Duration(seconds: 3), () {
       filtered.assignAll(soldAuction);
       isDoneLoading.value = true;
     });
+    ever(soldAuction, (soldAuction) => _updateList());
+    super.onInit();
+  }
+
+  void _updateList() {
+    if (!filtering.value) {
+      filtered.assignAll(soldAuction);
+    }
   }
 
   Stream<List<SoldItem>> getSoldAuction() {
