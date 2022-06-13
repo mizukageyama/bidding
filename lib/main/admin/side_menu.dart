@@ -17,7 +17,7 @@ class AdminSideMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: context.width >= 600 ? double.infinity : context.width * .65,
+      width: kIsWeb ? context.width * .45 : context.width * .65,
       height: double.infinity,
       color: indigoColor,
       child: SingleChildScrollView(

@@ -5,12 +5,11 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ItemInfoScreen extends StatelessWidget {
-  const ItemInfoScreen({Key? key, required Item item, required this.id})
+  ItemInfoScreen({Key? key, required Item item, required this.id})
       : _item = item,
         super(key: key);
   final Item _item;
@@ -20,18 +19,9 @@ class ItemInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawerEnableOpenDragGesture: false,
         body: ResponsiveView(
-          _Content(
-            item: _item,
-            id: id,
-          ),
-          MobileSliver(
-            title: 'Auctioned Items > ${_item.title}',
-            body: _Content(
-              item: _item,
-              id: id,
-            ),
-          ),
+          _Content(item: _item, id: id),
           SellerSideMenu(),
         ),
       ),
@@ -40,9 +30,13 @@ class ItemInfoScreen extends StatelessWidget {
 }
 
 class _Content extends StatelessWidget {
-  _Content({Key? key, required this.item, required this.id}) : super(key: key);
-  final String id;
+  _Content({
+    Key? key,
+    required this.item,
+    required this.id,
+  }) : super(key: key);
   final Item item;
+  final String id;
   final BidsController bidsController = Get.put(BidsController());
   final AuctionedItemController aController = Get.find();
 

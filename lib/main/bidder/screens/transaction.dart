@@ -17,19 +17,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionScreen extends StatelessWidget {
-  const TransactionScreen({Key? key}) : super(key: key);
+  TransactionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawerEnableOpenDragGesture: false,
         drawer: BidderSideMenu(),
         body: ResponsiveView(
           _Content(),
-          MobileSliver(
-            title: 'My Transactions',
-            body: _Content(),
-          ),
           BidderSideMenu(),
         ),
       ),
@@ -39,7 +36,6 @@ class TransactionScreen extends StatelessWidget {
 
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
-
   final BoughtItemsController boughtItems = Get.find();
 
   @override
@@ -50,31 +46,38 @@ class _Content extends StatelessWidget {
       color: const Color(0xFFF5F5F5),
       child: Column(
         children: [
-          kIsWeb && Get.width >= 600
-              ? Container(
-                  color: maroonColor,
-                  height: 50,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'My Transactions',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            color: whiteColor,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15),
-                      ),
-                    ],
+          Container(
+            color: maroonColor,
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Visibility(
+                  visible: Get.width < 600,
+                  child: IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    icon: const Icon(
+                      Icons.menu,
+                      color: whiteColor,
+                    ),
                   ),
-                )
-              : const SizedBox(
-                  height: 0,
-                  width: 0,
                 ),
+                Text(
+                  'My Transactions',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: whiteColor,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),
+                ),
+              ],
+            ),
+          ),
           Flexible(child: Obx(() => showTransactionTable(context))),
         ],
       ),

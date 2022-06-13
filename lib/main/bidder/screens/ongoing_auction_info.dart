@@ -9,7 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class OngoingAuctionInfoScreen extends StatelessWidget {
-  const OngoingAuctionInfoScreen({Key? key, required Item item})
+  OngoingAuctionInfoScreen({Key? key, required Item item})
       : _item = item,
         super(key: key);
   final Item _item;
@@ -22,12 +22,6 @@ class OngoingAuctionInfoScreen extends StatelessWidget {
           _Content(
             item: _item,
           ),
-          MobileSliver(
-            title: 'Ongoing Auctions > ${_item.title}',
-            body: _Content(
-              item: _item,
-            ),
-          ),
           BidderSideMenu(),
         ),
       ),
@@ -37,7 +31,6 @@ class OngoingAuctionInfoScreen extends StatelessWidget {
 
 class _Content extends StatelessWidget {
   _Content({Key? key, required this.item}) : super(key: key);
-
   final Item item;
   final BidsController bidsController = Get.put(BidsController());
 

@@ -11,20 +11,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class BidderHome extends StatelessWidget {
-  const BidderHome({Key? key}) : super(key: key);
+  BidderHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawerEnableOpenDragGesture: false,
         drawer: BidderSideMenu(),
         body: ResponsiveView(
           _Content(),
-          MobileSliver(
-            title: 'Dashboard',
-            body: _Content(),
-            scrollable: false,
-          ),
           BidderSideMenu(),
         ),
       ),
@@ -43,31 +39,38 @@ class _Content extends StatelessWidget {
       width: Get.width,
       color: whiteColor,
       child: Column(children: [
-        kIsWeb && Get.width >= 600
-            ? Container(
-                color: maroonColor,
-                height: 50,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Text(
-                      'Dashboard',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          color: whiteColor,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15),
-                    ),
-                  ],
+        Container(
+          color: maroonColor,
+          height: 50,
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Visibility(
+                visible: Get.width < 600,
+                child: IconButton(
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  icon: const Icon(
+                    Icons.menu,
+                    color: whiteColor,
+                  ),
                 ),
-              )
-            : const SizedBox(
-                height: 0,
-                width: 0,
               ),
+              Text(
+                'Dashboard',
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    color: whiteColor,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15),
+              ),
+            ],
+          ),
+        ),
         Expanded(
           child: ListView(
               padding: const EdgeInsets.all(15),
@@ -114,7 +117,7 @@ class _Content extends StatelessWidget {
                             onTap: () {
                               BidderSideMenuController menu = Get.find();
                               menu.changeActiveItem('Ongoing Auctions');
-                              Get.to(() => const OngoingAuctionScreen());
+                              Get.to(() => OngoingAuctionScreen());
                             },
                             child: Container(
                               height: 40,
