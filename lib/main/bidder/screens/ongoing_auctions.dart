@@ -92,8 +92,8 @@ class _Content extends StatelessWidget {
     if (itemListController.isDoneLoading.value &&
         itemListController.itemList.isNotEmpty) {
       if (itemListController.emptySearchResult) {
-        return Flexible(
-          child: const Padding(
+        return const Flexible(
+          child: Padding(
             padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
             child: NoDisplaySearchResult(),
           ),
