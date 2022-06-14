@@ -5,14 +5,13 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:bidding/shared/services/_services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AddItemForm extends StatelessWidget {
-  AddItemForm({Key? key}) : super(key: key);
+  const AddItemForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +60,7 @@ class _Content extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(
+                const Text(
                   'Add Item',
                   textAlign: TextAlign.start,
                   style: TextStyle(

@@ -21,22 +21,22 @@ List<MenuItem> sellerSideMenuItem = [
   MenuItem(
     name: 'Dashboard',
     icon: Icons.dashboard,
-    function: () => Get.offAll(() => SellerHome()),
+    function: () => Get.offAll(() => const SellerHome()),
   ),
   MenuItem(
     name: 'Auctioned Items',
     iconPath: 'assets/icons/icon_raise.png',
-    function: () => Get.offAll(() => AuctionedItemListScreen()),
+    function: () => Get.offAll(() => const AuctionedItemListScreen()),
   ),
   MenuItem(
     name: 'Add Item for Auction',
     icon: Icons.add_rounded,
-    function: () => Get.offAll(() => AddItemForm()),
+    function: () => Get.offAll(() => const AddItemForm()),
   ),
   MenuItem(
     name: 'Sold Items',
     iconPath: 'assets/icons/icon_auction.png',
-    function: () => Get.offAll(() => SoldItemList()),
+    function: () => Get.offAll(() => const SoldItemList()),
   ),
   MenuItem(
     name: 'My Profile',
@@ -59,17 +59,17 @@ List<MenuItem> bidderSideMenuItem = [
   MenuItem(
     name: 'Dashboard',
     icon: Icons.dashboard,
-    function: () => Get.offAll(() => BidderHome()),
+    function: () => Get.offAll(() => const BidderHome()),
   ),
   MenuItem(
     name: 'Ongoing Auctions',
     iconPath: 'assets/icons/icon_raise.png',
-    function: () => Get.offAll(() => OngoingAuctionScreen()),
+    function: () => Get.offAll(() => const OngoingAuctionScreen()),
   ),
   MenuItem(
     name: 'Transactions',
     icon: Icons.add_rounded,
-    function: () => Get.offAll(() => TransactionScreen()),
+    function: () => Get.offAll(() => const TransactionScreen()),
   ),
   MenuItem(
     name: 'My Profile',
@@ -92,22 +92,22 @@ List<MenuItem> adminSideMenuItem = [
   MenuItem(
     name: 'Dashboard',
     icon: Icons.dashboard,
-    function: () => Get.offAll(() => AdminHome()),
+    function: () => Get.offAll(() => const AdminHome()),
   ),
   MenuItem(
     name: 'Open Auctions',
     iconPath: 'assets/icons/icon_raise.png',
-    function: () => Get.offAll(() => OpenAuctionScreen()),
+    function: () => Get.offAll(() => const OpenAuctionScreen()),
   ),
   MenuItem(
     name: 'Closed Auctions',
     icon: Icons.close_rounded,
-    function: () => Get.offAll(() => ClosedAuctionScreen()),
+    function: () => Get.offAll(() => const ClosedAuctionScreen()),
   ),
   MenuItem(
     name: 'Sold Auctions',
     iconPath: 'assets/icons/icon_auction.png',
-    function: () => Get.offAll(() => SoldAuctionScreen()),
+    function: () => Get.offAll(() => const SoldAuctionScreen()),
   ),
   MenuItem(
     name: 'My Profile',

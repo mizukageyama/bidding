@@ -1,7 +1,3 @@
-import 'package:bidding/models/user_additional_info.dart';
-import 'package:bidding/shared/_packages_imports.dart';
-import 'package:bidding/shared/constants/firebase.dart';
-
 class UserModel {
   final String userID;
   final String email;

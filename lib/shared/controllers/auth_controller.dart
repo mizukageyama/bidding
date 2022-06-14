@@ -72,11 +72,11 @@ class AuthController extends GetxController {
       log.i('_setInitialScreen | User found. Data: ${_firebaseUser.email}');
       await _initializeUser();
       if (userModel.value!.userRole == 'Seller') {
-        await Get.offAll(() => SellerHome());
+        await Get.offAll(() => const SellerHome());
       } else if (userModel.value!.userRole == 'Bidder') {
-        await Get.offAll(() => BidderHome());
+        await Get.offAll(() => const BidderHome());
       } else {
-        await Get.offAll(() => AdminHome());
+        await Get.offAll(() => const AdminHome());
       }
     }
   }

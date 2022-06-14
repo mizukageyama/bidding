@@ -6,12 +6,11 @@ import 'package:bidding/main/admin/screens/open_auctions.dart';
 import 'package:bidding/main/admin/side_menu.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AdminHome extends StatelessWidget {
-  AdminHome({Key? key}) : super(key: key);
+  const AdminHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class AdminHome extends StatelessWidget {
         drawerEnableOpenDragGesture: false,
         drawer: AdminSideMenu(),
         body: ResponsiveView(
-          _Content(),
+          const _Content(),
           AdminSideMenu(),
         ),
       ),
@@ -29,7 +28,7 @@ class AdminHome extends StatelessWidget {
 }
 
 class _Content extends StatelessWidget {
-  _Content({Key? key}) : super(key: key);
+  const _Content({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +62,7 @@ class _Content extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(
+                const Text(
                   'Dashboard',
                   textAlign: TextAlign.start,
                   style: TextStyle(
@@ -123,7 +122,7 @@ class _Content extends StatelessWidget {
                                   onTap: () {
                                     AdminSideMenuController menu = Get.find();
                                     menu.changeActiveItem('Open Auctions');
-                                    Get.to(() => OpenAuctionScreen());
+                                    Get.to(() => const OpenAuctionScreen());
                                   },
                                   child: Container(
                                     height: 40,

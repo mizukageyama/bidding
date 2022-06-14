@@ -4,12 +4,11 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/bidder/side_menu.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class OngoingAuctionInfoScreen extends StatelessWidget {
-  OngoingAuctionInfoScreen({Key? key, required Item item})
+  const OngoingAuctionInfoScreen({Key? key, required Item item})
       : _item = item,
         super(key: key);
   final Item _item;

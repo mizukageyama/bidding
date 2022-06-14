@@ -16,7 +16,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class OpenAuctionScreen extends StatelessWidget {
-  OpenAuctionScreen({Key? key}) : super(key: key);
+  const OpenAuctionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

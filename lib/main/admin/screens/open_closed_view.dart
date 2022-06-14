@@ -7,13 +7,12 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class OpenClosedItemView extends StatelessWidget {
-  OpenClosedItemView({Key? key, required this.item}) : super(key: key);
+  const OpenClosedItemView({Key? key, required this.item}) : super(key: key);
   final Item item;
 
   @override

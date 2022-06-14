@@ -4,12 +4,11 @@ import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/bidder/side_menu.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class OngoingAuctionScreen extends StatelessWidget {
-  OngoingAuctionScreen({Key? key}) : super(key: key);
+  const OngoingAuctionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +58,7 @@ class _Content extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(
+                const Text(
                   'Ongoing Auctions',
                   textAlign: TextAlign.start,
                   style: TextStyle(

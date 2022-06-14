@@ -1,15 +1,13 @@
 import 'package:bidding/components/_components.dart';
-import 'package:bidding/main/bidder/side_menu.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/profile_controller.dart';
 import 'package:bidding/shared/layout/_layout.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:bidding/shared/services/_services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
-  ProfileScreen({Key? key, required this.sideMenu}) : super(key: key);
+  const ProfileScreen({Key? key, required this.sideMenu}) : super(key: key);
   final Widget sideMenu;
 
   @override
@@ -58,7 +56,7 @@ class _Content extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(
+              const Text(
                 'Profile',
                 textAlign: TextAlign.start,
                 style: TextStyle(

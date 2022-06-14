@@ -1,5 +1,4 @@
 import 'package:bidding/components/_components.dart';
-import 'package:bidding/components/data_table_format.dart';
 import 'package:bidding/components/table_header_tile.dart';
 import 'package:bidding/components/table_header_tile_mobile.dart';
 import 'package:bidding/components/table_row_tile.dart';
@@ -10,13 +9,12 @@ import 'package:bidding/main/admin/side_menu.dart';
 import 'package:bidding/models/item_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ClosedAuctionScreen extends StatelessWidget {
-  ClosedAuctionScreen({Key? key}) : super(key: key);
+  const ClosedAuctionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

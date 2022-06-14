@@ -43,7 +43,6 @@ class BoughtItemsController extends GetxController {
 
   // filtered Date
   void filterDate() {
-    print('filter date is click');
     filtering.value = true;
     filtered.clear();
     if (date.value == '') {
@@ -60,7 +59,6 @@ class BoughtItemsController extends GetxController {
 
   //refreshDate
   void refreshItem() {
-    print('refresh is click');
     filtering.value = false;
     date.value = '';
     filtered.clear();
