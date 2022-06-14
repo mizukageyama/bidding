@@ -65,6 +65,7 @@ class OpenAuctionController extends GetxController {
     final RxList<Item> itemHolder = RxList.empty(growable: true);
     itemHolder.assignAll(openItems);
 
+    //Search Item Title
     if (titleKeyword.text != '') {
       for (final item in List<Item>.from(itemHolder)) {
         if (!item.title
@@ -75,6 +76,7 @@ class OpenAuctionController extends GetxController {
       }
     }
 
+    //Search Item Seller Name
     if (sellerKeyword.text != '') {
       for (final item in List<Item>.from(itemHolder)) {
         if (!item.sellerInfo!.fullName
