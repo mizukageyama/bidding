@@ -33,33 +33,33 @@ class AppPages {
     //Seller
     GetPage(
       name: _Paths.SELLER_HOME,
-      page: () => SellerHome(),
+      page: () => const SellerHome(),
     ),
     GetPage(
       name: _Paths.ADD_ITEM_FORM,
-      page: () => AddItemForm(),
+      page: () => const AddItemForm(),
     ),
     GetPage(
       name: _Paths.ITEM_LIST,
-      page: () => AuctionedItemListScreen(),
+      page: () => const AuctionedItemListScreen(),
     ),
     GetPage(
       name: _Paths.SOLD_ITEM_LIST,
-      page: () => SoldItemList(),
+      page: () => const SoldItemList(),
     ),
 
     //Admin
     GetPage(
       name: _Paths.OPEN_AUCTIONS,
-      page: () => OpenAuctionScreen(),
+      page: () => const OpenAuctionScreen(),
     ),
     GetPage(
       name: _Paths.CLOSED_AUCTIONS,
-      page: () => ClosedAuctionScreen(),
+      page: () => const ClosedAuctionScreen(),
     ),
     GetPage(
       name: _Paths.SOLD_AUCTIONS,
-      page: () => SoldAuctionScreen(),
+      page: () => const SoldAuctionScreen(),
     )
   ];
 }

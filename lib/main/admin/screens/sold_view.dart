@@ -4,13 +4,12 @@ import 'package:bidding/main/admin/side_menu.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SoldItemView extends StatelessWidget {
-  SoldItemView({Key? key, required this.item}) : super(key: key);
+  const SoldItemView({Key? key, required this.item}) : super(key: key);
   final SoldItem item;
 
   @override

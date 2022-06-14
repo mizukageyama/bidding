@@ -1,5 +1,4 @@
 import 'package:bidding/components/_components.dart';
-import 'package:bidding/components/data_table_format.dart';
 import 'package:bidding/components/table_header_tile.dart';
 import 'package:bidding/components/table_header_tile_mobile.dart';
 import 'package:bidding/components/table_row_tile.dart';
@@ -7,17 +6,15 @@ import 'package:bidding/components/table_row_tile_mobile.dart';
 import 'package:bidding/main/admin/controllers/sold_auction_controller.dart';
 import 'package:bidding/main/admin/side_menu.dart';
 import 'package:bidding/main/admin/screens/sold_view.dart';
-import 'package:bidding/models/_models.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SoldAuctionScreen extends StatelessWidget {
-  SoldAuctionScreen({Key? key}) : super(key: key);
+  const SoldAuctionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

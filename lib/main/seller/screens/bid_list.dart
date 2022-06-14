@@ -5,12 +5,11 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class BidListScreen extends StatelessWidget {
-  BidListScreen({Key? key, required this.id}) : super(key: key);
+  const BidListScreen({Key? key, required this.id}) : super(key: key);
   final String id;
 
   @override

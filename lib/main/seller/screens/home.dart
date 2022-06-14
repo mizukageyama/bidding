@@ -5,12 +5,11 @@ import 'package:bidding/main/seller/screens/_seller_screens.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SellerHome extends StatelessWidget {
-  SellerHome({Key? key}) : super(key: key);
+  const SellerHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,7 @@ class SellerHome extends StatelessWidget {
         drawerEnableOpenDragGesture: false,
         drawer: SellerSideMenu(),
         body: ResponsiveView(
-          _Content(),
+          const _Content(),
           SellerSideMenu(),
         ),
       ),
@@ -28,7 +27,7 @@ class SellerHome extends StatelessWidget {
 }
 
 class _Content extends StatelessWidget {
-  _Content({Key? key}) : super(key: key);
+  const _Content({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +57,7 @@ class _Content extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(
+                const Text(
                   'Dashboard',
                   textAlign: TextAlign.start,
                   style: TextStyle(
@@ -118,7 +117,7 @@ class _Content extends StatelessWidget {
                             onTap: () {
                               SellerSideMenuController menu = Get.find();
                               menu.changeActiveItem('Add Item for Auction');
-                              Get.to(() => AddItemForm());
+                              Get.to(() => const AddItemForm());
                             },
                             child: Container(
                               height: 40,

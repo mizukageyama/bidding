@@ -9,7 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ItemInfoScreen extends StatelessWidget {
-  ItemInfoScreen({Key? key, required Item item, required this.id})
+  const ItemInfoScreen({Key? key, required Item item, required this.id})
       : _item = item,
         super(key: key);
   final Item _item;

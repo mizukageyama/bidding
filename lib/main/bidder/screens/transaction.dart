@@ -1,5 +1,4 @@
 import 'package:bidding/components/_components.dart';
-import 'package:bidding/components/data_table_format.dart';
 import 'package:bidding/components/display_info_section.dart';
 import 'package:bidding/components/table_header_tile.dart';
 import 'package:bidding/components/table_header_tile_mobile.dart';
@@ -10,14 +9,13 @@ import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/bidder/side_menu.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionScreen extends StatelessWidget {
-  TransactionScreen({Key? key}) : super(key: key);
+  const TransactionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +64,7 @@ class _Content extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(
+                const Text(
                   'My Transactions',
                   textAlign: TextAlign.start,
                   style: TextStyle(

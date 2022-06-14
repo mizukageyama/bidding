@@ -4,13 +4,12 @@ import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SoldItemInfoScreen extends StatelessWidget {
-  SoldItemInfoScreen({Key? key, required SoldItem item})
+  const SoldItemInfoScreen({Key? key, required SoldItem item})
       : _item = item,
         super(key: key);
   final SoldItem _item;
