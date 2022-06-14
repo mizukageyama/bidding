@@ -94,13 +94,9 @@ class _Content extends StatelessWidget {
         itemListController.itemList.isNotEmpty) {
       if (itemListController.emptySearchResult) {
         return Flexible(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
-            child: NoDisplaySearchResult(
-              content: 'No item found with ',
-              title: '"${itemListController.searchKey}"',
-              message: ' in title',
-            ),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
+            child: NoDisplaySearchResult(),
           ),
         );
       }

@@ -80,8 +80,4 @@ class ClosedAuctionController extends GetxController {
   get emptySearchResult {
     return filtered.isEmpty && filtering.value;
   }
-
-  get searchKey {
-    return titleKeyword.text;
-  }
 }

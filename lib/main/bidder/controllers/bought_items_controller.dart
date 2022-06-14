@@ -70,8 +70,4 @@ class BoughtItemsController extends GetxController {
   get emptySearchResult {
     return filtered.isEmpty && filtering.value;
   }
-
-  get searchKey {
-    return date.value;
-  }
 }

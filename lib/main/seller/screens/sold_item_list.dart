@@ -217,14 +217,10 @@ class _Content extends StatelessWidget {
                     ),
                     Visibility(
                       visible: soldItemsController.emptySearchResult,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 25, horizontal: 10),
-                        child: NoDisplaySearchResult(
-                          content: 'No item found with ',
-                          title: '"${soldItemsController.searchKey}"',
-                          message: ' in title',
-                        ),
+                      child: const Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 25, horizontal: 10),
+                        child: NoDisplaySearchResult(),
                       ),
                     ),
                   ],

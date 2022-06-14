@@ -4,13 +4,7 @@ import 'package:flutter/material.dart';
 class NoDisplaySearchResult extends StatelessWidget {
   const NoDisplaySearchResult({
     Key? key,
-    required this.title,
-    required this.message,
-    required this.content,
   }) : super(key: key);
-  final String title;
-  final String message;
-  final String content;
 
   @override
   Widget build(BuildContext context) {
@@ -27,26 +21,15 @@ class NoDisplaySearchResult extends StatelessWidget {
           const SizedBox(
             width: 15,
           ),
-          Text(content,
+          Flexible(
+            child: Text(
+              'No items matched with your search',
               style: robotoRegular.copyWith(
                 color: blackColor,
                 fontSize: 14,
-              )),
-          Flexible(
-            child: Text(
-              title,
-              style: const TextStyle(
-                color: blackColor,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w700,
               ),
             ),
           ),
-          Text(message,
-              style: robotoRegular.copyWith(
-                color: blackColor,
-                fontSize: 14,
-              )),
         ],
       ),
     );

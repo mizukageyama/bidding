@@ -8,6 +8,11 @@ class Format {
     return '${DateFormat.yMMMd().format(dt)} (${DateFormat.jm().format(dt)})';
   }
 
+  static String dateln(Timestamp timestamp) {
+    final dt = timestamp.toDate();
+    return '${DateFormat.yMMMd().format(dt)}\n(${DateFormat.jm().format(dt)})';
+  }
+
   static String dateShort(Timestamp timestamp) {
     final dt = timestamp.toDate();
     return DateFormat.yMMMd().format(dt);

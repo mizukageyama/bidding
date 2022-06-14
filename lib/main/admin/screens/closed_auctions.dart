@@ -201,14 +201,10 @@ class _Content extends StatelessWidget {
                     ),
                     Visibility(
                       visible: _closedAuction.emptySearchResult,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 25, horizontal: 10),
-                        child: NoDisplaySearchResult(
-                          content: 'No item found with ',
-                          title: '"${_closedAuction.searchKey}"',
-                          message: ' in title',
-                        ),
+                      child: const Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 25, horizontal: 10),
+                        child: NoDisplaySearchResult(),
                       ),
                     ),
                   ],

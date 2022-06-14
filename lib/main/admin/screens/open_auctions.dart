@@ -1,5 +1,6 @@
 import 'package:bidding/components/_components.dart';
-import 'package:bidding/components/data_table_format.dart';
+import 'package:bidding/components/search_dropdown_field.dart';
+import 'package:bidding/components/search_text_field.dart';
 import 'package:bidding/components/table_header_tile.dart';
 import 'package:bidding/components/table_header_tile_mobile.dart';
 import 'package:bidding/components/table_row_tile.dart';
@@ -10,7 +11,6 @@ import 'package:bidding/main/admin/side_menu.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -84,78 +84,132 @@ class _Content extends StatelessWidget {
   }
 
   Widget searchBar() {
-    return Row(
-      children: [
-        Expanded(
-          flex: 2,
-          child: Form(
-            key: _openAuction.formKey,
-            child: InputField(
-              hideLabelTyping: true,
-              labelText: 'Search here...',
-              onChanged: (value) {
-                return;
-              },
+    return Form(
+      key: _openAuction.formKey,
+      child: Wrap(
+        runSpacing: 20,
+        crossAxisAlignment: WrapCrossAlignment.end,
+        children: [
+          SizedBox(
+            width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
+            child: SearchTextField(
+              topLabel: 'Search by Title',
               onSaved: (value) => _openAuction.titleKeyword.text = value!,
               controller: _openAuction.titleKeyword,
             ),
           ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        SizedBox(
-          height: 45,
-          child: kIsWeb && Get.width >= 600
-              ? CustomButton(
-                  onTap: () {
-                    _openAuction.filterItems();
+          const SizedBox(
+            width: 10,
+          ),
+          SizedBox(
+            width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
+            child: SearchTextField(
+              topLabel: 'Search by Seller',
+              onSaved: (value) => _openAuction.sellerKeyword.text = value!,
+              controller: _openAuction.sellerKeyword,
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
+                child: SearchDropdownField(
+                  topLabel: 'Sort by',
+                  items: const ['Asking Price', 'Closing Date', 'Item Title'],
+                  onChanged: (value) {
+                    _openAuction.sortOption.value = value!;
+                    _openAuction.sortItems();
                   },
-                  text: 'Search',
-                  buttonColor: maroonColor,
-                  fontSize: 16,
-                )
-              : ElevatedButton(
-                  onPressed: () {
-                    _openAuction.filterItems();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: maroonColor, //maroonColor
-                  ),
-                  child: const Icon(
-                    Icons.search,
-                    color: whiteColor,
+                ),
+              ),
+              Obx(
+                () => Visibility(
+                  visible: _openAuction.sortOption.value != '',
+                  child: IconButton(
+                    onPressed: () {
+                      _openAuction.changeAscDesc();
+                      _openAuction.sortItems();
+                    },
+                    icon: Icon(
+                      _openAuction.asc.value
+                          ? Icons.south_outlined
+                          : Icons.north_outlined,
+                      color: greyColor,
+                      size: 20,
+                    ),
                   ),
                 ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        SizedBox(
-          height: 45,
-          child: kIsWeb && Get.width >= 600
-              ? CustomButton(
-                  onTap: () {
-                    _openAuction.refreshItem();
-                  },
-                  text: 'Refresh',
-                  buttonColor: maroonColor, //maroonColor
-                  fontSize: 16,
-                )
-              : ElevatedButton(
-                  onPressed: () {
-                    _openAuction.refreshItem();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: maroonColor,
-                  ),
-                  child: const Icon(
-                    Icons.refresh,
-                    color: whiteColor,
-                  ),
-                ),
-        ),
-      ],
+              ),
+            ],
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: 45,
+                child: kIsWeb && Get.width >= 600
+                    ? CustomButton(
+                        onTap: () {
+                          if (_openAuction.hasInputKeywords) {
+                            _openAuction.filterItems();
+                          }
+                        },
+                        text: 'Search',
+                        buttonColor: maroonColor,
+                        fontSize: 16,
+                      )
+                    : ElevatedButton(
+                        onPressed: () {
+                          _openAuction.filterItems();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: maroonColor,
+                        ),
+                        child: const Icon(
+                          Icons.search,
+                          color: whiteColor,
+                        ),
+                      ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              SizedBox(
+                height: 45,
+                child: kIsWeb && Get.width >= 600
+                    ? CustomButton(
+                        onTap: () {
+                          _openAuction.refreshItem();
+                        },
+                        text: 'Refresh',
+                        buttonColor: maroonColor, //maroonColor
+                        fontSize: 16,
+                      )
+                    : ElevatedButton(
+                        onPressed: () {
+                          _openAuction.refreshItem();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: maroonColor,
+                        ),
+                        child: const Icon(
+                          Icons.refresh,
+                          color: whiteColor,
+                        ),
+                      ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -165,6 +219,7 @@ class _Content extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
             vertical: 25, horizontal: kIsWeb ? 25 : 3),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             searchBar(),
             const SizedBox(
@@ -198,15 +253,12 @@ class _Content extends StatelessWidget {
                     ),
                     Visibility(
                       visible: _openAuction.emptySearchResult,
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 25, horizontal: 10),
-                          child: NoDisplaySearchResult(
-                            content: 'No item found with ',
-                            title: '"${_openAuction.searchKey}"',
-                            message: ' in title',
-                          )),
-                    )
+                      child: const Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 25, horizontal: 10),
+                        child: NoDisplaySearchResult(),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -293,8 +345,8 @@ class _Content extends StatelessWidget {
           imageUrl: item.images[0],
         ),
         Text(item.title),
-        Text(Format.dateShort(item.datePosted)),
-        Text(Format.dateShort(item.endDate)),
+        Text(Format.dateln(item.datePosted)),
+        Text(Format.dateln(item.endDate)),
         FutureBuilder(
           future: item.getSellerInfo(),
           builder: (context, snapshot) {
