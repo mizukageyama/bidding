@@ -143,9 +143,21 @@ final List<Category> category = [
   Category(value: 'Jewelries & Accessories'),
   Category(value: 'Mens Clothing & Shoes'),
   Category(value: 'Womens Clothing & Shoes'),
-  Category(value: 'Jewelries & Accessories'),
   Category(value: 'Video Games'),
   Category(value: 'Add Custom Category', isAdd: true),
+];
+
+final List<String> categorySearchOption = [
+  'Electronics',
+  'Electronic & Computers',
+  'Mobile Phones',
+  'Books',
+  'Supplies',
+  'Bags',
+  'Arts & Crafts',
+  'Jewelries & Accessories',
+  'Mens Clothing & Shoes',
+  'Video Games'
 ];
 
 final List<String> condition = [
