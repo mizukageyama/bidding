@@ -45,6 +45,7 @@ dev_dependencies:
   firebase_auth: ^3.3.17
   cloud_firestore: ^3.1.14
   firebase_storage: ^10.2.15
+  cloud_functions: ^3.2.16
   logger: ^1.0.0
   image_picker: ^0.8.5
   flutter_layout_grid: ^2.0.0
