@@ -1,5 +1,7 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/display_info_section.dart';
+import 'package:bidding/components/search_dropdown_field.dart';
+import 'package:bidding/components/search_text_field.dart';
 import 'package:bidding/components/table_header_tile.dart';
 import 'package:bidding/components/table_header_tile_mobile.dart';
 import 'package:bidding/components/table_row_tile.dart';
@@ -82,6 +84,198 @@ class _Content extends StatelessWidget {
     );
   }
 
+  Widget searchBar(BuildContext context) {
+    return Form(
+      key: boughtItems.formKey,
+      child: Wrap(
+        runSpacing: 20,
+        crossAxisAlignment: WrapCrossAlignment.end,
+        children: [
+          SizedBox(
+            width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
+            child: SearchTextField(
+              topLabel: 'Search by Title',
+              onSaved: (value) => boughtItems.titleKeyword.text = value!,
+              controller: boughtItems.titleKeyword,
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          SizedBox(
+            width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Search by Date Sold',
+                  style: robotoMedium.copyWith(
+                    color: greyColor,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                SizedBox(
+                  height: 50,
+                  child: InkWell(
+                    onTap: () async {
+                      DateTime? selected = await showDatePicker(
+                        context: context,
+                        initialDate: boughtItems.selectedDate.value,
+                        firstDate: DateTime(2010),
+                        lastDate: DateTime(2025),
+                      );
+                      if (selected != null) {
+                        boughtItems.date.value =
+                            DateFormat.yMMMd().format(selected);
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 2),
+                      height: 35,
+                      decoration: BoxDecoration(
+                          color: whiteColor,
+                          border: Border.all(color: greyColor),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Center(
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.calendar_today,
+                              size: 25,
+                              color: greyColor,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Obx(
+                              () => Text(
+                                boughtItems.date.value == ''
+                                    ? 'Select Date'
+                                    : boughtItems.date.value,
+                                style: robotoRegular.copyWith(
+                                    color: boughtItems.date.value == ''
+                                        ? greyColor
+                                        : blackColor),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
+                child: SearchDropdownField(
+                  topLabel: 'Sort by',
+                  items: const ['Bought At', 'Date Sold', 'Item Title'],
+                  onChanged: (value) {
+                    boughtItems.sortOption.value = value!;
+                    boughtItems.sortItems();
+                  },
+                ),
+              ),
+              Obx(
+                () => Visibility(
+                  visible: boughtItems.sortOption.value != '',
+                  child: IconButton(
+                    onPressed: () {
+                      boughtItems.changeAscDesc();
+                      boughtItems.sortItems();
+                    },
+                    icon: Icon(
+                      boughtItems.asc.value
+                          ? Icons.south_outlined
+                          : Icons.north_outlined,
+                      color: greyColor,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: 45,
+                child: kIsWeb && Get.width >= 600
+                    ? CustomButton(
+                        onTap: () {
+                          if (boughtItems.hasInputKeywords) {
+                            boughtItems.filterItems();
+                          }
+                        },
+                        text: 'Search',
+                        buttonColor: maroonColor,
+                        fontSize: 16,
+                      )
+                    : ElevatedButton(
+                        onPressed: () {
+                          boughtItems.filterItems();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: maroonColor,
+                        ),
+                        child: const Icon(
+                          Icons.search,
+                          color: whiteColor,
+                        ),
+                      ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              SizedBox(
+                height: 45,
+                child: kIsWeb && Get.width >= 600
+                    ? CustomButton(
+                        onTap: () {
+                          boughtItems.refreshItem();
+                        },
+                        text: 'Refresh',
+                        buttonColor: maroonColor, //maroonColor
+                        fontSize: 16,
+                      )
+                    : ElevatedButton(
+                        onPressed: () {
+                          boughtItems.refreshItem();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: maroonColor,
+                        ),
+                        child: const Icon(
+                          Icons.refresh,
+                          color: whiteColor,
+                        ),
+                      ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget showTransactionTable(BuildContext context) {
     if (boughtItems.isDoneLoading.value && boughtItems.soldItems.isNotEmpty) {
       return Padding(
@@ -90,61 +284,7 @@ class _Content extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
-                  onTap: () async {
-                    DateTime? selected = await showDatePicker(
-                      context: context,
-                      initialDate: boughtItems.selectedDate.value,
-                      firstDate: DateTime(2010),
-                      lastDate: DateTime(2025),
-                    );
-
-                    if (selected != null) {
-                      boughtItems.date.value =
-                          DateFormat.yMMMd().format(selected);
-                      boughtItems.filterDate();
-                    }
-                  },
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                    height: 35,
-                    decoration: BoxDecoration(
-                        color: whiteColor,
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Center(
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.calendar_today,
-                            size: 25,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Obx(
-                            () => Text(boughtItems.date.value == ''
-                                ? 'Select Date'
-                                : boughtItems.date.value),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    boughtItems.refreshItem();
-                  },
-                  icon: const Icon(Icons.refresh),
-                  iconSize: 25,
-                ),
-              ],
-            ),
+            searchBar(context),
             const SizedBox(
               height: 20,
             ),
@@ -482,7 +622,6 @@ class _Content extends StatelessWidget {
 
           if (selected != null) {
             boughtItems.date.value = DateFormat.yMMMd().format(selected);
-            boughtItems.filterDate();
           }
         },
         icon: const Icon(Icons.calendar_today),
