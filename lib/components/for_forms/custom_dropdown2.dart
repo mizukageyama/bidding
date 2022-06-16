@@ -1,8 +1,9 @@
+import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 
-class CustomDropdown extends StatefulWidget {
-  const CustomDropdown({
+class CustomDropdown2 extends StatefulWidget {
+  const CustomDropdown2({
     Key? key,
     required this.hintText,
     required this.dropdownItems,
@@ -11,24 +12,25 @@ class CustomDropdown extends StatefulWidget {
     required this.validator,
   }) : super(key: key);
 
-  final String? hintText;
-  final List<String>? dropdownItems;
+  final String hintText;
+  final List<String> dropdownItems;
   final void Function(String?)? onChanged;
   final void Function(String?)? onSaved;
   final String? Function(String?)? validator;
 
   @override
-  State createState() => CustomDropdownState();
+  State<CustomDropdown2> createState() => _CustomDropdown2State();
 }
 
-class CustomDropdownState extends State<CustomDropdown> {
+class _CustomDropdown2State extends State<CustomDropdown2> {
   String? selectedItem;
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
+    return DropdownButtonFormField2(
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.all(10),
+        isDense: true,
+        contentPadding: EdgeInsets.zero,
         filled: true,
         fillColor: whiteColor,
         border: OutlineInputBorder(
@@ -40,23 +42,30 @@ class CustomDropdownState extends State<CustomDropdown> {
             borderRadius: BorderRadius.circular(10)),
       ),
       isExpanded: true,
-      value: selectedItem,
-      hint: Text(widget.hintText!),
+      hint: Text(
+        widget.hintText,
+        style: robotoRegular.copyWith(fontSize: 14),
+      ),
+      icon: const Icon(
+        Icons.arrow_drop_down,
+        color: Colors.black45,
+      ),
+      iconSize: 30,
+      buttonHeight: 60,
+      buttonPadding: const EdgeInsets.only(left: 20, right: 10),
+      items: widget.dropdownItems
+          .map((item) => DropdownMenuItem<String>(
+                value: item,
+                child: Text(
+                  item,
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+              ))
+          .toList(),
       onChanged: widget.onChanged,
       onSaved: widget.onSaved,
-      items: widget.dropdownItems!.map((user) {
-        return DropdownMenuItem<String>(
-          value: user,
-          child: Row(
-            children: <Widget>[
-              Text(
-                user,
-                style: robotoRegular,
-              ),
-            ],
-          ),
-        );
-      }).toList(),
       validator: widget.validator,
     );
   }

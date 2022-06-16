@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:bidding/components/_components.dart';
+import 'package:bidding/components/for_forms/custom_dropdown2.dart';
 import 'package:bidding/main/seller/controllers/add_item_controller.dart';
 import 'package:bidding/models/item_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
@@ -204,7 +205,7 @@ class ManageItem extends GetxController {
                       const SizedBox(
                         height: 15,
                       ),
-                      CustomDropdown(
+                      CustomDropdown2(
                         hintText: 'Condition',
                         dropdownItems: condition,
                         onChanged: (item) => cond.value = item!,

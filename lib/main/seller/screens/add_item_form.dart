@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:bidding/components/_components.dart';
+import 'package:bidding/components/for_forms/custom_dropdown2.dart';
 import 'package:bidding/main/seller/controllers/add_item_controller.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/app_items.dart';
@@ -228,7 +229,7 @@ class _Content extends StatelessWidget {
                                             ),
                                             Expanded(
                                               flex: 2,
-                                              child: CustomDropdown(
+                                              child: CustomDropdown2(
                                                 hintText: 'Condition',
                                                 dropdownItems: condition,
                                                 onChanged: (item) =>
