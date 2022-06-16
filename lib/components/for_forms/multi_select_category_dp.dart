@@ -1,23 +1,27 @@
+import 'package:bidding/models/category_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:flutter/material.dart';
 
-class MultiSelectDropdown extends StatefulWidget {
-  const MultiSelectDropdown({
+class MultiCategoryDropdown extends StatefulWidget {
+  const MultiCategoryDropdown({
     Key? key,
     required this.items,
     required this.onChanged,
     required this.selectedItems,
+    required this.validator,
   }) : super(key: key);
-  final List<String> items;
-  final void Function(String, bool) onChanged;
+
+  final List<Category> items;
   final List<String> selectedItems;
+  final void Function(String, bool) onChanged;
+  final String? Function(String?)? validator;
 
   @override
-  State<MultiSelectDropdown> createState() => _MultiSelectDropdownState();
+  State<MultiCategoryDropdown> createState() => _MultiCategoryDropdownState();
 }
 
-class _MultiSelectDropdownState extends State<MultiSelectDropdown> {
+class _MultiCategoryDropdownState extends State<MultiCategoryDropdown> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField2(
@@ -37,7 +41,7 @@ class _MultiSelectDropdownState extends State<MultiSelectDropdown> {
       isExpanded: true,
       hint: Text(
         widget.selectedItems.isEmpty
-            ? 'Select Items'
+            ? 'Select Category'
             : widget.selectedItems.join(', '),
         style: robotoRegular.copyWith(
             fontSize: 14,
@@ -54,18 +58,20 @@ class _MultiSelectDropdownState extends State<MultiSelectDropdown> {
       buttonPadding: const EdgeInsets.only(left: 20, right: 10),
       items: widget.items
           .map((item) => DropdownMenuItem<String>(
-                value: item,
+                value: item.value,
                 enabled: false,
                 child: StatefulBuilder(
                   builder: (context, menuSetState) {
-                    final _isSelected = widget.selectedItems.contains(item);
+                    final _isSelected = item.isAdd
+                        ? true
+                        : widget.selectedItems.contains(item.value);
                     return InkWell(
                       onTap: () {
                         _isSelected
-                            ? widget.selectedItems.remove(item)
-                            : widget.selectedItems.add(item);
+                            ? widget.selectedItems.remove(item.value)
+                            : widget.selectedItems.add(item.value);
 
-                        widget.onChanged(item, _isSelected);
+                        widget.onChanged(item.value, _isSelected);
 
                         //This rebuilds the StatefulWidget to update the button's text
                         setState(() {});
@@ -77,13 +83,21 @@ class _MultiSelectDropdownState extends State<MultiSelectDropdown> {
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Row(
                           children: [
-                            _isSelected
-                                ? const Icon(Icons.check_box_outlined)
-                                : const Icon(Icons.check_box_outline_blank),
+                            item.isAdd
+                                ? const Padding(
+                                    padding: EdgeInsets.only(right: 8.0),
+                                    child: Icon(
+                                      Icons.add_circle_outline_rounded,
+                                      color: maroonColor,
+                                    ),
+                                  )
+                                : _isSelected
+                                    ? const Icon(Icons.check_box_outlined)
+                                    : const Icon(Icons.check_box_outline_blank),
                             const SizedBox(width: 16),
                             Flexible(
                               child: Text(
-                                item,
+                                item.value,
                                 style: const TextStyle(
                                   fontSize: 14,
                                 ),
@@ -99,6 +113,7 @@ class _MultiSelectDropdownState extends State<MultiSelectDropdown> {
           .toList(),
       dropdownMaxHeight: 250,
       onChanged: (value) {},
+      validator: (value) => widget.validator!(''),
       buttonWidth: 140,
       itemHeight: 40,
       itemPadding: EdgeInsets.zero,
