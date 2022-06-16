@@ -76,10 +76,42 @@ class BidsController extends GetxController {
     await firestore.collection('bids').doc(bidId).update({'is_approved': true});
   }
 
-  Future<void> setWinningBid(String itemId, String bidId) async {
-    await firestore.collection('items').doc(itemId).update({
+  Future<void> setWinningBid(Item item, String bidId) async {
+    await firestore.collection('items').doc(item.itemId).update({
       'winning_bid': bidId,
     });
+
+    try {
+      Bid winningBid = await firestore
+          .collection("bids")
+          .doc(bidId)
+          .get()
+          .then((doc) => Bid.fromJson(doc.data()!));
+      await winningBid.getBidderInfo();
+      sendEmailToWinner(item, winningBid);
+    } catch (error) {
+      log.i(error);
+    }
+  }
+
+  sendEmailToWinner(Item item, Bid winningBid) {
+    try {
+      function.httpsCallable('sendEmailToAuctionWinner').call({
+        "first_name": winningBid.bidderInfo?.fullName,
+        "item_id": item.itemId,
+        "item_title": item.title,
+        "item_condition": item.condition,
+        "asking_price": item.askingPrice,
+        "winner_email": winningBid.bidderInfo?.email,
+        "winning_bid": winningBid.amount,
+        "seller_name": user.fullName,
+        "seller_email": user.email
+      }).then((value) => log.i('Email sent to new winner'));
+    } on FirebaseFunctionsException catch (error) {
+      log.i(error.code);
+      log.i(error.details);
+      log.i(error.message);
+    }
   }
 
   Future<void> submitBid(String itemId) async {

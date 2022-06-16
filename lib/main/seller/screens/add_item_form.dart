@@ -1,5 +1,8 @@
 import 'dart:io';
 import 'package:bidding/components/_components.dart';
+import 'package:bidding/components/for_forms/custom_dropdown2.dart';
+import 'package:bidding/components/for_forms/multi_select_category_dp.dart';
+import 'package:bidding/components/for_forms/multi_select_dropdown.dart';
 import 'package:bidding/main/seller/controllers/add_item_controller.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/app_items.dart';
@@ -228,7 +231,7 @@ class _Content extends StatelessWidget {
                                             ),
                                             Expanded(
                                               flex: 2,
-                                              child: CustomDropdown(
+                                              child: CustomDropdown2(
                                                 hintText: 'Condition',
                                                 dropdownItems: condition,
                                                 onChanged: (item) =>
@@ -252,26 +255,30 @@ class _Content extends StatelessWidget {
                                         const SizedBox(
                                           height: 15,
                                         ),
-                                        SizedBox(
-                                          child: CategoryDropdown(
-                                            hintText: 'Category',
-                                            dropdownItems: category,
-                                            onChanged: (item) {
-                                              if (item ==
+                                        Obx(
+                                          () => MultiCategoryDropdown(
+                                            selectedItems: List<String>.from(
+                                                addItemController.category),
+                                            items: category,
+                                            onChanged: (value, selected) {
+                                              if (value ==
                                                   'Add Custom Category') {
                                                 showDialog(
+                                                    barrierDismissible: true,
                                                     context: context,
                                                     builder: (context) =>
                                                         addItemController
                                                             .inputDialog());
                                               } else {
-                                                addItemController.category
-                                                    .add(item!);
+                                                if (selected) {
+                                                  addItemController.category
+                                                      .remove(value);
+                                                } else {
+                                                  addItemController.category
+                                                      .add(value);
+                                                }
                                               }
                                             },
-                                            onSaved: (item) => addItemController
-                                                .category
-                                                .add(item!),
                                             validator: (value) {
                                               if (addItemController
                                                   .category.isEmpty) {

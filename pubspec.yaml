@@ -45,6 +45,7 @@ dev_dependencies:
   firebase_auth: ^3.3.17
   cloud_firestore: ^3.1.14
   firebase_storage: ^10.2.15
+  cloud_functions: ^3.2.16
   logger: ^1.0.0
   image_picker: ^0.8.5
   flutter_layout_grid: ^2.0.0
@@ -52,6 +53,7 @@ dev_dependencies:
   carousel_slider: ^4.1.1
   uuid: ^3.0.6
   data_table_2: ^2.2.1
+  dropdown_button2: ^1.4.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:bidding/components/_components.dart';
+import 'package:bidding/components/for_forms/custom_dropdown2.dart';
 import 'package:bidding/components/terms_and_condition.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/app_items.dart';
@@ -122,7 +123,7 @@ class SignupScreen extends StatelessWidget {
                                             children: <Widget>[
                                               SizedBox(
                                                 width: 160,
-                                                child: CustomDropdown(
+                                                child: CustomDropdown2(
                                                   hintText: 'Select user type',
                                                   dropdownItems: userType,
                                                   onChanged: (item) =>
