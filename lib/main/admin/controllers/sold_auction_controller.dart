@@ -1,3 +1,4 @@
+import 'package:bidding/models/_models.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/firebase.dart';
@@ -13,9 +14,15 @@ class SoldAuctionController extends GetxController {
 
   final RxInt soldItemCount = 0.obs;
 
+//filter Data
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController titleKeyword = TextEditingController();
+  final TextEditingController sellerKeyword = TextEditingController();
   final RxBool filtering = false.obs;
+
+  //Sort
+  final RxString sortOption = ''.obs;
+  final RxBool asc = true.obs;
 
   @override
   void onInit() {
@@ -49,31 +56,81 @@ class SoldAuctionController extends GetxController {
 
   get sCount => soldAuction.length;
 
+  get hasInputKeywords => titleKeyword.text != '' || sellerKeyword.text != '';
+
   void filterItems() {
     filtering.value = true;
-    filtered.clear();
-    if (titleKeyword.text == '') {
-      filtered.assignAll(soldAuction);
-    } else {
-      for (final item in soldAuction) {
-        if (item.title
+    final RxList<SoldItem> itemHolder = RxList.empty(growable: true);
+    itemHolder.assignAll(soldAuction);
+
+    //Search Item Title
+    if (titleKeyword.text != '') {
+      for (final item in List<SoldItem>.from(itemHolder)) {
+        if (!item.title
             .toLowerCase()
             .contains(titleKeyword.text.toLowerCase())) {
-          filtered.add(item);
+          itemHolder.remove(item);
         }
       }
     }
+
+    //Search Seller Name
+    if (sellerKeyword.text != '') {
+      for (final item in List<SoldItem>.from(itemHolder)) {
+        if (!item.sellerInfo!.fullName
+            .toString()
+            .toLowerCase()
+            .contains(sellerKeyword.text.toLowerCase())) {
+          itemHolder.remove(item);
+        }
+      }
+    }
+
+    filtered.clear();
+    filtered.assignAll(itemHolder);
   }
 
   void refreshItem() {
     filtering.value = false;
     formKey.currentState!.reset();
     titleKeyword.clear();
+    sellerKeyword.clear();
+
     filtered.clear();
     filtered.assignAll(soldAuction);
   }
 
   get emptySearchResult {
     return filtered.isEmpty && filtering.value;
+  }
+
+  //sort Items
+  void changeAscDesc() {
+    asc.value = !asc.value;
+  }
+
+  void sortItems() {
+    if (sortOption.value == 'Sold Date') {
+      sortBySoldDate();
+    } else if (sortOption.value == 'Item Title') {
+      sortByItemTitle();
+    }
+    return;
+  }
+
+  void sortBySoldDate() {
+    if (asc.value) {
+      filtered.sort((a, b) => a.dateSold.compareTo(b.dateSold));
+    } else {
+      filtered.sort((a, b) => b.dateSold.compareTo(a.dateSold));
+    }
+  }
+
+  void sortByItemTitle() {
+    if (asc.value) {
+      filtered.sort((a, b) => a.title.compareTo(b.title));
+    } else {
+      filtered.sort((a, b) => b.title.compareTo(a.title));
+    }
   }
 }

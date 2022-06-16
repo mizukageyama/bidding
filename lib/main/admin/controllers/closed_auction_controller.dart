@@ -18,7 +18,12 @@ class ClosedAuctionController extends GetxController {
   //Filter Data
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController titleKeyword = TextEditingController();
+  final TextEditingController sellerKeyword = TextEditingController();
   final RxBool filtering = false.obs;
+
+  //Sort
+  final RxString sortOption = ''.obs;
+  final RxBool asc = true.obs;
 
   @override
   void onInit() {
@@ -53,31 +58,73 @@ class ClosedAuctionController extends GetxController {
 
   get cCount => closedItems.length;
 
+  get hasInputKeywords => titleKeyword.text != '' || sellerKeyword.text != '';
+
   void filterItems() {
     filtering.value = true;
-    filtered.clear();
-    if (titleKeyword.text == '') {
-      filtered.assignAll(closedItems);
-    } else {
-      for (final item in closedItems) {
-        if (item.title
+    final RxList<Item> itemHolder = RxList.empty(growable: true);
+    itemHolder.assignAll(closedItems);
+
+    //Search Item Title
+    if (titleKeyword.text != '') {
+      for (final item in List<Item>.from(itemHolder)) {
+        if (!item.title
             .toLowerCase()
             .contains(titleKeyword.text.toLowerCase())) {
-          filtered.add(item);
+          itemHolder.remove(item);
         }
       }
     }
+
+    //Search Seller Name
+    if (sellerKeyword.text != '') {
+      for (final item in List<Item>.from(itemHolder)) {
+        if (!item.sellerInfo!.fullName
+            .toString()
+            .toLowerCase()
+            .contains(sellerKeyword.text.toLowerCase())) {
+          itemHolder.remove(item);
+        }
+      }
+    }
+
+    filtered.clear();
+    filtered.assignAll(itemHolder);
   }
 
   void refreshItem() {
     filtering.value = false;
     formKey.currentState!.reset();
     titleKeyword.clear();
+    sellerKeyword.clear();
     filtered.clear();
     filtered.assignAll(closedItems);
   }
 
   get emptySearchResult {
     return filtered.isEmpty && filtering.value;
+  }
+
+//sort Items
+
+  void changeAscDesc() {
+    asc.value = !asc.value;
+  }
+
+  void sortItems() {
+    if (sortOption.value == 'Winner Selected') {
+      sortByWinnerSelected();
+    } else if (sortOption.value == 'To Select') {
+      sortByWinnerSelected();
+    }
+    return;
+  }
+
+  void sortByWinnerSelected() {
+    if (asc.value) {
+      filtered.sort((a, b) => a.winningBid.compareTo(b.winningBid));
+    } else {
+      filtered.sort((a, b) => b.winningBid.compareTo(a.winningBid));
+    }
   }
 }
