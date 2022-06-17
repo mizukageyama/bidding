@@ -14,7 +14,12 @@ class SoldItemsController extends GetxController {
   //Filter Data
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController titleKeyword = TextEditingController();
+  final TextEditingController winnerKeyword = TextEditingController();
   final RxBool filtering = false.obs;
+
+  //Sort
+  final RxString sortOption = ''.obs;
+  final RxBool asc = true.obs;
 
   @override
   void onInit() {
@@ -22,10 +27,17 @@ class SoldItemsController extends GetxController {
 
     soldItems.bindStream(getSoldItems());
 
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 3), () {
       isDoneLoading.value = true;
       filtered.assignAll(soldItems);
     });
+    ever(soldItems, (soldItems) => _updateList());
+  }
+
+  void _updateList() {
+    if (!filtering.value) {
+      filtered.assignAll(soldItems);
+    }
   }
 
   Stream<List<SoldItem>> getSoldItems() {
@@ -42,18 +54,33 @@ class SoldItemsController extends GetxController {
     });
   }
 
+  get hasInputKeywords => titleKeyword.text != '' || winnerKeyword.text != '';
+
   //Search Functions
   void filterItems() {
     filtering.value = true;
-    filtered.clear();
-    if (titleKeyword.text == '') {
-      filtered.assignAll(soldItems);
-    } else {
-      for (final item in soldItems) {
-        if (item.title
+
+    final RxList<SoldItem> itemHolder = RxList.empty(growable: true);
+    itemHolder.assignAll(soldItems);
+
+    //Search Item Title
+    if (titleKeyword.text != '') {
+      for (final item in List<SoldItem>.from(itemHolder)) {
+        if (!item.title
             .toLowerCase()
             .contains(titleKeyword.text.toLowerCase())) {
-          filtered.add(item);
+          filtered.remove(item);
+        }
+      }
+    }
+    //Search Winner
+    if (winnerKeyword.text != '') {
+      for (final item in List<SoldItem>.from(itemHolder)) {
+        if (!item.buyerName
+            .toString()
+            .toLowerCase()
+            .contains(winnerKeyword.text.toLowerCase())) {
+          filtered.remove(item);
         }
       }
     }
@@ -63,11 +90,41 @@ class SoldItemsController extends GetxController {
     filtering.value = false;
     formKey.currentState!.reset();
     titleKeyword.clear();
+    winnerKeyword.clear();
     filtered.clear();
     filtered.assignAll(soldItems);
   }
 
   get emptySearchResult {
     return filtered.isEmpty && filtering.value;
+  }
+
+  void changeAscDesc() {
+    asc.value = !asc.value;
+  }
+
+  void sortItems() {
+    if (sortOption.value == 'Asking Price') {
+      sortByItemTitle();
+    } else if (sortOption.value == 'Closing Date') {
+      sortBySoldDate();
+    }
+    return;
+  }
+
+  void sortByItemTitle() {
+    if (asc.value) {
+      filtered.sort((a, b) => a.title.compareTo(b.title));
+    } else {
+      filtered.sort((a, b) => b.title.compareTo(a.title));
+    }
+  }
+
+  void sortBySoldDate() {
+    if (asc.value) {
+      filtered.sort((a, b) => a.dateSold.compareTo(b.dateSold));
+    } else {
+      filtered.sort((a, b) => b.dateSold.compareTo(a.dateSold));
+    }
   }
 }

@@ -1,6 +1,6 @@
 import 'package:bidding/components/_components.dart';
-import 'package:bidding/components/search_dropdown_field.dart';
-import 'package:bidding/components/search_text_field.dart';
+import 'package:bidding/components/for_forms/search_dropdown_field.dart';
+import 'package:bidding/components/for_forms/search_text_field.dart';
 import 'package:bidding/components/table_header_tile.dart';
 import 'package:bidding/components/table_header_tile_mobile.dart';
 import 'package:bidding/components/table_row_tile.dart';

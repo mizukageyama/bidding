@@ -189,7 +189,7 @@ class _Content extends StatelessWidget {
                 width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
                 child: SearchDropdownField(
                   topLabel: 'Sort by',
-                  items: const ['Closing Date', 'Item Title'],
+                  items: const ['Closing Date', 'Item Title', 'Price'],
                   onChanged: (value) {
                     itemListController.sortOption.value = value!;
                     itemListController.sortItems();

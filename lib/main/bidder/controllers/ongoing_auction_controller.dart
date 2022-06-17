@@ -129,6 +129,8 @@ class OngoingAuctionController extends GetxController {
       sortByDateClosing();
     } else if (sortOption.value == 'Item Title') {
       sortByDateItemTitle();
+    } else if (sortOption.value == 'Asking Price') {
+      sortByAskingPrice();
     }
     return;
   }
@@ -146,6 +148,14 @@ class OngoingAuctionController extends GetxController {
       filtered.sort((a, b) => a.title.compareTo(b.title));
     } else {
       filtered.sort((a, b) => b.title.compareTo(a.title));
+    }
+  }
+
+  void sortByAskingPrice() {
+    if (asc.value) {
+      filtered.sort((a, b) => a.askingPrice.compareTo(b.askingPrice));
+    } else {
+      filtered.sort((a, b) => b.askingPrice.compareTo(a.askingPrice));
     }
   }
 }

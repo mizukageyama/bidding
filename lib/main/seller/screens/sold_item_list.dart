@@ -1,5 +1,7 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/display_info_section.dart';
+import 'package:bidding/components/for_forms/search_dropdown_field.dart';
+import 'package:bidding/components/for_forms/search_text_field.dart';
 import 'package:bidding/components/table_header_tile.dart';
 import 'package:bidding/components/table_header_tile_mobile.dart';
 import 'package:bidding/components/table_row_tile.dart';
@@ -82,79 +84,134 @@ class _Content extends StatelessWidget {
   }
 
   Widget searchBar() {
-    return Row(
-      children: [
-        Expanded(
-          flex: 2,
-          child: Form(
-            key: soldItemsController.formKey,
-            child: InputField(
-              hideLabelTyping: true,
-              labelText: 'Search here...',
-              onChanged: (value) {
-                return;
-              },
+    return Form(
+      key: soldItemsController.formKey,
+      child: Wrap(
+        runSpacing: 20,
+        crossAxisAlignment: WrapCrossAlignment.end,
+        children: [
+          SizedBox(
+            width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
+            child: SearchTextField(
+              topLabel: 'Search by Title',
               onSaved: (value) =>
                   soldItemsController.titleKeyword.text = value!,
               controller: soldItemsController.titleKeyword,
             ),
           ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        SizedBox(
-          height: 45,
-          child: kIsWeb && Get.width >= 600
-              ? CustomButton(
-                  onTap: () {
-                    soldItemsController.filterItems();
+          const SizedBox(
+            width: 10,
+          ),
+          SizedBox(
+            width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
+            child: SearchTextField(
+              topLabel: 'Search by Winner',
+              onSaved: (value) =>
+                  soldItemsController.winnerKeyword.text = value!,
+              controller: soldItemsController.winnerKeyword,
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
+                child: SearchDropdownField(
+                  topLabel: 'Sort by',
+                  items: const ['Title', 'Date Sold'],
+                  onChanged: (value) {
+                    soldItemsController.sortOption.value = value!;
+                    soldItemsController.sortItems();
                   },
-                  text: 'Search',
-                  buttonColor: maroonColor,
-                  fontSize: 16,
-                )
-              : ElevatedButton(
-                  onPressed: () {
-                    soldItemsController.filterItems();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: maroonColor, //maroonColor
-                  ),
-                  child: const Icon(
-                    Icons.search,
-                    color: whiteColor,
+                ),
+              ),
+              Obx(
+                () => Visibility(
+                  visible: soldItemsController.sortOption.value != '',
+                  child: IconButton(
+                    onPressed: () {
+                      soldItemsController.changeAscDesc();
+                      soldItemsController.sortItems();
+                    },
+                    icon: Icon(
+                      soldItemsController.asc.value
+                          ? Icons.south_outlined
+                          : Icons.north_outlined,
+                      color: greyColor,
+                      size: 20,
+                    ),
                   ),
                 ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        SizedBox(
-          height: 45,
-          child: kIsWeb && Get.width >= 600
-              ? CustomButton(
-                  onTap: () {
-                    soldItemsController.refreshItem();
-                  },
-                  text: 'Refresh',
-                  buttonColor: maroonColor, //maroonColor
-                  fontSize: 16,
-                )
-              : ElevatedButton(
-                  onPressed: () {
-                    soldItemsController.refreshItem();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: maroonColor,
+              ),
+            ],
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: 45,
+                child: kIsWeb && Get.width >= 600
+                    ? CustomButton(
+                        onTap: () {
+                          if (soldItemsController.hasInputKeywords) {
+                            soldItemsController.filterItems();
+                          }
+                        },
+                        text: 'Search',
+                        buttonColor: maroonColor,
+                        fontSize: 16,
+                      )
+                    : ElevatedButton(
+                        onPressed: () {
+                          soldItemsController.filterItems();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: maroonColor, //maroonColor
+                        ),
+                        child: const Icon(
+                          Icons.search,
+                          color: whiteColor,
+                        ),
+                      ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          SizedBox(
+            height: 45,
+            child: kIsWeb && Get.width >= 600
+                ? CustomButton(
+                    onTap: () {
+                      soldItemsController.refreshItem();
+                    },
+                    text: 'Refresh',
+                    buttonColor: maroonColor, //maroonColor
+                    fontSize: 16,
+                  )
+                : ElevatedButton(
+                    onPressed: () {
+                      soldItemsController.refreshItem();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: maroonColor,
+                    ),
+                    child: const Icon(
+                      Icons.refresh,
+                      color: whiteColor,
+                    ),
                   ),
-                  child: const Icon(
-                    Icons.refresh,
-                    color: whiteColor,
-                  ),
-                ),
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -166,7 +223,7 @@ class _Content extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
             vertical: 25, horizontal: kIsWeb ? 25 : 3),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          //     crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             searchBar(),
             const SizedBox(

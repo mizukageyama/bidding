@@ -80,6 +80,7 @@ class OpenAuctionController extends GetxController {
     if (sellerKeyword.text != '') {
       for (final item in List<Item>.from(itemHolder)) {
         if (!item.sellerInfo!.fullName
+            .toString()
             .toLowerCase()
             .contains(sellerKeyword.text.toLowerCase())) {
           itemHolder.remove(item);
