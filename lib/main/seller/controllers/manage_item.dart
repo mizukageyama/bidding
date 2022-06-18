@@ -2,6 +2,7 @@ import 'dart:core';
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/for_forms/custom_dropdown2.dart';
 import 'package:bidding/main/seller/controllers/add_item_controller.dart';
+import 'package:bidding/models/bid_model.dart';
 import 'package:bidding/models/item_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
@@ -126,6 +127,56 @@ class ManageItem extends GetxController {
     return firestore.collection('items').doc(itemId).update({
       'end_date': endTimeStamp,
       'winning_bid': '',
+    });
+  }
+
+  Future<void> markItemAsSold(Item item) async {
+    showLoading();
+    final Bid winningBid = await firestore
+        .collection('bids')
+        .doc(item.winningBid)
+        .get()
+        .then((snapshot) => Bid.fromJson(snapshot.data()!));
+    markItemAsSoldBatch(item, winningBid);
+  }
+
+  //Marking Item as Sold in Batch
+  static Future<void> markItemAsSoldBatch(Item item, Bid winningBid) async {
+    final batch = firestore.batch();
+
+    final soldItemRef = firestore.collection('sold_items').doc(item.itemId);
+    batch.set(soldItemRef, {
+      'item_id': item.itemId,
+      'seller_id': item.sellerId,
+      'title': item.title,
+      'description': item.description,
+      'asking_price': item.askingPrice,
+      'brand': item.brand,
+      'date_posted': item.datePosted,
+      'end_date': item.endDate,
+      'date_sold': Timestamp.now(),
+      'category': List<String>.from(item.category),
+      'condition': item.condition,
+      'sold_at': winningBid.amount,
+      'buyer_id': winningBid.bidderId,
+      'images': List<String>.from(item.images),
+    });
+
+    final itemRef = firestore.collection('items').doc(item.itemId);
+    batch.delete(itemRef);
+
+    // Commit the batch
+    batch.commit().then((_) async {
+      dismissDialog();
+      showSimpleDialog(
+          title: 'Item Marked as Sold',
+          description: 'The item is transferred to your sold items.');
+    }).catchError((onError) {
+      dismissDialog();
+      showErrorDialog(
+          errorTitle: 'An error occured',
+          errorDescription:
+              'Something went wrong updating your item. Please try again later.');
     });
   }
 
