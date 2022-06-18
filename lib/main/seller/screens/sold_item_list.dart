@@ -215,7 +215,6 @@ class _Content extends StatelessWidget {
     );
   }
 
-  //Sold DataTable
   Widget showSoldItems(BuildContext context) {
     if (soldItemsController.isDoneLoading.value &&
         soldItemsController.soldItems.isNotEmpty) {
@@ -223,7 +222,7 @@ class _Content extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
             vertical: 25, horizontal: kIsWeb ? 25 : 3),
         child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             searchBar(),
             const SizedBox(
