@@ -121,7 +121,7 @@ class _Content extends StatelessWidget {
                 width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
                 child: SearchDropdownField(
                   topLabel: 'Sort by',
-                  items: const ['To Select', 'Winner Selected'],
+                  items: const ['Winner Selected', 'To Select'],
                   onChanged: (value) {
                     _closedAuction.sortOption.value = value!;
                     _closedAuction.sortItems();
@@ -221,7 +221,7 @@ class _Content extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
             vertical: 25, horizontal: kIsWeb ? 25 : 3),
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             searchBar(),
             const SizedBox(

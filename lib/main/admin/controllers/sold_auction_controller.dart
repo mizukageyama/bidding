@@ -110,10 +110,10 @@ class SoldAuctionController extends GetxController {
   }
 
   void sortItems() {
-    if (sortOption.value == 'Sold Date') {
-      sortBySoldDate();
-    } else if (sortOption.value == 'Item Title') {
+    if (sortOption.value == 'Item Title') {
       sortByItemTitle();
+    } else if (sortOption.value == 'Date Sold') {
+      sortBySoldDate();
     }
     return;
   }

@@ -104,9 +104,9 @@ class SoldItemsController extends GetxController {
   }
 
   void sortItems() {
-    if (sortOption.value == 'Asking Price') {
+    if (sortOption.value == 'Item Title') {
       sortByItemTitle();
-    } else if (sortOption.value == 'Closing Date') {
+    } else if (sortOption.value == 'Date Sold') {
       sortBySoldDate();
     }
     return;

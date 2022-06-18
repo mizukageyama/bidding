@@ -122,7 +122,7 @@ class _Content extends StatelessWidget {
                 width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
                 child: SearchDropdownField(
                   topLabel: 'Sort by',
-                  items: const ['Title', 'Date Sold'],
+                  items: const ['Item Title', 'Date Sold'],
                   onChanged: (value) {
                     soldItemsController.sortOption.value = value!;
                     soldItemsController.sortItems();
@@ -287,7 +287,7 @@ class _Content extends StatelessWidget {
     } else if (soldItemsController.isDoneLoading.value &&
         soldItemsController.soldItems.isEmpty) {
       return const Center(
-          child: InfoDisplay(message: 'No ongoing auctions at the moment.'));
+          child: InfoDisplay(message: 'You have no Sold items yet.'));
     }
     return const Center(
       child: SizedBox(
