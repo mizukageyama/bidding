@@ -94,13 +94,14 @@ class BidsController extends GetxController {
     }
   }
 
-  sendEmailToWinner(Item item, Bid winningBid) {
+  sendEmailToWinner(Item item, Bid winningBid) async {
     try {
-      function.httpsCallable('sendEmailToAuctionWinner').call({
+      await function.httpsCallable('sendEmailToAuctionWinner').call({
         "first_name": winningBid.bidderInfo?.fullName,
         "item_id": item.itemId,
         "item_title": item.title,
         "item_condition": item.condition,
+        "item_category": item.category.join(', '),
         "asking_price": item.askingPrice,
         "winner_email": winningBid.bidderInfo?.email,
         "winning_bid": winningBid.amount,
@@ -108,9 +109,9 @@ class BidsController extends GetxController {
         "seller_email": user.email
       }).then((value) => log.i('Email sent to new winner'));
     } on FirebaseFunctionsException catch (error) {
-      log.i(error.code);
-      log.i(error.details);
-      log.i(error.message);
+      print(error);
+    } catch (error) {
+      print(error);
     }
   }
 
