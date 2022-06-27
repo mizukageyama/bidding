@@ -1,10 +1,12 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/main/seller/controllers/auctioned_items_controller.dart';
+import 'package:bidding/main/seller/controllers/manage_item.dart';
 import 'package:bidding/models/item_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
+import 'package:bidding/shared/services/dialogs.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -43,48 +45,67 @@ class _Content extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.height,
-      width: Get.width,
+      height: context.height,
+      width: context.width,
       color: const Color(0xFFF5F5F5),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          kIsWeb && Get.width >= 600
-              ? Container(
-                  color: maroonColor,
-                  height: 55,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () => Get.back(),
-                        child: const Icon(
-                          Icons.arrow_back_outlined,
+          Container(
+            color: maroonColor,
+            height: 55,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: () => Get.back(),
+                      child: const Icon(
+                        Icons.arrow_back_outlined,
+                        color: whiteColor,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    const Text(
+                      'Bid History',
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
                           color: whiteColor,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      const Text(
-                        'Bid History',
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            color: whiteColor,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15),
-                      ),
-                    ],
-                  ),
-                )
-              : const SizedBox(
-                  height: 0,
-                  width: 0,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15),
+                    ),
+                  ],
                 ),
+                CustomButton(
+                  onTap: () {
+                    showConfirmationDialog(
+                        dialogTitle: 'Are you sure?',
+                        dialogCaption:
+                            'Please select "yes" to mark this item as sold. Otherwise, select "no"',
+                        onYesTap: () async {
+                          await ManageItem.markItemAsSold(getItem());
+                        },
+                        onNoTap: () => dismissDialog());
+                  },
+                  text: 'Mark as Sold',
+                  buttonColor: fadeColor,
+                  fontColor: indigoColor,
+                  fontSize: 14,
+                ),
+              ],
+            ),
+          ),
           Flexible(
             child: Padding(
               padding: const EdgeInsets.all(kIsWeb ? 20 : 12),

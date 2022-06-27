@@ -41,13 +41,9 @@ class _Content extends StatelessWidget {
   final AuctionedItemController aController = Get.find();
 
   Item getItem() {
-    List<Item> items = aController.itemList
-        .where((itemElement) => itemElement.itemId == id)
-        .toList();
-    if (items.isEmpty) {
-      return item;
-    }
-    return items[0];
+    List<Item> item =
+        aController.itemList.where((item) => item.itemId == id).toList();
+    return item[0];
   }
 
   @override
@@ -61,44 +57,40 @@ class _Content extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          kIsWeb && Get.width >= 600
-              ? Container(
-                  color: maroonColor,
-                  height: 55,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () => Get.back(),
-                        child: const Icon(
-                          Icons.arrow_back_outlined,
-                          color: whiteColor,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Flexible(
-                        child: Text(
-                          'Auctioned Items > ${item.title}',
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(
-                            color: whiteColor,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                    ],
+          Container(
+            color: maroonColor,
+            height: 55,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () => Get.back(),
+                  child: const Icon(
+                    Icons.arrow_back_outlined,
+                    color: whiteColor,
                   ),
-                )
-              : const SizedBox(
-                  height: 0,
                 ),
+                const SizedBox(
+                  width: 15,
+                ),
+                Flexible(
+                  child: Text(
+                    'Auctioned Items > ${item.title}',
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(
+                      color: whiteColor,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
           kIsWeb && Get.width >= 600
               ? Expanded(
                   child: ListView(
@@ -134,10 +126,12 @@ class _Content extends StatelessWidget {
                       LeftColumn(
                         images: item.images,
                       ),
-                      RightColumn(
-                          item: getItem(),
-                          controller: bidsController,
-                          isBidder: false)
+                      Obx(
+                        () => RightColumn(
+                            item: getItem(),
+                            controller: bidsController,
+                            isBidder: false),
+                      )
                     ],
                   ),
                 ),

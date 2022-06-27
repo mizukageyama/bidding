@@ -91,7 +91,11 @@ class _Content extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.end,
         children: [
           SizedBox(
-            width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
+            width: kIsWeb
+                ? Get.width >= 600 && Get.width < 900
+                    ? 200
+                    : 250
+                : Get.width / 2,
             child: SearchTextField(
               topLabel: 'Search by Title',
               onSaved: (value) =>
@@ -103,7 +107,11 @@ class _Content extends StatelessWidget {
             width: 10,
           ),
           SizedBox(
-            width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
+            width: kIsWeb
+                ? Get.width >= 600 && Get.width < 900
+                    ? 200
+                    : 250
+                : Get.width / 2,
             child: SearchTextField(
               topLabel: 'Search by Winner',
               onSaved: (value) =>
@@ -119,7 +127,11 @@ class _Content extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               SizedBox(
-                width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
+                width: kIsWeb
+                    ? Get.width >= 600 && Get.width < 900
+                        ? 200
+                        : 250
+                    : Get.width / 2,
                 child: SearchDropdownField(
                   topLabel: 'Sort by',
                   items: const ['Item Title', 'Date Sold'],
@@ -220,7 +232,7 @@ class _Content extends StatelessWidget {
         soldItemsController.soldItems.isNotEmpty) {
       return Padding(
         padding: const EdgeInsets.symmetric(
-            vertical: 25, horizontal: kIsWeb ? 25 : 3),
+            vertical: 25, horizontal: kIsWeb ? 25 : 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -396,43 +408,45 @@ class _Content extends StatelessWidget {
                       imageUrl: item.images[0],
                       isContained: false,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Item #',
-                              style: robotoRegular.copyWith(
-                                  color: blackColor, fontSize: 15),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              item.itemId,
-                              style: robotoRegular.copyWith(
-                                  color: greyColor,
-                                  fontSize: kIsWeb ? 13 : 11.5),
-                              textAlign: TextAlign.justify,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'Buyer',
-                              style: robotoRegular.copyWith(
-                                  color: blackColor, fontSize: 15),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              item.buyerName,
-                              style: robotoRegular.copyWith(
-                                  color: greyColor, fontSize: 13),
-                            ),
-                          ]),
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Item #',
+                                style: robotoRegular.copyWith(
+                                    color: blackColor, fontSize: 15),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                item.itemId,
+                                style: robotoRegular.copyWith(
+                                    color: greyColor,
+                                    fontSize: kIsWeb ? 13 : 11.5),
+                                textAlign: TextAlign.justify,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Buyer',
+                                style: robotoRegular.copyWith(
+                                    color: blackColor, fontSize: 15),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                item.buyerName,
+                                style: robotoRegular.copyWith(
+                                    color: greyColor, fontSize: 13),
+                              ),
+                            ]),
+                      ),
                     ),
                   ],
                 ),

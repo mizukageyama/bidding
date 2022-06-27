@@ -2,6 +2,8 @@ import 'dart:core';
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/for_forms/custom_dropdown2.dart';
 import 'package:bidding/main/seller/controllers/add_item_controller.dart';
+import 'package:bidding/main/seller/controllers/seller_side_menu_controller.dart';
+import 'package:bidding/main/seller/screens/sold_item_list.dart';
 import 'package:bidding/models/bid_model.dart';
 import 'package:bidding/models/item_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
@@ -130,7 +132,7 @@ class ManageItem extends GetxController {
     });
   }
 
-  Future<void> markItemAsSold(Item item) async {
+  static Future<void> markItemAsSold(Item item) async {
     showLoading();
     final Bid winningBid = await firestore
         .collection('bids')
@@ -170,7 +172,12 @@ class ManageItem extends GetxController {
       dismissDialog();
       showSimpleDialog(
           title: 'Item Marked as Sold',
-          description: 'The item is transferred to your sold items.');
+          description: 'The item is transferred to your sold items.',
+          onTapFunc: () {
+            SellerSideMenuController menu = Get.find();
+            menu.changeActiveItem('Sold Items');
+            Get.to(() => const SoldItemList());
+          });
     }).catchError((onError) {
       dismissDialog();
       showErrorDialog(
@@ -310,8 +317,8 @@ class ManageItem extends GetxController {
     final RxBool showValidation = false.obs;
     return SimpleDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+        contentPadding: const EdgeInsets.symmetric(
+            vertical: 20, horizontal: kIsWeb ? 30 : 25),
         children: [
           Column(
             children: [
@@ -447,7 +454,7 @@ class ManageItem extends GetxController {
         }
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
+        padding: const EdgeInsets.symmetric(horizontal: kIsWeb ? 15 : 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -457,11 +464,13 @@ class ManageItem extends GetxController {
               color: blackColor,
             ),
             const SizedBox(
-              width: 10,
+              width: kIsWeb ? 10 : 5,
             ),
-            Text(
-              'End Date of Auction',
-              style: robotoBold.copyWith(color: blackColor, fontSize: 14),
+            Flexible(
+              child: Text(
+                'End Date of Auction',
+                style: robotoBold.copyWith(color: blackColor, fontSize: 14),
+              ),
             )
           ],
         ),
@@ -483,7 +492,7 @@ class ManageItem extends GetxController {
         }
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
+        padding: const EdgeInsets.symmetric(horizontal: kIsWeb ? 15 : 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -493,11 +502,13 @@ class ManageItem extends GetxController {
               color: blackColor,
             ),
             const SizedBox(
-              width: 10,
+              width: kIsWeb ? 10 : 5,
             ),
-            Text(
-              'End Time of Auction',
-              style: robotoBold.copyWith(color: blackColor, fontSize: 14),
+            Flexible(
+              child: Text(
+                'End Time of Auction',
+                style: robotoBold.copyWith(color: blackColor, fontSize: 14),
+              ),
             )
           ],
         ),

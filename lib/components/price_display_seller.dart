@@ -38,20 +38,22 @@ class DisplayPriceSeller extends StatelessWidget {
               const SizedBox(
                 width: 30,
               ),
-              InkWell(
-                onTap: () {
-                  Get.to(
-                      () => BidListScreen(
-                            id: item.itemId,
-                          ),
-                      transition: Transition.noTransition);
-                },
-                child: Text(
-                  'View Bids',
-                  style: robotoMedium.copyWith(
-                      color: maroonColor,
-                      decoration: TextDecoration.underline,
-                      fontSize: 16),
+              Flexible(
+                child: InkWell(
+                  onTap: () {
+                    Get.to(
+                        () => BidListScreen(
+                              id: item.itemId,
+                            ),
+                        transition: Transition.noTransition);
+                  },
+                  child: Text(
+                    'View Bids',
+                    style: robotoMedium.copyWith(
+                        color: maroonColor,
+                        decoration: TextDecoration.underline,
+                        fontSize: 16),
+                  ),
                 ),
               )
             ],
@@ -69,20 +71,22 @@ class DisplayPriceSeller extends StatelessWidget {
             const SizedBox(
               width: 30,
             ),
-            InkWell(
-              onTap: () {
-                Get.to(
-                    () => BidListScreen(
-                          id: item.itemId,
-                        ),
-                    transition: Transition.noTransition);
-              },
-              child: Text(
-                'View Bids',
-                style: robotoMedium.copyWith(
-                    color: maroonColor,
-                    decoration: TextDecoration.underline,
-                    fontSize: 16),
+            Flexible(
+              child: InkWell(
+                onTap: () {
+                  Get.to(
+                      () => BidListScreen(
+                            id: item.itemId,
+                          ),
+                      transition: Transition.noTransition);
+                },
+                child: Text(
+                  'View Bids',
+                  style: robotoMedium.copyWith(
+                      color: maroonColor,
+                      decoration: TextDecoration.underline,
+                      fontSize: 16),
+                ),
               ),
             )
           ],
