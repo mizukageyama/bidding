@@ -7,6 +7,7 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:bidding/shared/services/dialogs.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -275,9 +276,46 @@ class _RightColumn extends StatelessWidget {
             ],
           ),
           const SizedBox(
-            height: 5,
+            height: 15,
           ),
-          const Divider(),
+          ElevatedButton(
+              onPressed: () async {
+                showLoading();
+                try {
+                  // final pdfFile = await PdfService.generate(
+                  //   item: item,
+                  //   bids: bidsController.bids,
+                  // );
+                  dismissDialog();
+                  //PdfApi.openFile(pdfFile);
+                } catch (error) {
+                  dismissDialog();
+                  showErrorDialog(
+                    errorTitle: 'Something went wrong',
+                    errorDescription: 'Please try again later',
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                primary: maroonColor,
+              ),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.picture_as_pdf_outlined,
+                      color: whiteColor,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      'Generate Report',
+                      textAlign: TextAlign.center,
+                    ),
+                  ])),
+          const SizedBox(
+            height: 15,
+          ),
         ],
       ),
     );
