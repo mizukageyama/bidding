@@ -2,8 +2,10 @@ import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/display_info_section.dart';
 import 'package:bidding/main/seller/controllers/manage_item.dart';
 import 'package:bidding/models/_models.dart';
+import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:bidding/shared/services/dialogs.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:bidding/shared/services/validator.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +52,15 @@ class RightColumnContent extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () async {
-                      await ManageItem.deleteUsingBatch(item.itemId);
+                      showConfirmationDialog(
+                          dialogTitle:
+                              'Are you sure you want to delete this item?',
+                          dialogCaption:
+                              'Please select "yes" to mark this item as sold. Otherwise, select "no"',
+                          onYesTap: () async {
+                            await ManageItem.deleteUsingBatch(item.itemId);
+                          },
+                          onNoTap: () => dismissDialog());
                     },
                     child: const Icon(
                       Icons.delete,

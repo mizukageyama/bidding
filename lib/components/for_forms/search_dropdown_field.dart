@@ -30,18 +30,21 @@ class SearchDropdownField extends StatelessWidget {
         const SizedBox(
           height: 5,
         ),
-        CustomDropdown2(
-          hintText: 'Select',
-          dropdownItems: items,
-          onChanged: (item) {
-            onChanged!(item);
-          },
-          onSaved: (item) {
-            onChanged!(item);
-          },
-          validator: (value) {
-            return null;
-          },
+        SizedBox(
+          height: 48,
+          child: CustomDropdown2(
+            hintText: 'Select',
+            dropdownItems: items,
+            onChanged: (item) {
+              onChanged!(item);
+            },
+            onSaved: (item) {
+              onChanged!(item);
+            },
+            validator: (value) {
+              return null;
+            },
+          ),
         ),
       ],
     );

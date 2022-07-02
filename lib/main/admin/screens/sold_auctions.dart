@@ -91,7 +91,11 @@ class _Content extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.end,
         children: [
           SizedBox(
-            width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
+            width: kIsWeb
+                ? Get.width >= 600 && Get.width < 900
+                    ? 200
+                    : 250
+                : Get.width / 2,
             child: SearchTextField(
               topLabel: 'Search by Title',
               onSaved: (value) => _soldAuction.titleKeyword.text = value!,
@@ -102,7 +106,11 @@ class _Content extends StatelessWidget {
             width: 10,
           ),
           SizedBox(
-            width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
+            width: kIsWeb
+                ? Get.width >= 600 && Get.width < 900
+                    ? 200
+                    : 250
+                : Get.width / 2,
             child: SearchTextField(
               topLabel: 'Search by Seller',
               onSaved: (value) => _soldAuction.sellerKeyword.text = value!,
@@ -120,7 +128,11 @@ class _Content extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               SizedBox(
-                width: Get.width >= 600 && Get.width < 900 ? 200 : 250,
+                width: kIsWeb
+                    ? Get.width >= 600 && Get.width < 900
+                        ? 200
+                        : 250
+                    : Get.width / 2,
                 child: SearchDropdownField(
                   topLabel: 'Sort by',
                   items: const ['Item Title', 'Date Sold'],
@@ -227,7 +239,7 @@ class _Content extends StatelessWidget {
         _soldAuction.soldAuction.isNotEmpty) {
       return Padding(
         padding: const EdgeInsets.symmetric(
-            vertical: 25, horizontal: kIsWeb ? 25 : 3),
+            vertical: 25, horizontal: kIsWeb ? 25 : 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

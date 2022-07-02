@@ -1,3 +1,4 @@
+import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends Container {
@@ -5,6 +6,7 @@ class CustomButton extends Container {
     Key? key,
     required this.onTap,
     required this.text,
+    this.fontColor = whiteColor,
     this.buttonPadding =
         const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
     this.splashColor = Colors.transparent,
@@ -17,6 +19,7 @@ class CustomButton extends Container {
   final Color? buttonColor;
   final Color splashColor;
   final double? fontSize;
+  final Color? fontColor;
   final EdgeInsetsGeometry? buttonPadding;
 
   @override
@@ -35,7 +38,7 @@ class CustomButton extends Container {
           fontFamily: 'Roboto',
           fontWeight: FontWeight.w600,
           fontSize: fontSize,
-          color: Colors.white,
+          color: fontColor,
         ),
       ),
     );

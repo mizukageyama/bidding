@@ -77,40 +77,57 @@ class BidsController extends GetxController {
   }
 
   Future<void> setWinningBid(Item item, String bidId) async {
+    showLoading();
     await firestore.collection('items').doc(item.itemId).update({
       'winning_bid': bidId,
+    }).then((value) async {
+      //TO DO: send notification to the winner
+      //Not sure kung upon setting winner kay mag email na ba
+      try {
+        Bid winningBid = await firestore
+            .collection("bids")
+            .doc(bidId)
+            .get()
+            .then((doc) => Bid.fromJson(doc.data()!));
+        await winningBid.getBidderInfo();
+        sendEmailToWinner(item, winningBid);
+        dismissDialog();
+      } catch (error) {
+        dismissDialog();
+        showErrorDialog(
+            errorTitle: 'Something went wrong',
+            errorDescription:
+                'An error occured while sending email to the auction winner');
+        log.i(error);
+      }
+    }).catchError((onError) {
+      dismissDialog();
+      showErrorDialog(
+          errorTitle: 'Something went wrong',
+          errorDescription: 'An error occured while setting winner');
+      log.i(onError);
     });
-
-    try {
-      Bid winningBid = await firestore
-          .collection("bids")
-          .doc(bidId)
-          .get()
-          .then((doc) => Bid.fromJson(doc.data()!));
-      await winningBid.getBidderInfo();
-      sendEmailToWinner(item, winningBid);
-    } catch (error) {
-      log.i(error);
-    }
   }
 
-  sendEmailToWinner(Item item, Bid winningBid) {
+  Future<void> sendEmailToWinner(Item item, Bid winningBid) async {
     try {
-      function.httpsCallable('sendEmailToAuctionWinner').call({
+      await function.httpsCallable('sendEmailToAuctionWinner').call({
         "first_name": winningBid.bidderInfo?.fullName,
         "item_id": item.itemId,
         "item_title": item.title,
         "item_condition": item.condition,
+        "item_category": item.category.join(', '),
         "asking_price": item.askingPrice,
         "winner_email": winningBid.bidderInfo?.email,
         "winning_bid": winningBid.amount,
         "seller_name": user.fullName,
-        "seller_email": user.email
+        "seller_email": user.email,
+        "item_photo": item.images[0],
       }).then((value) => log.i('Email sent to new winner'));
     } on FirebaseFunctionsException catch (error) {
-      log.i(error.code);
-      log.i(error.details);
-      log.i(error.message);
+      print(error);
+    } catch (error) {
+      print(error);
     }
   }
 
