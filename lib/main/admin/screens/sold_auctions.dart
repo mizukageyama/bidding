@@ -214,6 +214,9 @@ class _Content extends StatelessWidget {
                     ),
                   ),
           ),
+          const SizedBox(
+            width: 20,
+          ),
         ],
       ),
     );
@@ -230,7 +233,7 @@ class _Content extends StatelessWidget {
           children: [
             searchBar(),
             const SizedBox(
-              height: 24,
+              height: 5,
             ),
             Flexible(
               child: Container(
@@ -388,7 +391,7 @@ class _Content extends StatelessWidget {
               color: maroonColor,
             ),
           ),
-        )
+        ),
       ],
     );
   }

@@ -2,6 +2,8 @@ import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/display_info_section.dart';
 import 'package:bidding/components/for_forms/search_dropdown_field.dart';
 import 'package:bidding/components/for_forms/search_text_field.dart';
+import 'package:bidding/components/pdf_generate_invoice.dart';
+import 'package:bidding/components/pdf_open.dart';
 import 'package:bidding/components/table_header_tile.dart';
 import 'package:bidding/components/table_header_tile_mobile.dart';
 import 'package:bidding/components/table_row_tile.dart';
@@ -9,11 +11,14 @@ import 'package:bidding/components/table_row_tile_mobile.dart';
 import 'package:bidding/main/seller/controllers/sold_items_controller.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import '../../../models/_models.dart';
 
 class SoldItemList extends StatelessWidget {
   const SoldItemList({Key? key}) : super(key: key);
@@ -36,6 +41,7 @@ class SoldItemList extends StatelessWidget {
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
   final SoldItemsController soldItemsController = Get.find();
+  final BidsController bidsController = Get.put(BidsController());
 
   @override
   Widget build(BuildContext context) {
@@ -254,12 +260,14 @@ class _Content extends StatelessWidget {
                                     ConnectionState.done) {
                                   if (kIsWeb && context.width >= 900) {
                                     return row(
-                                        soldItemsController.filtered[index],
-                                        context);
+                                      soldItemsController.filtered[index],
+                                      context,
+                                    );
                                   }
                                   return rowMobile(
-                                      soldItemsController.filtered[index],
-                                      context);
+                                    soldItemsController.filtered[index],
+                                    context,
+                                  );
                                 }
                                 return const SizedBox(
                                   height: 0,
@@ -358,7 +366,10 @@ class _Content extends StatelessWidget {
         Text('₱ ${Format.amountShort(item.askingPrice)}'),
         Text('₱ ${Format.amountShort(item.soldAt)}'),
         InkWell(
-          onTap: () => showSoldItemInfo(context, item),
+          onTap: () => showSoldItemInfo(
+            context,
+            item,
+          ),
           child: Text(
             'View',
             style: robotoMedium.copyWith(
@@ -374,6 +385,7 @@ class _Content extends StatelessWidget {
     showDialog(
         context: context,
         builder: (context) {
+          bidsController.bindBidList(item.itemId);
           return SimpleDialog(
               contentPadding: EdgeInsets.symmetric(
                 vertical: 30,
@@ -544,6 +556,32 @@ class _Content extends StatelessWidget {
                     )
                   ],
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                    onPressed: () async {
+                      final pdfFile =
+                          await PdfInvoice.generate(bidsController.bids, item);
+                      PdfApi.openFile(pdfFile);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: maroonColor,
+                    ),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Icons.picture_as_pdf_outlined,
+                            color: whiteColor,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            'Generate Invoice',
+                            textAlign: TextAlign.center,
+                          ),
+                        ])),
               ]);
         });
   }
