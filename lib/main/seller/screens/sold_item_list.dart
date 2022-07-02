@@ -1,24 +1,15 @@
 import 'package:bidding/components/_components.dart';
-import 'package:bidding/components/display_info_section.dart';
-import 'package:bidding/components/for_forms/search_dropdown_field.dart';
-import 'package:bidding/components/for_forms/search_text_field.dart';
-import 'package:bidding/components/pdf_generate_invoice.dart';
-import 'package:bidding/components/pdf_open.dart';
-import 'package:bidding/components/table_header_tile.dart';
-import 'package:bidding/components/table_header_tile_mobile.dart';
-import 'package:bidding/components/table_row_tile.dart';
-import 'package:bidding/components/table_row_tile_mobile.dart';
 import 'package:bidding/main/seller/controllers/sold_items_controller.dart';
+import 'package:bidding/models/bid_model.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
+import 'package:bidding/shared/services/dialogs.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import '../../../models/_models.dart';
 
 class SoldItemList extends StatelessWidget {
   const SoldItemList({Key? key}) : super(key: key);
@@ -352,7 +343,6 @@ class _Content extends StatelessWidget {
       rowData: [
         ImageView(
           imageUrl: item.images[0],
-          isContained: false,
         ),
         InkWell(
           onTap: () => showSoldItemInfo(context, item),
@@ -374,7 +364,6 @@ class _Content extends StatelessWidget {
       rowData: [
         ImageView(
           imageUrl: item.images[0],
-          isContained: false,
         ),
         Text(item.title),
         Text(item.buyerName),
@@ -399,10 +388,10 @@ class _Content extends StatelessWidget {
   }
 
   void showSoldItemInfo(BuildContext context, SoldItem item) {
+    bidsController.bindBidList(item.itemId);
     showDialog(
         context: context,
         builder: (context) {
-          bidsController.bindBidList(item.itemId);
           return SimpleDialog(
               contentPadding: EdgeInsets.symmetric(
                 vertical: 30,
@@ -423,7 +412,6 @@ class _Content extends StatelessWidget {
                       width: 90,
                       height: 90,
                       imageUrl: item.images[0],
-                      isContained: false,
                     ),
                     Flexible(
                       child: Padding(
@@ -580,9 +568,21 @@ class _Content extends StatelessWidget {
                 ),
                 ElevatedButton(
                     onPressed: () async {
-                      final pdfFile =
-                          await PdfInvoice.generate(bidsController.bids, item);
-                      PdfApi.openFile(pdfFile);
+                      showLoading();
+                      try {
+                        final pdfFile = await PdfService.generate(
+                          item: item,
+                          bids: bidsController.bids,
+                        );
+                        dismissDialog();
+                        PdfApi.openFile(pdfFile);
+                      } catch (error) {
+                        dismissDialog();
+                        showErrorDialog(
+                          errorTitle: 'Something went wrong',
+                          errorDescription: 'Please try again later',
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       primary: maroonColor,
@@ -597,7 +597,7 @@ class _Content extends StatelessWidget {
                           ),
                           SizedBox(width: 5),
                           Text(
-                            'Generate Invoice',
+                            'Generate Report',
                             textAlign: TextAlign.center,
                           ),
                         ])),

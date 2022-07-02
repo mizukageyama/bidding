@@ -1,10 +1,4 @@
 import 'package:bidding/components/_components.dart';
-import 'package:bidding/components/for_forms/search_dropdown_field.dart';
-import 'package:bidding/components/for_forms/search_text_field.dart';
-import 'package:bidding/components/table_header_tile.dart';
-import 'package:bidding/components/table_header_tile_mobile.dart';
-import 'package:bidding/components/table_row_tile.dart';
-import 'package:bidding/components/table_row_tile_mobile.dart';
 import 'package:bidding/main/admin/controllers/sold_auction_controller.dart';
 import 'package:bidding/main/admin/side_menu.dart';
 import 'package:bidding/main/admin/screens/sold_view.dart';
@@ -40,8 +34,8 @@ class _Content extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.height,
-      width: Get.width,
+      height: context.height,
+      width: context.width,
       color: const Color(0xFFF5F5F5),
       child: Column(
         children: [
@@ -194,40 +188,34 @@ class _Content extends StatelessWidget {
                         ),
                       ),
               ),
-            ],
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          SizedBox(
-            height: 45,
-            child: kIsWeb && Get.width >= 600
-                ? CustomButton(
-                    onTap: () {
-                      _soldAuction.refreshItem();
-                    },
-                    text: 'Refresh',
-                    buttonColor: maroonColor,
-                    fontSize: 16,
-                  )
-                : ElevatedButton(
-                    onPressed: () {
-                      _soldAuction.refreshItem();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: maroonColor, //maroonColor
-                    ),
-                    child: const Align(
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.refresh,
-                        color: whiteColor,
+              const SizedBox(
+                width: 10,
+              ),
+              SizedBox(
+                height: 45,
+                child: kIsWeb && Get.width >= 600
+                    ? CustomButton(
+                        onTap: () {
+                          _soldAuction.refreshItem();
+                        },
+                        text: 'Refresh',
+                        buttonColor: maroonColor,
+                        fontSize: 16,
+                      )
+                    : ElevatedButton(
+                        onPressed: () {
+                          _soldAuction.refreshItem();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: maroonColor,
+                        ),
+                        child: const Icon(
+                          Icons.refresh,
+                          color: whiteColor,
+                        ),
                       ),
-                    ),
-                  ),
-          ),
-          const SizedBox(
-            width: 20,
+              ),
+            ],
           ),
         ],
       ),
@@ -237,56 +225,105 @@ class _Content extends StatelessWidget {
   Widget showTableReport(BuildContext context) {
     if (_soldAuction.isDoneLoading.value &&
         _soldAuction.soldAuction.isNotEmpty) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(
-            vertical: 25, horizontal: kIsWeb ? 25 : 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            searchBar(),
-            const SizedBox(
-              height: 5,
-            ),
-            Flexible(
-              child: Container(
-                height: Get.height,
-                color: whiteColor,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 5),
-                      child: kIsWeb && context.width >= 900
-                          ? header()
-                          : headerMobile(),
-                    ),
-                    Flexible(
-                      child: ListView.builder(
-                        itemCount: _soldAuction.filtered.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          if (kIsWeb && context.width >= 900) {
-                            return row(_soldAuction.filtered[index], context);
-                          }
-                          return rowMobile(
-                              _soldAuction.filtered[index], context);
-                        },
+      return ListView(
+        shrinkWrap: true,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                vertical: 25, horizontal: kIsWeb ? 25 : 15),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ExpandablePanel(
+                  header: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: fadeColor,
+                      border: Border.all(color: neutralColor),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(5),
                       ),
                     ),
-                    Visibility(
-                      visible: _soldAuction.emptySearchResult,
-                      child: const Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 25, horizontal: 10),
-                        child: NoDisplaySearchResult(),
-                      ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.search,
+                          color: brownColor,
+                          size: 24,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Filter Item',
+                          style: robotoMedium.copyWith(
+                              fontSize: 17, color: brownColor),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
+                  collapsed: const SizedBox(
+                    height: 20,
+                    width: 0,
+                  ),
+                  expanded: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      searchBar(),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+                Container(
+                  color: whiteColor,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: kIsWeb && context.width >= 900
+                            ? header()
+                            : headerMobile(),
+                      ),
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          minHeight: 250,
+                          maxHeight: 500,
+                        ),
+                        child: ListView.builder(
+                          itemCount: _soldAuction.filtered.length,
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            if (kIsWeb && context.width >= 900) {
+                              return row(_soldAuction.filtered[index], context);
+                            }
+                            return rowMobile(
+                                _soldAuction.filtered[index], context);
+                          },
+                        ),
+                      ),
+                      Visibility(
+                        visible: _soldAuction.emptySearchResult,
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 25, horizontal: 10),
+                          child: NoDisplaySearchResult(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       );
     } else if (_soldAuction.isDoneLoading.value &&
         _soldAuction.soldAuction.isEmpty) {

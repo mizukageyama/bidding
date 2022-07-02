@@ -265,7 +265,7 @@ class _Content extends StatelessWidget {
                           boughtItems.refreshItem();
                         },
                         text: 'Refresh',
-                        buttonColor: maroonColor, //maroonColor
+                        buttonColor: maroonColor,
                         fontSize: 16,
                       )
                     : ElevatedButton(
@@ -398,7 +398,6 @@ class _Content extends StatelessWidget {
       rowData: [
         ImageView(
           imageUrl: item.images[0],
-          isContained: false,
         ),
         InkWell(
           onTap: () => showTransactionInfo(context, item),
@@ -420,7 +419,6 @@ class _Content extends StatelessWidget {
       rowData: [
         ImageView(
           imageUrl: item.images[0],
-          isContained: false,
         ),
         Text(item.title),
         Text(item.sellerInfo?.fullName),
@@ -465,7 +463,6 @@ class _Content extends StatelessWidget {
                       width: 90,
                       height: 90,
                       imageUrl: item.images[0],
-                      isContained: false,
                     ),
                     Flexible(
                       child: Padding(

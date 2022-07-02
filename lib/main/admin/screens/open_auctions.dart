@@ -202,7 +202,7 @@ class _Content extends StatelessWidget {
                           _openAuction.refreshItem();
                         },
                         text: 'Refresh',
-                        buttonColor: maroonColor, //maroonColor
+                        buttonColor: maroonColor,
                         fontSize: 16,
                       )
                     : ElevatedButton(
