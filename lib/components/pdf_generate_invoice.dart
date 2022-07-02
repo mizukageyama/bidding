@@ -52,7 +52,7 @@ class PdfInvoice {
         children: [
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
-              item.itemId, //Title
+              item.title, //Title
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -87,15 +87,10 @@ class PdfInvoice {
             height: 10,
           ),
           Text(
-            'Test Test', //seller
-            style: const TextStyle(fontSize: 16, color: PdfColors.grey600),
+            item.sellerInfo!.fullName,
+            style: const TextStyle(fontSize: 16),
             textAlign: TextAlign.justify,
           ),
-          // Text(
-          //   item.sellerInfo!.fullName,
-          //   style: const TextStyle(fontSize: kIsWeb ? 13 : 16),
-          //   textAlign: TextAlign.justify,
-          // ),
           SizedBox(
             height: 35,
           ),
@@ -168,16 +163,16 @@ class PdfInvoice {
       'Bidder',
       'Amount',
       'Bid Date',
-      'Status',
     ];
 
     final data = invoice.map((invoice) {
       invoice.getBidderInfo();
       return [
-        invoice.bidderInfo!.fullName,
+        'Test Test',
+        //  invoice.bidderInfo!.fullName,
         Format.amountShort(invoice.amount),
         Format.dateShort(invoice.bidDate),
-        invoice.isApproved, //status
+        //status
       ];
     }).toList();
 
@@ -194,7 +189,6 @@ class PdfInvoice {
         0: Alignment.centerLeft,
         1: Alignment.centerLeft,
         2: Alignment.centerLeft,
-        3: Alignment.centerLeft,
       },
     );
   }

@@ -233,6 +233,11 @@ class _Content extends StatelessWidget {
     );
   }
 
+  Future<void> getInfo(SoldItem item) async {
+    await item.getBuyerInfo();
+    await item.getSellerInfo();
+  }
+
   Widget showSoldItems(BuildContext context) {
     if (soldItemsController.isDoneLoading.value &&
         soldItemsController.soldItems.isNotEmpty) {
@@ -265,8 +270,8 @@ class _Content extends StatelessWidget {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return FutureBuilder(
-                              future: soldItemsController.filtered[index]
-                                  .getBuyerInfo(),
+                              future:
+                                  getInfo(soldItemsController.filtered[index]),
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.done) {
