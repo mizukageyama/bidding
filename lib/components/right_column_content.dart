@@ -69,7 +69,8 @@ class RightColumnContent extends StatelessWidget {
                   ),
                   Visibility(
                     visible: (!isBidder &&
-                        DateTime.now().isAfter(item.endDate.toDate())),
+                        DateTime.now().isAfter(item.endDate.toDate()) &&
+                        item.winningBid == ''),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
@@ -82,7 +83,7 @@ class RightColumnContent extends StatelessWidget {
                             await ManageItem.reOpen(context, item.itemId);
                           },
                           buttonColor: maroonColor,
-                          text: 'Reopen Item',
+                          text: 'Re-open Item',
                         ),
                       ],
                     ),

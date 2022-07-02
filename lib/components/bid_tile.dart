@@ -190,7 +190,8 @@ class BidTile extends StatelessWidget {
                 Visibility(
                   visible: !isBidder &&
                       DateTime.now().isAfter(item.endDate.toDate()) &&
-                      bid.bidId != item.winningBid,
+                      bid.bidId != item.winningBid &&
+                      item.winningBid == '',
                   child: Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: InkWell(

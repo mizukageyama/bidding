@@ -87,21 +87,26 @@ class _Content extends StatelessWidget {
                     ),
                   ],
                 ),
-                CustomButton(
-                  onTap: () {
-                    showConfirmationDialog(
-                        dialogTitle: 'Are you sure?',
-                        dialogCaption:
-                            'Please select "yes" to mark this item as sold. Otherwise, select "no"',
-                        onYesTap: () async {
-                          await ManageItem.markItemAsSold(getItem());
-                        },
-                        onNoTap: () => dismissDialog());
-                  },
-                  text: 'Mark as Sold',
-                  buttonColor: fadeColor,
-                  fontColor: indigoColor,
-                  fontSize: 14,
+                Obx(
+                  () => Visibility(
+                    visible: getItem().winningBid != '',
+                    child: CustomButton(
+                      onTap: () {
+                        showConfirmationDialog(
+                            dialogTitle: 'Are you sure?',
+                            dialogCaption:
+                                'Please select "yes" to mark this item as sold. Otherwise, select "no"',
+                            onYesTap: () async {
+                              await ManageItem.markItemAsSold(getItem());
+                            },
+                            onNoTap: () => dismissDialog());
+                      },
+                      text: 'Mark as Sold',
+                      buttonColor: fadeColor,
+                      fontColor: indigoColor,
+                      fontSize: 14,
+                    ),
+                  ),
                 ),
               ],
             ),

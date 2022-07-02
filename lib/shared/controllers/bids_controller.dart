@@ -78,11 +78,16 @@ class BidsController extends GetxController {
 
   Future<void> setWinningBid(Item item, String bidId) async {
     showLoading();
-    await firestore.collection('items').doc(item.itemId).update({
+    final batch = firestore.batch();
+    batch.update(firestore.collection('items').doc(item.itemId), {
       'winning_bid': bidId,
-    }).then((value) async {
-      //TO DO: send notification to the winner
-      //Not sure kung upon setting winner kay mag email na ba
+    });
+    batch.update(
+      firestore.collection('bids').doc(bidId),
+      {'is_approved': true},
+    );
+
+    batch.commit().then((value) async {
       try {
         Bid winningBid = await firestore
             .collection("bids")
@@ -123,7 +128,10 @@ class BidsController extends GetxController {
         "seller_name": user.fullName,
         "seller_email": user.email,
         "item_photo": item.images[0],
-      }).then((value) => log.i('Email sent to new winner'));
+      }).then((value) {
+        //TO DO: set notification
+        log.i('Email sent to new winner');
+      });
     } on FirebaseFunctionsException catch (error) {
       print(error);
     } catch (error) {
