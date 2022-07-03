@@ -1,13 +1,17 @@
 import 'package:bidding/components/_components.dart';
+import 'package:bidding/components/notification_card.dart';
 import 'package:bidding/main/bidder/controllers/bidder_side_menu_controller.dart';
 import 'package:bidding/main/bidder/controllers/ongoing_auction_controller.dart';
 import 'package:bidding/main/bidder/screens/_bidder_screens.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/constants/firebase.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/bidder/side_menu.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'notification_feed.dart';
 
 class BidderHome extends StatelessWidget {
   const BidderHome({Key? key}) : super(key: key);
@@ -43,32 +47,32 @@ class _Content extends StatelessWidget {
           height: 50,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Visibility(
-                visible: Get.width < 600,
-                child: IconButton(
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  icon: const Icon(
-                    Icons.menu,
-                    color: whiteColor,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Visibility(
+                  visible: Get.width < 600,
+                  child: IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    icon: const Icon(
+                      Icons.menu,
+                      color: whiteColor,
+                    ),
                   ),
                 ),
-              ),
-              const Text(
-                'Dashboard',
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                    color: whiteColor,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15),
-              ),
-            ],
-          ),
+                const Text(
+                  'Dashboard',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: whiteColor,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),
+                ),
+                notificationIcon(context),
+              ]),
         ),
         Expanded(
           child: ListView(
@@ -160,6 +164,7 @@ class _Content extends StatelessWidget {
     );
   }
 
+  //auctions item
   Widget auctionsItems() {
     if (itemListController.isDoneLoading.value &&
         itemListController.itemList.isNotEmpty) {
@@ -197,6 +202,93 @@ class _Content extends StatelessWidget {
       ),
     );
   }
+}
+
+//notifications
+Widget notificationIcon(BuildContext context) {
+  return notifIconNormal(context);
+}
+
+Widget notifIconNormal(BuildContext context) {
+  return IconButton(
+    onPressed: () {
+      Get.to(NotificationFeed());
+    },
+    icon: const Icon(
+      Icons.notifications_outlined,
+      size: 25,
+      color: whiteColor,
+    ),
+  );
+}
+
+Widget notifIconWithBadge(int count, BuildContext context) {
+  return Badge(
+    position: BadgePosition.topEnd(top: 1, end: 3),
+    badgeContent: Text(
+      '$count',
+      style: const TextStyle(color: whiteColor),
+    ),
+    child: IconButton(
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (context) => notificationDialog(context));
+        resetBadge();
+      },
+      icon: const Icon(
+        Icons.notifications_outlined,
+        size: 25,
+        color: whiteColor,
+      ),
+    ),
+  );
+}
+
+Widget notificationDialog(BuildContext context) {
+  return SimpleDialog(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+    contentPadding: EdgeInsets.symmetric(vertical: 30, horizontal: 50),
+    children: [
+      SizedBox(
+        width: kIsWeb ? Get.width * .8 : Get.width * .2,
+        child: SingleChildScrollView(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [displayNotification()],
+        )),
+      )
+    ],
+  );
+}
+
+Widget displayNotification() {
+  return NotificationCard();
+  // return notifController.notif.isEmpty
+  //     ? Center(
+  //         child: Text(
+  //           'notif'.tr,
+  //           textAlign: TextAlign.center,
+  //         ),
+  //       )
+  //     : ListView.builder(
+  //         padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+  //         shrinkWrap: true,
+  //         itemCount: notifController.notif.length,
+  //         itemBuilder: (context, index) {
+  //           return NotificationCard(notif: notifController.notif[index]);
+  //         });
+}
+
+Future<void> resetBadge() async {
+  await firestore
+      .collection('bidder')
+      .doc(auth.currentUser!.uid)
+      .collection('status')
+      .doc('value')
+      .update({
+    'notifBadge': 0,
+  });
 }
 
 class _ResponsiveItemGrid extends GetResponsiveView {

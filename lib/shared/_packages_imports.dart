@@ -7,3 +7,4 @@ export 'package:uuid/uuid.dart';
 export 'package:data_table_2/data_table_2.dart';
 export 'package:dropdown_button2/dropdown_button2.dart';
 export 'package:expandable/expandable.dart';
+export 'package:badges/badges.dart';

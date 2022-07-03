@@ -107,7 +107,7 @@ class PdfService {
           textAlign: TextAlign.justify,
         ),
         SizedBox(
-          height: 10,
+          height: 5,
         ),
         Text(
           item.sellerInfo!.fullName,
