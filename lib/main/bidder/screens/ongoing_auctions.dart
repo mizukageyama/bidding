@@ -82,10 +82,51 @@ class _Content extends StatelessWidget {
               kIsWeb ? 20 : 12,
               kIsWeb ? 0 : 5,
             ),
-            child: searchBar(context),
-          ),
-          const SizedBox(
-            height: 10,
+            child: ExpandablePanel(
+              header: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: fadeColor,
+                  border: Border.all(color: neutralColor),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(5),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.search,
+                      color: brownColor,
+                      size: 24,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Filter Item',
+                      style: robotoMedium.copyWith(
+                          fontSize: 17, color: brownColor),
+                    ),
+                  ],
+                ),
+              ),
+              collapsed: const SizedBox(
+                height: 5,
+                width: 0,
+              ),
+              expanded: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  searchBar(context),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                ],
+              ),
+            ),
           ),
           Flexible(child: Obx(() => showItems())),
         ],
@@ -132,7 +173,11 @@ class _Content extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.end,
         children: [
           SizedBox(
-            width: context.width >= 600 && context.width < 900 ? 200 : 250,
+            width: kIsWeb
+                ? Get.width >= 600 && Get.width < 900
+                    ? 200
+                    : 250
+                : Get.width / 2,
             child: SearchTextField(
               topLabel: 'Search by Title',
               onSaved: (value) => itemListController.titleKeyword.text = value!,
@@ -158,8 +203,12 @@ class _Content extends StatelessWidget {
                   height: 5,
                 ),
                 SizedBox(
-                  width:
-                      context.width >= 600 && context.width < 900 ? 200 : 250,
+                  width: kIsWeb
+                      ? Get.width >= 600 && Get.width < 900
+                          ? 200
+                          : 250
+                      : Get.width / 2,
+                  height: 48,
                   child: Obx(
                     () => MultiSelectDropdown(
                       selectedItems: List<String>.from(

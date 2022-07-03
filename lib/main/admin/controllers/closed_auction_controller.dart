@@ -97,6 +97,7 @@ class ClosedAuctionController extends GetxController {
     formKey.currentState!.reset();
     titleKeyword.clear();
     sellerKeyword.clear();
+    sortOption.value = '';
     filtered.clear();
     filtered.assignAll(closedItems);
   }

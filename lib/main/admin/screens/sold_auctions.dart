@@ -293,7 +293,7 @@ class _Content extends StatelessWidget {
                       ),
                       ConstrainedBox(
                         constraints: const BoxConstraints(
-                          minHeight: 250,
+                          minHeight: 20,
                           maxHeight: 500,
                         ),
                         child: ListView.builder(
@@ -312,8 +312,7 @@ class _Content extends StatelessWidget {
                       Visibility(
                         visible: _soldAuction.emptySearchResult,
                         child: const Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 25, horizontal: 10),
+                          padding: EdgeInsets.fromLTRB(10, 0, 10, 30),
                           child: NoDisplaySearchResult(),
                         ),
                       ),

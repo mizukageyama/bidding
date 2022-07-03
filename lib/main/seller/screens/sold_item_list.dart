@@ -182,7 +182,7 @@ class _Content extends StatelessWidget {
                           soldItemsController.filterItems();
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: maroonColor, //maroonColor
+                          primary: maroonColor,
                         ),
                         child: const Icon(
                           Icons.search,
@@ -190,34 +190,34 @@ class _Content extends StatelessWidget {
                         ),
                       ),
               ),
+              const SizedBox(
+                width: 10,
+              ),
+              SizedBox(
+                height: 45,
+                child: kIsWeb && Get.width >= 600
+                    ? CustomButton(
+                        onTap: () {
+                          soldItemsController.refreshItem();
+                        },
+                        text: 'Refresh',
+                        buttonColor: maroonColor, //maroonColor
+                        fontSize: 16,
+                      )
+                    : ElevatedButton(
+                        onPressed: () {
+                          soldItemsController.refreshItem();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: maroonColor,
+                        ),
+                        child: const Icon(
+                          Icons.refresh,
+                          color: whiteColor,
+                        ),
+                      ),
+              ),
             ],
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          SizedBox(
-            height: 45,
-            child: kIsWeb && Get.width >= 600
-                ? CustomButton(
-                    onTap: () {
-                      soldItemsController.refreshItem();
-                    },
-                    text: 'Refresh',
-                    buttonColor: maroonColor, //maroonColor
-                    fontSize: 16,
-                  )
-                : ElevatedButton(
-                    onPressed: () {
-                      soldItemsController.refreshItem();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: maroonColor,
-                    ),
-                    child: const Icon(
-                      Icons.refresh,
-                      color: whiteColor,
-                    ),
-                  ),
           ),
         ],
       ),
@@ -232,73 +232,121 @@ class _Content extends StatelessWidget {
   Widget showSoldItems(BuildContext context) {
     if (soldItemsController.isDoneLoading.value &&
         soldItemsController.soldItems.isNotEmpty) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(
-            vertical: 25, horizontal: kIsWeb ? 25 : 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            searchBar(),
-            const SizedBox(
-              height: 20,
-            ),
-            Flexible(
-              child: Container(
-                height: Get.height,
-                color: whiteColor,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 5),
-                      child: kIsWeb && context.width >= 900
-                          ? header()
-                          : headerMobile(),
+      return ListView(
+        shrinkWrap: true,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                vertical: 25, horizontal: kIsWeb ? 25 : 15),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ExpandablePanel(
+                  header: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: fadeColor,
+                      border: Border.all(color: neutralColor),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(5),
+                      ),
                     ),
-                    Flexible(
-                      child: ListView.builder(
-                        itemCount: soldItemsController.filtered.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return FutureBuilder(
-                              future:
-                                  getInfo(soldItemsController.filtered[index]),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.done) {
-                                  if (kIsWeb && context.width >= 900) {
-                                    return row(
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.search,
+                          color: brownColor,
+                          size: 24,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Filter Item',
+                          style: robotoMedium.copyWith(
+                              fontSize: 17, color: brownColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                  collapsed: const SizedBox(
+                    height: 20,
+                    width: 0,
+                  ),
+                  expanded: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      searchBar(),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  color: whiteColor,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: kIsWeb && context.width >= 900
+                            ? header()
+                            : headerMobile(),
+                      ),
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          minHeight: 20,
+                          maxHeight: 500,
+                        ),
+                        child: ListView.builder(
+                          itemCount: soldItemsController.filtered.length,
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return FutureBuilder(
+                                future: getInfo(
+                                    soldItemsController.filtered[index]),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    if (kIsWeb && context.width >= 900) {
+                                      return row(
+                                        soldItemsController.filtered[index],
+                                        context,
+                                      );
+                                    }
+                                    return rowMobile(
                                       soldItemsController.filtered[index],
                                       context,
                                     );
                                   }
-                                  return rowMobile(
-                                    soldItemsController.filtered[index],
-                                    context,
+                                  return const SizedBox(
+                                    height: 0,
+                                    width: 0,
                                   );
-                                }
-                                return const SizedBox(
-                                  height: 0,
-                                  width: 0,
-                                );
-                              });
-                        },
+                                });
+                          },
+                        ),
                       ),
-                    ),
-                    Visibility(
-                      visible: soldItemsController.emptySearchResult,
-                      child: const Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 25, horizontal: 10),
-                        child: NoDisplaySearchResult(),
+                      Visibility(
+                        visible: soldItemsController.emptySearchResult,
+                        child: const Padding(
+                          padding: EdgeInsets.fromLTRB(10, 0, 10, 30),
+                          child: NoDisplaySearchResult(),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       );
     } else if (soldItemsController.isDoneLoading.value &&
         soldItemsController.soldItems.isEmpty) {
