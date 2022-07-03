@@ -1,8 +1,6 @@
 import 'package:bidding/components/_components.dart';
-import 'package:bidding/components/display_info_section.dart';
 import 'package:bidding/main/seller/controllers/manage_item.dart';
 import 'package:bidding/models/_models.dart';
-import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/services/dialogs.dart';

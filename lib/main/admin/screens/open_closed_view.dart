@@ -1,5 +1,4 @@
 import 'package:bidding/components/_components.dart';
-import 'package:bidding/components/display_info_section.dart';
 import 'package:bidding/main/admin/side_menu.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/models/item_model.dart';
@@ -7,7 +6,6 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/_firebase_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
-import 'package:bidding/shared/services/dialogs.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

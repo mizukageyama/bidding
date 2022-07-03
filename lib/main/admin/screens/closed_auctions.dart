@@ -1,10 +1,4 @@
 import 'package:bidding/components/_components.dart';
-import 'package:bidding/components/for_forms/search_dropdown_field.dart';
-import 'package:bidding/components/for_forms/search_text_field.dart';
-import 'package:bidding/components/table_header_tile.dart';
-import 'package:bidding/components/table_header_tile_mobile.dart';
-import 'package:bidding/components/table_row_tile.dart';
-import 'package:bidding/components/table_row_tile_mobile.dart';
 import 'package:bidding/main/admin/controllers/closed_auction_controller.dart';
 import 'package:bidding/main/admin/screens/open_closed_view.dart';
 import 'package:bidding/main/admin/side_menu.dart';
@@ -133,7 +127,11 @@ class _Content extends StatelessWidget {
                     : Get.width / 2,
                 child: SearchDropdownField(
                   topLabel: 'Sort by',
-                  items: const ['Winner Selected', 'To Select'],
+                  items: const [
+                    'Winner Selected',
+                    'Asking Price',
+                    'Date Closed'
+                  ],
                   onChanged: (value) {
                     _closedAuction.sortOption.value = value!;
                     _closedAuction.sortItems();

@@ -35,10 +35,39 @@ class NotificationCard extends StatelessWidget {
                           style: robotoRegular.copyWith(fontSize: 14),
                           children: const <TextSpan>[
                             TextSpan(
-                                text:
-                                    'Your Bid has been approved by the Seller.'),
-                            TextSpan(text: 'Test Test.'),
-                          ]))
+                                text: 'Seller: Yor forger.  ',
+                                style: robotoBold),
+                            TextSpan(
+                              text: 'Item: ',
+                            ),
+                            TextSpan(
+                              text: 'Scientific Calculator',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic),
+                            )
+                          ])),
+                      Text.rich(TextSpan(
+                          style: robotoRegular.copyWith(fontSize: 14),
+                          children: const <TextSpan>[
+                            TextSpan(text: 'Your Bid  '),
+                            TextSpan(text: 'Php 200', style: robotoBold),
+                            TextSpan(
+                              text: ' has been approved by the Seller.',
+                            )
+                          ])),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      const Text(
+                          'Please monitor your bids so that you will be updated with the new asking price.\nThank You.'),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        '2 days ago.',
+                        style: robotoRegular.copyWith(color: greyColor),
+                      ),
                     ],
                   ),
                 ))

@@ -115,17 +115,35 @@ class ClosedAuctionController extends GetxController {
   void sortItems() {
     if (sortOption.value == 'Winner Selected') {
       sortByWinnerSelected();
-    } else if (sortOption.value == 'To Select') {
-      sortByWinnerSelected();
+    } else if (sortOption.value == 'Asking Price') {
+      sortByAskingPrice();
+    } else if (sortOption.value == 'Date Closed') {
+      sortByDateClosed();
     }
     return;
   }
 
   void sortByWinnerSelected() {
     if (asc.value) {
-      filtered.sort((a, b) => a.winningBid.compareTo(b.winningBid));
-    } else {
       filtered.sort((a, b) => b.winningBid.compareTo(a.winningBid));
+    } else {
+      filtered.sort((a, b) => a.winningBid.compareTo(b.winningBid));
+    }
+  }
+
+  void sortByAskingPrice() {
+    if (asc.value) {
+      filtered.sort((a, b) => a.askingPrice.compareTo(b.askingPrice));
+    } else {
+      filtered.sort((a, b) => b.askingPrice.compareTo(a.askingPrice));
+    }
+  }
+
+  void sortByDateClosed() {
+    if (asc.value) {
+      filtered.sort((a, b) => a.endDate.compareTo(b.endDate));
+    } else {
+      filtered.sort((a, b) => b.endDate.compareTo(a.endDate));
     }
   }
 }

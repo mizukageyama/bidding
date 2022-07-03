@@ -1,4 +1,3 @@
-import 'package:bidding/components/for_forms/custom_dropdown.dart';
 import 'package:bidding/components/for_forms/custom_dropdown2.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
