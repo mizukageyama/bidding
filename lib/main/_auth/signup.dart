@@ -464,7 +464,9 @@ class SignupScreen extends StatelessWidget {
 
   Widget tACDialog(BuildContext context) {
     return SimpleDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       contentPadding: const EdgeInsets.symmetric(
         vertical: 20,
         horizontal: 40,

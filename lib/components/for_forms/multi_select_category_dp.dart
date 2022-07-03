@@ -1,6 +1,7 @@
 import 'package:bidding/models/category_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:flutter/foundation.dart' as layout;
 import 'package:flutter/material.dart';
 
 class MultiCategoryDropdown extends StatefulWidget {
@@ -54,7 +55,7 @@ class _MultiCategoryDropdownState extends State<MultiCategoryDropdown> {
         color: Colors.black45,
       ),
       iconSize: 30,
-      buttonHeight: 60,
+      buttonHeight: layout.kIsWeb ? 56 : 48,
       buttonPadding: const EdgeInsets.only(left: 20, right: 10),
       items: widget.items
           .map((item) => DropdownMenuItem<String>(

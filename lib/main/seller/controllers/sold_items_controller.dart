@@ -91,6 +91,7 @@ class SoldItemsController extends GetxController {
     formKey.currentState!.reset();
     titleKeyword.clear();
     winnerKeyword.clear();
+    sortOption.value = '';
     filtered.clear();
     filtered.assignAll(soldItems);
   }
