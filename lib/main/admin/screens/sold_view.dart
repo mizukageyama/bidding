@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/main/admin/side_menu.dart';
 import 'package:bidding/models/sold_item.dart';
@@ -219,7 +221,7 @@ class _RightColumn extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 15,
+            height: 10,
           ),
           const Divider(),
           const SizedBox(
@@ -294,46 +296,54 @@ class _RightColumn extends StatelessWidget {
             ],
           ),
           const SizedBox(
-            height: 15,
+            height: 25,
           ),
-          ElevatedButton(
-            onPressed: () async {
-              showLoading();
-              try {
-                final pdfFile = await PdfService.generate(
-                  item: item,
-                  bids: bidsController.bids,
-                );
-                dismissDialog();
-                PdfApi.openFile(pdfFile);
-              } catch (error) {
-                dismissDialog();
-                showErrorDialog(
-                  errorTitle: 'Something went wrong',
-                  errorDescription: 'Please try again later',
-                );
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              primary: maroonColor,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(
-                    Icons.picture_as_pdf_outlined,
-                    color: whiteColor,
-                  ),
-                  SizedBox(width: 5),
-                  Text(
-                    'Generate Report',
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+          Center(
+            child: ElevatedButton(
+              onPressed: () async {
+                showLoading();
+                try {
+                  if (kIsWeb) {
+                    await PdfService.generateWeb(
+                        item: item, bids: bidsController.bids);
+                    dismissDialog();
+                  } else {
+                    final pdfFile = await PdfService.generate(
+                      item: item,
+                      bids: bidsController.bids,
+                    );
+                    dismissDialog();
+                    PdfApi.openFile(pdfFile);
+                  }
+                } catch (error) {
+                  dismissDialog();
+                  showErrorDialog(
+                    errorTitle: 'Something went wrong',
+                    errorDescription: 'Please try again later',
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                primary: maroonColor,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Icon(
+                      Icons.picture_as_pdf_outlined,
+                      color: whiteColor,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      'Generate Report',
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:bidding/components/pdf_open.dart';
 import 'package:bidding/models/bid_model.dart';
 import 'package:bidding/models/sold_item.dart';
@@ -6,6 +7,7 @@ import 'package:bidding/shared/services/format.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
+import 'package:universal_html/html.dart' as html;
 
 class PdfService {
   static Future<File> generate({
@@ -39,8 +41,46 @@ class PdfService {
         buildBidTable(bids),
       ],
     ));
-
     return PdfApi.saveDocument(name: '${item.itemId}.pdf', pdf: pdf);
+  }
+
+  static Future<void> generateWeb({
+    required SoldItem item,
+    required List<Bid> bids,
+  }) async {
+    final pdf = Document();
+
+    final image = await itemImage(item.images[0]);
+    for (final bidItem in bids) {
+      await bidItem.getBidderInfo();
+    }
+
+    pdf.addPage(MultiPage(
+      pageFormat: PdfPageFormat.a4,
+      build: (context) => [
+        buildTitle(),
+        SizedBox(height: 10),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Image(image),
+            ),
+            SizedBox(width: 20),
+            Expanded(flex: 2, child: buildHeader(item)),
+          ],
+        ),
+        Divider(),
+        buildBidTable(bids),
+      ],
+    ));
+
+    Uint8List pdfInBytes = await pdf.save();
+    final blob = html.Blob([pdfInBytes], 'application/pdf');
+    final url = html.Url.createObjectUrlFromBlob(blob);
+    html.window.open(url, "url");
+    html.Url.revokeObjectUrl(url);
   }
 
   static Future<ImageProvider> itemImage(String imgUrl) async {
