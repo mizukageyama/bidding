@@ -1,5 +1,6 @@
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/styles.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropdown2 extends StatefulWidget {
@@ -51,7 +52,7 @@ class _CustomDropdown2State extends State<CustomDropdown2> {
         color: Colors.black45,
       ),
       iconSize: 30,
-      buttonHeight: 60,
+      buttonHeight: kIsWeb ? 56 : 48,
       buttonPadding: const EdgeInsets.only(left: 20, right: 10),
       items: widget.dropdownItems
           .map((item) => DropdownMenuItem<String>(

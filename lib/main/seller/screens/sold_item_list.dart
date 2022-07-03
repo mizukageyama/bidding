@@ -37,7 +37,8 @@ class _Content extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: Get.width,
+      width: context.width,
+      height: context.height,
       color: const Color(0xFFF5F5F5),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -357,7 +358,9 @@ class _Content extends StatelessWidget {
       child: SizedBox(
         width: 20,
         height: 20,
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          color: maroonColor,
+        ),
       ),
     );
   }
@@ -615,40 +618,46 @@ class _Content extends StatelessWidget {
                   height: 10,
                 ),
                 ElevatedButton(
-                    onPressed: () async {
-                      showLoading();
-                      try {
-                        final pdfFile = await PdfService.generate(
-                          item: item,
-                          bids: bidsController.bids,
-                        );
-                        dismissDialog();
-                        PdfApi.openFile(pdfFile);
-                      } catch (error) {
-                        dismissDialog();
-                        showErrorDialog(
-                          errorTitle: 'Something went wrong',
-                          errorDescription: 'Please try again later',
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: maroonColor,
-                    ),
+                  onPressed: () async {
+                    showLoading();
+                    try {
+                      final pdfFile = await PdfService.generate(
+                        item: item,
+                        bids: bidsController.bids,
+                      );
+                      dismissDialog();
+                      PdfApi.openFile(pdfFile);
+                    } catch (error) {
+                      dismissDialog();
+                      showErrorDialog(
+                        errorTitle: 'Something went wrong',
+                        errorDescription: 'Please try again later',
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: maroonColor,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
-                          Icon(
-                            Icons.picture_as_pdf_outlined,
-                            color: whiteColor,
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            'Generate Report',
-                            textAlign: TextAlign.center,
-                          ),
-                        ])),
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(
+                          Icons.picture_as_pdf_outlined,
+                          color: whiteColor,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          'Generate Report',
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ]);
         });
   }

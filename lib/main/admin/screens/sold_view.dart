@@ -2,6 +2,7 @@ import 'package:bidding/components/_components.dart';
 import 'package:bidding/main/admin/side_menu.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/controllers/bids_controller.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/shared/services/dialogs.dart';
 import 'package:bidding/shared/services/format.dart';
@@ -118,11 +119,14 @@ class _Content extends StatelessWidget {
 }
 
 class _RightColumn extends StatelessWidget {
-  const _RightColumn({Key? key, required this.item}) : super(key: key);
+  _RightColumn({Key? key, required this.item}) : super(key: key);
   final SoldItem item;
+
+  final BidsController bidsController = Get.put(BidsController());
 
   @override
   Widget build(BuildContext context) {
+    bidsController.bindBidList(item.itemId);
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Column(
@@ -293,40 +297,46 @@ class _RightColumn extends StatelessWidget {
             height: 15,
           ),
           ElevatedButton(
-              onPressed: () async {
-                showLoading();
-                try {
-                  // final pdfFile = await PdfService.generate(
-                  //   item: item,
-                  //   bids: bidsController.bids,
-                  // );
-                  dismissDialog();
-                  //PdfApi.openFile(pdfFile);
-                } catch (error) {
-                  dismissDialog();
-                  showErrorDialog(
-                    errorTitle: 'Something went wrong',
-                    errorDescription: 'Please try again later',
-                  );
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                primary: maroonColor,
-              ),
+            onPressed: () async {
+              showLoading();
+              try {
+                final pdfFile = await PdfService.generate(
+                  item: item,
+                  bids: bidsController.bids,
+                );
+                dismissDialog();
+                PdfApi.openFile(pdfFile);
+              } catch (error) {
+                dismissDialog();
+                showErrorDialog(
+                  errorTitle: 'Something went wrong',
+                  errorDescription: 'Please try again later',
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              primary: maroonColor,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Icon(
-                      Icons.picture_as_pdf_outlined,
-                      color: whiteColor,
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      'Generate Report',
-                      textAlign: TextAlign.center,
-                    ),
-                  ])),
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(
+                    Icons.picture_as_pdf_outlined,
+                    color: whiteColor,
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    'Generate Report',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ),
           const SizedBox(
             height: 15,
           ),

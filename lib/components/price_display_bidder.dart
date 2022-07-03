@@ -1,6 +1,7 @@
 import 'package:bidding/components/display_info_section.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
+import 'package:bidding/shared/layout/styles.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +41,9 @@ class DisplayPriceBidder extends StatelessWidget {
       return const SizedBox(
         width: 20,
         height: 20,
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          color: maroonColor,
+        ),
       );
     });
   }

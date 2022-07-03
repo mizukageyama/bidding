@@ -413,7 +413,9 @@ class _Content extends StatelessWidget {
       child: SizedBox(
         width: 20,
         height: 20,
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          color: maroonColor,
+        ),
       ),
     );
   }
