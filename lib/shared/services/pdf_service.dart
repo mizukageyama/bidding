@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:bidding/components/pdf_open.dart';
 import 'package:bidding/models/bid_model.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/services/format.dart';
+import 'package:bidding/shared/services/pdf_open.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';

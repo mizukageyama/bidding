@@ -313,6 +313,81 @@ class ManageItem extends GetxController {
         ]);
   }
 
+  static Widget otpDialog(Item item, BuildContext context) {
+    final _otpFormkey = GlobalKey<FormState>();
+    final otpEditingController = TextEditingController();
+
+    return SimpleDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        contentPadding: const EdgeInsets.symmetric(
+            vertical: 20, horizontal: kIsWeb ? 30 : 5),
+        children: [
+          SizedBox(
+            width: 300,
+            child: Column(
+              children: [
+                Text(
+                  'To complete this transaction, please enter your OTP number to mark this item as sold',
+                  textAlign: TextAlign.center,
+                  style: robotoMedium.copyWith(fontSize: 15),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Form(
+                  key: _otpFormkey,
+                  child: Container(
+                    width: 500,
+                    padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                    child: Column(
+                      children: [
+                        InputField(
+                          controller: otpEditingController,
+                          labelText: 'OTP',
+                          onChanged: (value) {
+                            return;
+                          },
+                          onSaved: (value) =>
+                              otpEditingController.text = value!,
+                          validator: Validator().notEmpty,
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        SizedBox(
+                          width: 120,
+                          height: 40,
+                          child: CustomButton(
+                            buttonColor: maroonColor,
+                            text: 'Submit',
+                            onTap: () async {
+                              if (_otpFormkey.currentState!.validate()) {
+                                //TO DO: kuhaon ni sa item model
+                                String otp = 'sdfsdf';
+                                if (otpEditingController.text == otp) {
+                                  await markItemAsSold(item);
+                                  _otpFormkey.currentState!.reset();
+                                } else {
+                                  dismissDialog();
+                                  showErrorDialog(
+                                      errorTitle: 'Wrong OTP',
+                                      errorDescription:
+                                          'Please make sure to enter the correct OTP key for this item.');
+                                }
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ]);
+  }
+
   static Widget reOpenItemDialog(String itemId, BuildContext context) {
     final RxBool showValidation = false.obs;
     return SimpleDialog(

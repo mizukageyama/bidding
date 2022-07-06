@@ -20,6 +20,7 @@ exports.sendEmailToAuctionWinner = functions.https.onCall((data, context) => {
           },
         ],
         "dynamic_template_data": {
+          "otp": data.otp,
           "first_name": data.first_name,
           "item_id": data.item_id,
           "item_title": data.item_title,
@@ -29,7 +30,8 @@ exports.sendEmailToAuctionWinner = functions.https.onCall((data, context) => {
           "winning_bid": data.winning_bid,
           "seller_name": data.seller_name,
           "seller_email": data.seller_email,
-          "photo_url": "",
+          "seller_number": data.seller_number,
+          "item_photo": data.item_photo,
         },
       },
     ],

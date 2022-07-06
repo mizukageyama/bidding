@@ -1,12 +1,10 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/main/admin/controllers/sold_auction_controller.dart';
-import 'package:bidding/main/admin/screens/adm_pdf_sold.dart';
 import 'package:bidding/main/admin/side_menu.dart';
 import 'package:bidding/main/admin/screens/sold_view.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
-import 'package:bidding/shared/services/dialogs.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -70,30 +68,6 @@ class _Content extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       fontSize: 15),
                 ),
-                // CustomButton(
-                //   onTap: () async {
-                //     showLoading();
-                //     try {
-                //       if (kIsWeb) {
-                //         await AdminSoldPdf.generateWeb(
-                //             items: _soldAuction.filtered);
-                //         dismissDialog();
-                //       } else {
-                //         final pdfFile =
-                //             await AdminSoldPdf.generate(_soldAuction.filtered);
-                //         dismissDialog();
-                //         PdfApi.openFile(pdfFile);
-                //       }
-                //     } catch (error) {
-                //       dismissDialog();
-                //       showErrorDialog(
-                //         errorTitle: 'Something went wrong',
-                //         errorDescription: 'Please try again later',
-                //       );
-                //     }
-                //   },
-                //   text: 'Generate Invoice',
-                // ),
               ],
             ),
           ),
@@ -241,60 +215,6 @@ class _Content extends StatelessWidget {
                         ),
                       ),
               ),
-              const SizedBox(
-                width: 60,
-              ),
-              SizedBox(
-                height: 45,
-                child: TextButton(
-                  onPressed: () async {
-                    showLoading();
-                    try {
-                      if (kIsWeb) {
-                        await AdminSoldPdf.generateWeb(
-                            items: _soldAuction.filtered);
-                        dismissDialog();
-                      } else {
-                        final pdfFile =
-                            await AdminSoldPdf.generate(_soldAuction.filtered);
-                        dismissDialog();
-                        PdfApi.openFile(pdfFile);
-                      }
-                    } catch (error) {
-                      dismissDialog();
-                      showErrorDialog(
-                        errorTitle: 'Something went wrong',
-                        errorDescription: 'Please try again later',
-                      );
-                    }
-                  },
-                  style: TextButton.styleFrom(
-                    primary: blackColor,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Icon(
-                          Icons.picture_as_pdf_outlined,
-                          color: blackColor,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          'Generate Report',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
             ],
           ),
         ],

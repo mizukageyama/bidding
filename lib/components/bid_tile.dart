@@ -177,7 +177,7 @@ class BidTile extends StatelessWidget {
                       DateTime.now().isBefore(item.endDate.toDate()),
                   child: InkWell(
                     onTap: () async {
-                      await bidsController.approveBid(bid.bidId);
+                      await bidsController.approveBid(bid, item);
                     },
                     child: Text(
                       'Approve',

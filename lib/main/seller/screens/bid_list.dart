@@ -6,7 +6,6 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
-import 'package:bidding/shared/services/dialogs.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -91,15 +90,11 @@ class _Content extends StatelessWidget {
                   () => Visibility(
                     visible: getItem().winningBid != '',
                     child: CustomButton(
-                      onTap: () {
-                        showConfirmationDialog(
-                            dialogTitle: 'Are you sure?',
-                            dialogCaption:
-                                'Please select "yes" to mark this item as sold. Otherwise, select "no"',
-                            onYesTap: () async {
-                              await ManageItem.markItemAsSold(getItem());
-                            },
-                            onNoTap: () => dismissDialog());
+                      onTap: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (context) =>
+                                ManageItem.otpDialog(getItem(), context));
                       },
                       text: 'Mark as Sold',
                       buttonColor: fadeColor,

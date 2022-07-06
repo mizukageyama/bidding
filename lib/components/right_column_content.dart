@@ -186,7 +186,8 @@ class RightColumnContent extends StatelessWidget {
                         child: CustomButton(
                           onTap: () async {
                             if (_formKey.currentState!.validate()) {
-                              await controller.submitBid(item.itemId);
+                              await controller.submitBid(
+                                  item.itemId, item.sellerId, item.title);
                             }
                           },
                           text: 'Submit Bid',

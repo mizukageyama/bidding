@@ -1,6 +1,5 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/main/seller/controllers/sold_items_controller.dart';
-import 'package:bidding/models/bid_model.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
@@ -8,6 +7,8 @@ import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
 import 'package:bidding/shared/services/dialogs.dart';
 import 'package:bidding/shared/services/format.dart';
+import 'package:bidding/shared/services/pdf_open.dart';
+import 'package:bidding/shared/services/pdf_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
