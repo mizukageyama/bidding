@@ -186,9 +186,31 @@ class AuthController extends GetxController {
   }
 
   Future<void> _createUser(String _userID, BuildContext context) async {
-    await uploadPhotos(_userID);
-    log.i('done upload');
-    await firestore.collection('users').doc(_userID).set(<String, dynamic>{
+    RxBool successUpload = false.obs;
+    try {
+      await uploadPhotos(_userID);
+      log.i('done upload');
+      successUpload.value = true;
+    } catch (error) {
+      log.i(error);
+    }
+    if (successUpload.value) {
+      await createUserBatch(_userID, context);
+    } else {
+      dismissDialog();
+      Get.snackbar(
+        'Error creating account',
+        'Please try again later',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> createUserBatch(String _userID, BuildContext context) async {
+    final batch = firestore.batch();
+
+    final userRef = firestore.collection('users').doc(_userID);
+    Map<String, dynamic> userData = {
       'user_id': _userID,
       'email': emailController.text.trim(),
       'first_name': firstNameController.text.trim(),
@@ -197,21 +219,49 @@ class AuthController extends GetxController {
       'id_number': idNumberController.text.trim(),
       'form_1': form1Url.value,
       'um_id': umIdUrl.value,
-    }).then((value) async {
-      await addSubCollection(_userID);
-      dismissDialog();
-      await signInWithEmailAndPassword(context);
-      registrationSuccess();
-    });
-  }
+    };
 
-  Future<void> addSubCollection(String _userID) async {
-    await firestore
+    batch.set(userRef, userData);
+
+    final addtionalRef = firestore
         .collection('users')
         .doc(_userID)
         .collection('additional_info')
-        .doc('value')
-        .set({'profile_photo': ''});
+        .doc('value');
+    Map<String, dynamic> additionalData = {
+      'profile_photo': '',
+      'notif_badge': 0
+    };
+
+    batch.set(addtionalRef, additionalData);
+
+    final notifRef = firestore
+        .collection('users')
+        .doc(_userID)
+        .collection('notifications')
+        .doc(_userID);
+
+    Map<String, dynamic> firstNotif = {
+      'title': 'Welcome, ${firstNameController.text.trim()}!',
+      'message':
+          'As a new user of our application, we welcome you with pleasure. '
+              'You may now start to explore our community bidding.',
+      'created_at': FieldValue.serverTimestamp(),
+    };
+
+    batch.set(notifRef, firstNotif);
+
+    batch.commit().then((value) async {
+      dismissDialog();
+      await signInWithEmailAndPassword(context);
+      registrationSuccess();
+    }).catchError((onError) {
+      dismissDialog();
+      showErrorDialog(
+          errorTitle: 'Something went wrong',
+          errorDescription: 'An error occured while creating your account');
+      log.i(onError);
+    });
   }
 
   Future<void> uploadPhotos(String id) async {
