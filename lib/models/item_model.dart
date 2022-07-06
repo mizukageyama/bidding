@@ -15,6 +15,7 @@ class Item {
   final Timestamp endDate;
   final Timestamp datePosted;
   final String winningBid;
+  final String otp;
   final List<String> images;
   UserModel? sellerInfo;
   Bid? winningBidInfo;
@@ -33,6 +34,7 @@ class Item {
     required this.brand,
     required this.endDate,
     required this.images,
+    required this.otp,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) {
@@ -49,6 +51,7 @@ class Item {
       endDate: json['end_date'] as Timestamp,
       images: List<String>.from(json['images'] ?? []),
       winningBid: json['winning_bid'] as String,
+      otp: json['otp'] as String,
     );
   }
 
@@ -64,13 +67,14 @@ class Item {
         'brand': brand,
         'end_date': endDate,
         'images': images,
+        'otp': otp,
       };
 
   @override
   String toString() {
     return '{itemId: $itemId\nsellerId: $sellerId\ntitle: $title\ndescription: $description'
         '\naskingPrice: $askingPrice\ncategory: $category\ncondition: $condition'
-        '\nbrand: $brand\nendDate: $endDate\nimages: $images}';
+        '\nbrand: $brand\nendDate: $endDate\nimages: $images\notp: $otp}';
   }
 
   //Fetch Additional Data
