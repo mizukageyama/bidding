@@ -196,7 +196,7 @@ class BidTile extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 5),
                     child: InkWell(
                       onTap: () async {
-                        await bidsController.setWinningBid(item, bid.bidId);
+                        await bidsController.setWinningBid(item, bid);
                       },
                       child: Text(
                         'Set winner',

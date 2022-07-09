@@ -78,45 +78,40 @@ class BidsController extends GetxController {
         .collection('bids')
         .doc(bid.bidId)
         .update({'is_approved': true}).then((value) async {
-      //TO DO: notif
-      // await firestore
-      //     .collection('users')
-      //     .doc(bid.bidderId)
-      //     .collection('notifications')
-      //     .add({
-      //   'title': 'A Bid has been Approved',
-      //   'message':
-      //       'Your Php ${bid.amount} bid for ${item.title} has been approved. '
-      //           'You have the chance to win the auction.',
-      //   'created_at': FieldValue.serverTimestamp(),
-      // });
+      //TO DO: notif - TO CHECK
+      await firestore
+          .collection('users')
+          .doc(bid.bidderId)
+          .collection('notifications')
+          .add({
+        'title': 'A Bid has been Approved',
+        'message':
+            'Your Php ${bid.amount} bid for ${item.title} has been approved. '
+                'You have the chance to win the auction.',
+        'created_at': FieldValue.serverTimestamp(),
+      });
     });
   }
 
-  Future<void> setWinningBid(Item item, String bidId) async {
+  Future<void> setWinningBid(Item item, Bid bid) async {
     showLoading();
     final String generatedOtp = uuid.v4().substring(0, 6);
     final batch = firestore.batch();
 
     batch.update(firestore.collection('items').doc(item.itemId), {
-      'winning_bid': bidId,
+      'winning_bid': bid.bidId,
       'otp': generatedOtp,
     });
 
     batch.update(
-      firestore.collection('bids').doc(bidId),
+      firestore.collection('bids').doc(bid.bidId),
       {'is_approved': true},
     );
 
     batch.commit().then((value) async {
       try {
-        Bid winningBid = await firestore
-            .collection("bids")
-            .doc(bidId)
-            .get()
-            .then((doc) => Bid.fromJson(doc.data()!));
-        await winningBid.getBidderInfo();
-        sendEmailToWinner(item, winningBid, generatedOtp);
+        await bid.getBidderInfo();
+        sendEmailToWinner(item, bid, generatedOtp);
         dismissDialog();
       } catch (error) {
         dismissDialog();
@@ -136,7 +131,6 @@ class BidsController extends GetxController {
   }
 
   Future<void> sendEmailToWinner(Item item, Bid winningBid, String otp) async {
-    //TO DO: Update contact number
     try {
       await function.httpsCallable('sendEmailToAuctionWinner').call({
         "otp": otp,
@@ -150,22 +144,21 @@ class BidsController extends GetxController {
         "winning_bid": winningBid.amount,
         "seller_name": user.fullName,
         "seller_email": user.email,
-        "seller_number": "090909",
+        "seller_number": winningBid.bidderInfo?.contactNumber,
         "item_photo": item.images[0],
       }).then((value) async {
         log.i('Email sent to new winner');
-        //TO DO: notif
-        // await firestore
-        //     .collection('users')
-        //     .doc(winningBid.bidderId)
-        //     .collection('notifications')
-        //     .add({
-        //   'title': 'New Bid has been Received',
-        //   'message':
-        //       '${user.fullName} has bid Php ${double.parse(bidInput.text)} '
-        //           'for ${item.title}',
-        //   'created_at': FieldValue.serverTimestamp(),
-        // });
+        //TO DO: notif - TO CHECK
+        await firestore
+            .collection('users')
+            .doc(winningBid.bidderId)
+            .collection('notifications')
+            .add({
+          'title': 'You Won an Auction!',
+          'message':
+              'You won ${item.title} wuth the bid of Php ${double.parse(bidInput.text)}',
+          'created_at': FieldValue.serverTimestamp(),
+        });
       });
     } on FirebaseFunctionsException catch (error) {
       print(error);

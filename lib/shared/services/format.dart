@@ -1,4 +1,5 @@
 import 'package:bidding/shared/constants/_firebase_imports.dart';
+import 'package:bidding/shared/services/time_ago.dart';
 import 'package:intl/intl.dart';
 
 class Format {
@@ -19,6 +20,12 @@ class Format {
 
   static String dateTime(DateTime dt) {
     return '${DateFormat.yMMMMd().format(dt)} (${DateFormat.jm().format(dt)})';
+  }
+
+  static String timeAgo(Timestamp timestamp) {
+    final dt = timestamp.toDate();
+    final dateString = DateFormat('dd-MM-yyyy h:mma').format(dt);
+    return TimeAgo.timeAgoSinceDate(dateString, dt);
   }
 
   static String amount(double amount) {

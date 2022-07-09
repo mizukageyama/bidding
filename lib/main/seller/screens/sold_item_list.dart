@@ -619,16 +619,21 @@ class _Content extends StatelessWidget {
                   height: 10,
                 ),
                 ElevatedButton(
-                  //todo: pdfWeb
                   onPressed: () async {
                     showLoading();
                     try {
-                      final pdfFile = await PdfService.generate(
-                        item: item,
-                        bids: bidsController.bids,
-                      );
-                      dismissDialog();
-                      PdfApi.openFile(pdfFile);
+                      if (kIsWeb) {
+                        await PdfService.generateWeb(
+                            item: item, bids: bidsController.bids);
+                        dismissDialog();
+                      } else {
+                        final pdfFile = await PdfService.generate(
+                          item: item,
+                          bids: bidsController.bids,
+                        );
+                        dismissDialog();
+                        PdfApi.openFile(pdfFile);
+                      }
                     } catch (error) {
                       dismissDialog();
                       showErrorDialog(

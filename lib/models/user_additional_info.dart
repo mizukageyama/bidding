@@ -1,14 +1,11 @@
 class AdditionalInfo {
   final String profilePhoto;
-  //final int notifBadgeCount;
+  final int badgeCount;
 
-  AdditionalInfo({
-    required this.profilePhoto,
-  });
-  // required this.notifBadgeCount});
+  AdditionalInfo({required this.profilePhoto, required this.badgeCount});
 
   factory AdditionalInfo.fromJson(Map<String, dynamic> json) => AdditionalInfo(
         profilePhoto: json['profile_photo'] as String,
-        //notifBadgeCount: json['notif_badge'] as int,
+        badgeCount: json['notif_badge'] as int,
       );
 }
