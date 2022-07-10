@@ -26,9 +26,10 @@ class NotificationFeed extends StatelessWidget {
     if (notifController.isDoneLoading.value &&
         notifController.notifs.isNotEmpty) {
       return ListView.builder(
+        itemCount: notifController.notifs.length,
         primary: false,
         physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(kIsWeb ? 15 : 12),
+        padding: const EdgeInsets.all(kIsWeb ? 10 : 10),
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return NotificationCard(
