@@ -1,8 +1,10 @@
+import 'package:bidding/main/bidder/screens/notification_feed.dart'; //sellernotiffeed
 import 'package:bidding/main/seller/controllers/auctioned_items_controller.dart';
 import 'package:bidding/main/seller/controllers/seller_side_menu_controller.dart';
 import 'package:bidding/main/seller/controllers/sold_items_controller.dart';
 import 'package:bidding/main/seller/screens/_seller_screens.dart';
 import 'package:bidding/shared/_packages_imports.dart';
+import 'package:bidding/shared/controllers/notif_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
 import 'package:flutter/foundation.dart';
@@ -18,7 +20,7 @@ class SellerHome extends StatelessWidget {
         drawerEnableOpenDragGesture: false,
         drawer: SellerSideMenu(),
         body: ResponsiveView(
-          const _Content(),
+          _Content(),
           SellerSideMenu(),
         ),
       ),
@@ -27,7 +29,8 @@ class SellerHome extends StatelessWidget {
 }
 
 class _Content extends StatelessWidget {
-  const _Content({Key? key}) : super(key: key);
+  _Content({Key? key}) : super(key: key);
+  final NotifController notifController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -42,29 +45,37 @@ class _Content extends StatelessWidget {
             height: 50,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Visibility(
-                  visible: Get.width < 600,
-                  child: IconButton(
-                    onPressed: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                    icon: const Icon(
-                      Icons.menu,
-                      color: whiteColor,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Visibility(
+                      visible: Get.width < 600,
+                      child: IconButton(
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        icon: const Icon(
+                          Icons.menu,
+                          color: whiteColor,
+                        ),
+                      ),
                     ),
-                  ),
+                    const Text(
+                      'Dashboard',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          color: whiteColor,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15),
+                    ),
+                  ],
                 ),
-                const Text(
-                  'Dashboard',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: whiteColor,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15),
+                Obx(
+                  () => notifIcon(context),
                 ),
               ],
             ),
@@ -181,6 +192,28 @@ class _Content extends StatelessWidget {
             ],
           ))
         ],
+      ),
+    );
+  }
+
+  Widget notifIcon(BuildContext context) {
+    return Badge(
+      showBadge: notifController.notifBadgeCount != 0,
+      position: BadgePosition.topEnd(top: 1, end: 3),
+      badgeContent: Text(
+        '${notifController.notifBadgeCount}',
+        style: const TextStyle(color: whiteColor),
+      ),
+      child: IconButton(
+        onPressed: () {
+          Get.to(() => NotificationFeed()); //sellerfeed
+          notifController.resetBadge();
+        },
+        icon: const Icon(
+          Icons.notifications_outlined,
+          size: 25,
+          color: whiteColor,
+        ),
       ),
     );
   }

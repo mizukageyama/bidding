@@ -9,7 +9,6 @@ import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/bidder/side_menu.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'notification_feed.dart';
 
 class BidderHome extends StatelessWidget {
