@@ -10,8 +10,7 @@ class NotificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-        child: Padding(
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,6 +45,6 @@ class NotificationCard extends StatelessWidget {
           ),
         ],
       ),
-    ));
+    );
   }
 }
