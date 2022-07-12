@@ -362,9 +362,7 @@ class ManageItem extends GetxController {
                             text: 'Submit',
                             onTap: () async {
                               if (_otpFormkey.currentState!.validate()) {
-                                //TO DO: kuhaon ni sa item model
-                                String otp = 'sdfsdf';
-                                if (otpEditingController.text == otp) {
+                                if (otpEditingController.text == item.otp) {
                                   await markItemAsSold(item);
                                   _otpFormkey.currentState!.reset();
                                 } else {

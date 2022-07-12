@@ -74,27 +74,53 @@ class BidsController extends GetxController {
   }
 
   Future<void> approveBid(Bid bid, Item item) async {
-    await firestore
-        .collection('bids')
-        .doc(bid.bidId)
-        .update({'is_approved': true}).then((value) async {
-      //TO DO: notif - TO CHECK
-      await firestore
+    showLoading();
+    final String generatedNotifId = uuid.v4();
+
+    final batch = firestore.batch();
+    batch.update(
+      firestore.collection('bids').doc(bid.bidId),
+      {'is_approved': true},
+    );
+
+    batch.set(
+      firestore
           .collection('users')
           .doc(bid.bidderId)
           .collection('notifications')
-          .add({
+          .doc(generatedNotifId),
+      {
         'title': 'A Bid has been Approved',
         'message':
             'Your Php ${bid.amount} bid for ${item.title} has been approved. '
                 'You have the chance to win the auction.',
         'created_at': FieldValue.serverTimestamp(),
-      });
+      },
+    );
+
+    batch.update(
+      firestore
+          .collection('users')
+          .doc(bid.bidderId)
+          .collection('additional_info')
+          .doc('value'),
+      {'notif_badge': FieldValue.increment(1)},
+    );
+
+    batch.commit().then((value) async {
+      dismissDialog();
+    }).catchError((onError) {
+      dismissDialog();
+      showErrorDialog(
+          errorTitle: 'Something went wrong',
+          errorDescription: 'An error occured while approving bid');
+      log.i(onError);
     });
   }
 
   Future<void> setWinningBid(Item item, Bid bid) async {
     showLoading();
+    final String generatedNotifId = uuid.v4();
     final String generatedOtp = uuid.v4().substring(0, 6);
     final batch = firestore.batch();
 
@@ -106,6 +132,29 @@ class BidsController extends GetxController {
     batch.update(
       firestore.collection('bids').doc(bid.bidId),
       {'is_approved': true},
+    );
+
+    batch.set(
+      firestore
+          .collection('users')
+          .doc(bid.bidderId)
+          .collection('notifications')
+          .doc(generatedNotifId),
+      {
+        'title': 'You Won an Auction!',
+        'message': 'You won ${item.title} with the bid of Php ${bid.amount}. '
+            'Please check your email for futher information.',
+        'created_at': Timestamp.now()
+      },
+    );
+
+    batch.update(
+      firestore
+          .collection('users')
+          .doc(bid.bidderId)
+          .collection('additional_info')
+          .doc('value'),
+      {'notif_badge': FieldValue.increment(1)},
     );
 
     batch.commit().then((value) async {
@@ -148,17 +197,6 @@ class BidsController extends GetxController {
         "item_photo": item.images[0],
       }).then((value) async {
         log.i('Email sent to new winner');
-        //TO DO: notif - TO CHECK
-        await firestore
-            .collection('users')
-            .doc(winningBid.bidderId)
-            .collection('notifications')
-            .add({
-          'title': 'You Won an Auction!',
-          'message':
-              'You won ${item.title} wuth the bid of Php ${double.parse(bidInput.text)}',
-          'created_at': FieldValue.serverTimestamp(),
-        });
       });
     } on FirebaseFunctionsException catch (error) {
       print(error);
@@ -169,11 +207,11 @@ class BidsController extends GetxController {
 
   Future<void> submitBid(
       String itemId, String sellerId, String itemTitle) async {
-    final String generatedItemId = uuid.v4();
+    final String generatedBidId = uuid.v4();
     final batch = firestore.batch();
 
-    batch.set(firestore.collection('bids').doc(generatedItemId), {
-      'bid_id': generatedItemId,
+    batch.set(firestore.collection('bids').doc(generatedBidId), {
+      'bid_id': generatedBidId,
       'item_id': itemId,
       'bidder_id': auth.currentUser!.uid,
       'amount': double.parse(bidInput.text),
@@ -186,13 +224,22 @@ class BidsController extends GetxController {
             .collection('users')
             .doc(sellerId)
             .collection('notifications')
-            .doc(generatedItemId),
+            .doc(generatedBidId),
         {
           'title': 'New Bid has been Received',
           'message':
               '${user.fullName} has bid Php ${double.parse(bidInput.text)} for $itemTitle',
           'created_at': FieldValue.serverTimestamp(),
         });
+
+    batch.update(
+      firestore
+          .collection('users')
+          .doc(sellerId)
+          .collection('additional_info')
+          .doc('value'),
+      {'notif_badge': FieldValue.increment(1)},
+    );
 
     batch.commit().then((_) async {
       bidInput.clear();

@@ -230,7 +230,7 @@ class AuthController extends GetxController {
         .doc('value');
     Map<String, dynamic> additionalData = {
       'profile_photo': '',
-      'notif_badge': 0
+      'notif_badge': 1
     };
 
     batch.set(addtionalRef, additionalData);

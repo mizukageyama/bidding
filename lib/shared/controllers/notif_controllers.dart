@@ -32,7 +32,6 @@ class NotifController extends GetxController {
   }
 
   Stream<List<NotificationModel>> getUserNotifs() {
-    print(auth.currentUser!.uid);
     return firestore
         .collection('users')
         .doc(auth.currentUser!.uid)
