@@ -199,9 +199,9 @@ class BidsController extends GetxController {
         log.i('Email sent to new winner');
       });
     } on FirebaseFunctionsException catch (error) {
-      print(error);
+      log.i(error);
     } catch (error) {
-      print(error);
+      log.i(error);
     }
   }
 

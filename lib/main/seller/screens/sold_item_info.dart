@@ -1,5 +1,4 @@
 import 'package:bidding/components/_components.dart';
-import 'package:bidding/components/display_info_section.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';

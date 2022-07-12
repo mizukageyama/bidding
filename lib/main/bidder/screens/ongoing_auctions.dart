@@ -1,7 +1,5 @@
 import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/for_forms/multi_select_dropdown.dart';
-import 'package:bidding/components/for_forms/search_dropdown_field.dart';
-import 'package:bidding/components/for_forms/search_text_field.dart';
 import 'package:bidding/main/bidder/controllers/ongoing_auction_controller.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';

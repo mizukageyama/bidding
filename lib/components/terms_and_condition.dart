@@ -8,7 +8,7 @@ class TermsAndCondition extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       //padding: const EdgeInsets.symmetric(vertical: 10),
       width: Get.width * .4,
       child: Column(

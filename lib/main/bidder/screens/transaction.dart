@@ -1,11 +1,4 @@
 import 'package:bidding/components/_components.dart';
-import 'package:bidding/components/display_info_section.dart';
-import 'package:bidding/components/for_forms/search_dropdown_field.dart';
-import 'package:bidding/components/for_forms/search_text_field.dart';
-import 'package:bidding/components/table_header_tile.dart';
-import 'package:bidding/components/table_header_tile_mobile.dart';
-import 'package:bidding/components/table_row_tile.dart';
-import 'package:bidding/components/table_row_tile_mobile.dart';
 import 'package:bidding/main/bidder/controllers/bought_items_controller.dart';
 import 'package:bidding/models/sold_item.dart';
 import 'package:bidding/shared/_packages_imports.dart';
