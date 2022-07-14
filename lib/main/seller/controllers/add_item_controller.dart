@@ -88,6 +88,7 @@ class AddItemController extends GetxController {
         'condition': condition.value,
         'images': itemImageUrls,
         'winning_bid': '',
+        'otp': '',
       };
 
       batch.set(itemRef, itemData);

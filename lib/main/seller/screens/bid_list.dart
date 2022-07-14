@@ -10,8 +10,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class BidListScreen extends StatelessWidget {
-  const BidListScreen({Key? key, required this.id}) : super(key: key);
-  final String id;
+  const BidListScreen({Key? key, required this.item}) : super(key: key);
+  final Item item;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class BidListScreen extends StatelessWidget {
         drawerEnableOpenDragGesture: false,
         body: ResponsiveView(
           _Content(
-            id: id,
+            item: item,
           ),
           SellerSideMenu(),
         ),
@@ -29,16 +29,17 @@ class BidListScreen extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class _Content extends StatelessWidget {
-  _Content({Key? key, required this.id}) : super(key: key);
+  _Content({Key? key, required this.item}) : super(key: key);
   final AuctionedItemController aController = Get.find();
   final BidsController bidsController = Get.find();
-  final String id;
+  Item item;
 
   Item getItem() {
-    List<Item> item =
-        aController.itemList.where((item) => item.itemId == id).toList();
-    return item[0];
+    item = aController.itemList
+        .firstWhere((val) => val.itemId == item.itemId, orElse: () => item);
+    return item;
   }
 
   @override

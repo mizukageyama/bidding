@@ -127,11 +127,7 @@ class _Content extends StatelessWidget {
                     : Get.width / 2,
                 child: SearchDropdownField(
                   topLabel: 'Sort by',
-                  items: const [
-                    'Winner Selected',
-                    'Asking Price',
-                    'Date Closed'
-                  ],
+                  items: const ['Asking Price', 'Date Closed'],
                   onChanged: (value) {
                     _closedAuction.sortOption.value = value!;
                     _closedAuction.sortItems();

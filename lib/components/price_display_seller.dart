@@ -43,7 +43,7 @@ class DisplayPriceSeller extends StatelessWidget {
                   onTap: () {
                     Get.to(
                         () => BidListScreen(
-                              id: item.itemId,
+                              item: item,
                             ),
                         transition: Transition.noTransition);
                   },
@@ -76,7 +76,7 @@ class DisplayPriceSeller extends StatelessWidget {
                 onTap: () {
                   Get.to(
                       () => BidListScreen(
-                            id: item.itemId,
+                            item: item,
                           ),
                       transition: Transition.noTransition);
                 },

@@ -106,29 +106,18 @@ class ClosedAuctionController extends GetxController {
     return filtered.isEmpty && filtering.value;
   }
 
-//sort Items
-
+  //sort Items
   void changeAscDesc() {
     asc.value = !asc.value;
   }
 
   void sortItems() {
-    if (sortOption.value == 'Winner Selected') {
-      sortByWinnerSelected();
-    } else if (sortOption.value == 'Asking Price') {
+    if (sortOption.value == 'Asking Price') {
       sortByAskingPrice();
     } else if (sortOption.value == 'Date Closed') {
       sortByDateClosed();
     }
     return;
-  }
-
-  void sortByWinnerSelected() {
-    if (asc.value) {
-      filtered.sort((a, b) => b.winningBid.compareTo(a.winningBid));
-    } else {
-      filtered.sort((a, b) => a.winningBid.compareTo(b.winningBid));
-    }
   }
 
   void sortByAskingPrice() {

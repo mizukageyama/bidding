@@ -170,14 +170,9 @@ class ManageItem extends GetxController {
     // Commit the batch
     batch.commit().then((_) async {
       dismissDialog();
-      showSimpleDialog(
-          title: 'Item Marked as Sold',
-          description: 'The item is transferred to your sold items.',
-          onTapFunc: () {
-            SellerSideMenuController menu = Get.find();
-            menu.changeActiveItem('Sold Items');
-            Get.to(() => const SoldItemList());
-          });
+      SellerSideMenuController menu = Get.find();
+      menu.changeActiveItem('Sold Items');
+      Get.to(() => const SoldItemList());
     }).catchError((onError) {
       dismissDialog();
       showErrorDialog(
