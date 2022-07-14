@@ -36,12 +36,9 @@ class NotificationCard extends StatelessWidget {
             style: robotoRegular.copyWith(color: greyColor),
           ),
           const SizedBox(
-            height: 5,
+            height: 3,
           ),
           const Divider(),
-          const SizedBox(
-            height: 15,
-          ),
         ],
       ),
     );
