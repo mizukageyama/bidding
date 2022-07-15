@@ -3,7 +3,7 @@ import 'package:bidding/main/bidder/controllers/ongoing_auction_controller.dart'
 import 'package:bidding/models/user_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
-import 'package:bidding/shared/controllers/notif_controllers.dart';
+import 'package:bidding/shared/controllers/notif_controller.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 

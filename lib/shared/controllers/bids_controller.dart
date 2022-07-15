@@ -144,7 +144,7 @@ class BidsController extends GetxController {
         'title': 'You Won an Auction!',
         'message': 'You won ${item.title} with the bid of Php ${bid.amount}. '
             'Please check your email for futher information.',
-        'created_at': Timestamp.now()
+        'created_at': FieldValue.serverTimestamp(),
       },
     );
 

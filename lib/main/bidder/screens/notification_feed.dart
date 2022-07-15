@@ -1,7 +1,7 @@
 import 'package:bidding/components/info_display.dart';
 import 'package:bidding/components/notification_card.dart';
 import 'package:bidding/shared/_packages_imports.dart';
-import 'package:bidding/shared/controllers/notif_controllers.dart';
+import 'package:bidding/shared/controllers/notif_controller.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

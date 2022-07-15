@@ -5,7 +5,7 @@ import 'package:bidding/main/seller/controllers/seller_side_menu_controller.dart
 import 'package:bidding/main/seller/controllers/sold_items_controller.dart';
 import 'package:bidding/main/seller/screens/_seller_screens.dart';
 import 'package:bidding/shared/_packages_imports.dart';
-import 'package:bidding/shared/controllers/notif_controllers.dart';
+import 'package:bidding/shared/controllers/notif_controller.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
 import 'package:flutter/foundation.dart';

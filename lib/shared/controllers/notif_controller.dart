@@ -18,19 +18,6 @@ class NotifController extends GetxController {
     super.onInit();
   }
 
-  get notifBadgeCount => _authController.info.value?.badgeCount ?? 0;
-
-  Future<void> resetBadge() async {
-    await firestore
-        .collection('users')
-        .doc(auth.currentUser!.uid)
-        .collection('additional_info')
-        .doc('value')
-        .update({
-      'notif_badge': 0,
-    });
-  }
-
   Stream<List<NotificationModel>> getUserNotifs() {
     return firestore
         .collection('users')
@@ -42,6 +29,19 @@ class NotifController extends GetxController {
       return query.docs.map((item) {
         return NotificationModel.fromJson(item.data());
       }).toList();
+    });
+  }
+
+  get notifBadgeCount => _authController.info.value?.badgeCount ?? 0;
+
+  Future<void> resetBadge() async {
+    await firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('additional_info')
+        .doc('value')
+        .update({
+      'notif_badge': 0,
     });
   }
 }

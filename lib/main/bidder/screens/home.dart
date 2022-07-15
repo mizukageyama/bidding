@@ -5,7 +5,7 @@ import 'package:bidding/main/bidder/controllers/ongoing_auction_controller.dart'
 import 'package:bidding/main/bidder/screens/_bidder_screens.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
-import 'package:bidding/shared/controllers/notif_controllers.dart';
+import 'package:bidding/shared/controllers/notif_controller.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/bidder/side_menu.dart';
 import 'package:flutter/foundation.dart';

@@ -24,7 +24,6 @@ class SoldItemsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     soldItems.bindStream(getSoldItems());
 
     Future.delayed(const Duration(seconds: 3), () {
