@@ -33,12 +33,16 @@ class NotificationCard extends StatelessWidget {
           ),
           Text(
             Format.timeAgo(notif.createdAt),
-            style: robotoRegular.copyWith(color: greyColor),
+            style: robotoRegular.copyWith(
+              color: Colors.black54,
+            ),
           ),
           const SizedBox(
             height: 3,
           ),
-          const Divider(),
+          const Divider(
+            color: Colors.grey,
+          ),
         ],
       ),
     );

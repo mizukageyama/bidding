@@ -31,6 +31,7 @@ class BidderHome extends StatelessWidget {
 
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
+  final notifScroll = ScrollController(initialScrollOffset: 0);
   final OngoingAuctionController itemListController = Get.find();
   final NotifController notifController = Get.find();
   final RxBool showNotif = false.obs;
@@ -175,17 +176,28 @@ class _Content extends StatelessWidget {
                 () => Visibility(
                   visible: showNotif.value,
                   child: Positioned(
-                    right: 0,
+                    right: 3,
                     top: 0,
                     child: Card(
+                      color: Colors.white.withOpacity(0.70),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       elevation: 8,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: whiteColor,
-                          borderRadius: BorderRadius.circular(10),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: 50,
+                            maxHeight: context.height - 200,
+                          ),
+                          child: GlassContainer.clearGlass(
+                            borderColor: Colors.transparent,
+                            height: double.infinity,
+                            width: 250,
+                            child: showNotifs(),
+                          ),
                         ),
-                        width: 250,
-                        child: showNotifications(),
                       ),
                     ),
                   ),
@@ -261,13 +273,12 @@ class _Content extends StatelessWidget {
     );
   }
 
-  Widget showNotifications() {
+  Widget showNotifs() {
     if (notifController.isDoneLoading.value &&
         notifController.notifs.isNotEmpty) {
       return ListView.builder(
+        controller: notifScroll,
         itemCount: notifController.notifs.length,
-        primary: false,
-        physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.all(kIsWeb ? 10 : 10),
         shrinkWrap: true,
         itemBuilder: (context, index) {

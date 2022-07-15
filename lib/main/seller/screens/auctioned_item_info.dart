@@ -106,10 +106,12 @@ class _Content extends StatelessWidget {
                             ),
                           ),
                           Expanded(
-                            child: RightColumn(
-                                item: getItem(),
-                                controller: bidsController,
-                                isBidder: false),
+                            child: Obx(
+                              () => RightColumn(
+                                  item: getItem(),
+                                  controller: bidsController,
+                                  isBidder: false),
+                            ),
                           ),
                         ],
                       ),

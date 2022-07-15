@@ -119,7 +119,7 @@ class AuthController extends GetxController {
   Stream<AdditionalInfo> getAdditionalInfo() {
     return firestore
         .collection('users')
-        .doc(firebaseUser.value!.uid)
+        .doc(auth.currentUser!.uid)
         .collection('additional_info')
         .doc('value')
         .snapshots()
