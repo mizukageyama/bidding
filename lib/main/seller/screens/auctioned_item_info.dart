@@ -35,15 +35,15 @@ class _Content extends StatelessWidget {
     required this.item,
     required this.id,
   }) : super(key: key);
-  final Item item;
+  Item item;
   final String id;
   final BidsController bidsController = Get.put(BidsController());
   final AuctionedItemController aController = Get.find();
 
   Item getItem() {
-    List<Item> item =
-        aController.itemList.where((item) => item.itemId == id).toList();
-    return item[0];
+    item = aController.itemList
+        .firstWhere((val) => val.itemId == item.itemId, orElse: () => item);
+    return item;
   }
 
   @override
