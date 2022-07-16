@@ -3,7 +3,6 @@ import 'package:bidding/components/notification_card.dart';
 import 'package:bidding/main/bidder/controllers/bidder_side_menu_controller.dart';
 import 'package:bidding/main/bidder/controllers/ongoing_auction_controller.dart';
 import 'package:bidding/main/bidder/screens/_bidder_screens.dart';
-import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/notif_controller.dart';

@@ -29,6 +29,7 @@ class ItemInfoScreen extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class _Content extends StatelessWidget {
   _Content({
     Key? key,

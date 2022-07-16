@@ -206,6 +206,23 @@ class SignupScreen extends StatelessWidget {
                                             height: 10,
                                           ),
                                           FormInputFieldWithIcon(
+                                            controller: authController
+                                                .contactController,
+                                            iconPrefix: Icons.contact_phone,
+                                            labelText: 'Contact Number',
+                                            keyboardType: TextInputType.number,
+                                            onChanged: (value) {
+                                              return;
+                                            },
+                                            onSaved: (value) => authController
+                                                .contactController
+                                                .text = value!,
+                                            validator: Validator().number,
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          FormInputFieldWithIcon(
                                             controller:
                                                 authController.emailController,
                                             iconPrefix: Icons.mail,

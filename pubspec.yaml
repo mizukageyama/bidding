@@ -62,7 +62,6 @@ dev_dependencies:
   expandable: ^5.0.1
   badges: ^2.0.3
   universal_html: ^2.0.8
-  glass_kit: ^2.0.1
   flutter_launcher_icons: ^0.9.3
   blurrycontainer: ^1.0.2
 

@@ -25,12 +25,13 @@ class AuthController extends GetxController {
   Rxn<AdditionalInfo> info = Rxn<AdditionalInfo>();
 
   //Sign Up Screen
+  TextEditingController idNumberController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController confirmPassController = TextEditingController();
   TextEditingController currentPasswordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
-  TextEditingController idnumberController = TextEditingController();
+  TextEditingController contactController = TextEditingController();
   final RxString usertype = ''.obs;
 
   XFile? imgOfValidIDFile;
@@ -38,7 +39,6 @@ class AuthController extends GetxController {
   final RxString validIDImage = ''.obs;
   final RxString form1Image = ''.obs;
   TextEditingController confirmPwController = TextEditingController();
-  TextEditingController idNumberController = TextEditingController();
   final ImagePickerService picker = ImagePickerService();
   final RxString userType = ''.obs;
   final RxString idImage = ''.obs;
@@ -219,7 +219,7 @@ class AuthController extends GetxController {
       'id_number': idNumberController.text.trim(),
       'form_1': form1Url.value,
       'um_id': umIdUrl.value,
-      'contact_number': '',
+      'contact_number': contactController.text.trim(),
     };
 
     batch.set(userRef, userData);
@@ -302,6 +302,7 @@ class AuthController extends GetxController {
     lastNameController.clear();
     confirmPwController.clear();
     idNumberController.clear();
+    contactController.clear();
     userType.value = '';
     idImage.value = '';
     form1Image.value = '';
