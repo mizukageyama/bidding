@@ -15,5 +15,5 @@ class NotificationModel {
       NotificationModel(
           title: json['title'] as String,
           message: json['message'] as String,
-          createdAt: json['created_at'] as Timestamp);
+          createdAt: json['created_at'] ?? Timestamp.now());
 }

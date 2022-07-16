@@ -3,6 +3,7 @@ import 'package:bidding/components/notification_card.dart';
 import 'package:bidding/main/bidder/controllers/bidder_side_menu_controller.dart';
 import 'package:bidding/main/bidder/controllers/ongoing_auction_controller.dart';
 import 'package:bidding/main/bidder/screens/_bidder_screens.dart';
+import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/notif_controller.dart';
@@ -188,12 +189,12 @@ class _Content extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                         child: ConstrainedBox(
                           constraints: BoxConstraints(
-                            minHeight: 50,
+                            minHeight: 200,
                             maxHeight: context.height - 200,
                           ),
-                          child: GlassContainer.clearGlass(
-                            borderColor: Colors.transparent,
-                            height: double.infinity,
+                          child: BlurryContainer(
+                            blur: 5,
+                            color: Colors.white.withOpacity(0.6),
                             width: 250,
                             child: showNotifs(),
                           ),

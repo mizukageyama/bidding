@@ -172,7 +172,7 @@ class ManageItem extends GetxController {
       dismissDialog();
       SellerSideMenuController menu = Get.find();
       menu.changeActiveItem('Sold Items');
-      Get.to(() => const SoldItemList());
+      Get.offAll(() => const SoldItemList());
     }).catchError((onError) {
       dismissDialog();
       showErrorDialog(

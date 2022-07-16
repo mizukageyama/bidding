@@ -6,6 +6,7 @@ import 'package:bidding/main/seller/controllers/sold_items_controller.dart';
 import 'package:bidding/main/seller/screens/_seller_screens.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/notif_controller.dart';
+import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
 import 'package:flutter/foundation.dart';
@@ -212,12 +213,12 @@ class _Content extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       child: ConstrainedBox(
                         constraints: BoxConstraints(
-                          minHeight: 50,
+                          minHeight: 200,
                           maxHeight: context.height - 200,
                         ),
-                        child: GlassContainer.clearGlass(
-                          borderColor: Colors.transparent,
-                          height: double.infinity,
+                        child: BlurryContainer(
+                          blur: 5,
+                          color: Colors.white.withOpacity(0.6),
                           width: 250,
                           child: showNotifs(),
                         ),

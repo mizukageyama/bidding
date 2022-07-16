@@ -219,6 +219,7 @@ class AuthController extends GetxController {
       'id_number': idNumberController.text.trim(),
       'form_1': form1Url.value,
       'um_id': umIdUrl.value,
+      'contact_number': '',
     };
 
     batch.set(userRef, userData);
