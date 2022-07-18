@@ -203,9 +203,9 @@ class _Content extends StatelessWidget {
                   right: 3,
                   top: 0,
                   child: Card(
-                    color: Colors.white.withOpacity(0.35),
+                    color: Colors.white.withOpacity(0.70),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(11),
                     ),
                     elevation: 8,
                     child: ClipRRect(
