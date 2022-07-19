@@ -3,6 +3,7 @@ import 'package:bidding/components/_components.dart';
 import 'package:bidding/components/for_forms/custom_dropdown2.dart';
 import 'package:bidding/main/seller/controllers/add_item_controller.dart';
 import 'package:bidding/main/seller/controllers/seller_side_menu_controller.dart';
+import 'package:bidding/main/seller/screens/auctioned_item_list.dart';
 import 'package:bidding/main/seller/screens/sold_item_list.dart';
 import 'package:bidding/models/bid_model.dart';
 import 'package:bidding/models/item_model.dart';
@@ -95,11 +96,18 @@ class ManageItem extends GetxController {
         log.i('Should notify admin about the item photos that wasn\'t deleted');
       });
       dismissDialog();
+      dismissDialog();
       showSimpleDialog(
           title: 'Item Deleted Successfully',
-          description: 'The selected auctioned item has been deleted.');
+          description: 'The selected auctioned item has been deleted.',
+          onTapFunc: () {
+            SellerSideMenuController menu = Get.find();
+            menu.changeActiveItem('Auctioned Items');
+            Get.offAll(() => const AuctionedItemListScreen());
+          });
     }).catchError((onError) {
       log.i('Unable to delete item and its bid');
+      dismissDialog();
       dismissDialog();
       showErrorDialog(
           errorTitle: 'An error occured',

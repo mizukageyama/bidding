@@ -54,7 +54,7 @@ class RightColumnContent extends StatelessWidget {
                           dialogTitle:
                               'Are you sure you want to delete this item?',
                           dialogCaption:
-                              'Please select "yes" to mark this item as sold. Otherwise, select "no"',
+                              'Please select "yes" to delete this item. Otherwise, select "no"',
                           onYesTap: () async {
                             await ManageItem.deleteUsingBatch(item.itemId);
                           },

@@ -165,13 +165,7 @@ class DisplayBids extends StatelessWidget {
         return const InfoDisplay(
             message: 'No bids for this item at the moment');
       }
-      return const SizedBox(
-        width: 20,
-        height: 20,
-        child: CircularProgressIndicator(
-          color: maroonColor,
-        ),
-      );
+      return const SizedBox(width: 0, height: 0);
     });
   }
 }
