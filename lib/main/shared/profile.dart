@@ -208,13 +208,12 @@ class _Content extends StatelessWidget {
 
   Widget changePassword(BuildContext context) {
     final _changePassword = GlobalKey<FormState>();
-    return Center(
-        child: SimpleDialog(
+    return SimpleDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+      contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       children: [
         SizedBox(
-          width: kIsWeb ? Get.width * .3 : Get.width * .7,
+          width: kIsWeb && Get.width >= 600 ? Get.width * .3 : Get.width * .8,
           child: Column(children: [
             Text(
               'Change Password',
@@ -234,7 +233,9 @@ class _Content extends StatelessWidget {
             Form(
               key: _changePassword,
               child: SizedBox(
-                width: kIsWeb ? Get.width * .2 : Get.width * .9,
+                width: kIsWeb && Get.width >= 600
+                    ? Get.width * .2
+                    : Get.width * .66,
                 child: Column(children: [
                   Obx(
                     () => FormInputFieldWithIcon(
@@ -315,6 +316,6 @@ class _Content extends StatelessWidget {
           ]),
         )
       ],
-    ));
+    );
   }
 }
