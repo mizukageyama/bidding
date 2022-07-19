@@ -326,7 +326,7 @@ class _Content extends StatelessWidget {
     } else if (_closedAuction.isDoneLoading.value &&
         _closedAuction.closedItems.isEmpty) {
       return const Center(
-          child: InfoDisplay(message: 'No ongoing auction at the moment'));
+          child: InfoDisplay(message: 'No closed auction at the moment'));
     }
     return const Center(
       child: SizedBox(

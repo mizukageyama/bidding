@@ -42,10 +42,10 @@ class DisplayPriceSeller extends StatelessWidget {
                 child: InkWell(
                   onTap: () {
                     Get.to(
-                        () => BidListScreen(
-                              item: item,
-                            ),
-                        transition: Transition.noTransition);
+                      () => BidListScreen(
+                        item: item,
+                      ),
+                    );
                   },
                   child: Text(
                     'View Bids',
@@ -75,10 +75,10 @@ class DisplayPriceSeller extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   Get.to(
-                      () => BidListScreen(
-                            item: item,
-                          ),
-                      transition: Transition.noTransition);
+                    () => BidListScreen(
+                      item: item,
+                    ),
+                  );
                 },
                 child: Text(
                   'View Bids',
