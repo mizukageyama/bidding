@@ -624,7 +624,7 @@ class DeletableCategoryChip extends StatelessWidget {
             onDeleted: () {
               controller.category.remove(data);
             },
-            useDeleteButtonTooltip: true,
+            deleteButtonTooltipMessage: 'Remove',
             backgroundColor: blackColor,
             label: Text(
               data,
