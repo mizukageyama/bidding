@@ -17,28 +17,28 @@ import 'package:flutter/material.dart';
 final AuthController authController = Get.find();
 
 //Seller Side Menu Options
-List<MenuItem> sellerSideMenuItem = [
-  MenuItem(
+List<SMenuItem> sellerSideMenuItem = [
+  SMenuItem(
     name: 'Dashboard',
     icon: Icons.dashboard,
     function: () => Get.offAll(() => const SellerHome()),
   ),
-  MenuItem(
+  SMenuItem(
     name: 'Auctioned Items',
     iconPath: 'assets/icons/icon_raise.png',
     function: () => Get.offAll(() => const AuctionedItemListScreen()),
   ),
-  MenuItem(
+  SMenuItem(
     name: 'Add Item for Auction',
     icon: Icons.add_rounded,
     function: () => Get.offAll(() => const AddItemForm()),
   ),
-  MenuItem(
+  SMenuItem(
     name: 'Sold Items',
     iconPath: 'assets/icons/icon_auction.png',
     function: () => Get.offAll(() => const SoldItemList()),
   ),
-  MenuItem(
+  SMenuItem(
     name: 'My Profile',
     icon: Icons.settings,
     function: () => Get.offAll(
@@ -47,7 +47,7 @@ List<MenuItem> sellerSideMenuItem = [
       ),
     ),
   ),
-  MenuItem(
+  SMenuItem(
     name: 'Logout',
     icon: Icons.logout,
     function: () => authController.signOut(),
@@ -55,23 +55,23 @@ List<MenuItem> sellerSideMenuItem = [
 ];
 
 //Bidder Side Menu Options
-List<MenuItem> bidderSideMenuItem = [
-  MenuItem(
+List<SMenuItem> bidderSideMenuItem = [
+  SMenuItem(
     name: 'Dashboard',
     icon: Icons.dashboard,
     function: () => Get.offAll(() => const BidderHome()),
   ),
-  MenuItem(
+  SMenuItem(
     name: 'Ongoing Auctions',
     iconPath: 'assets/icons/icon_raise.png',
     function: () => Get.offAll(() => const OngoingAuctionScreen()),
   ),
-  MenuItem(
+  SMenuItem(
     name: 'Transactions',
     icon: Icons.add_rounded,
     function: () => Get.offAll(() => const TransactionScreen()),
   ),
-  MenuItem(
+  SMenuItem(
     name: 'My Profile',
     icon: Icons.settings,
     function: () => Get.offAll(
@@ -80,7 +80,7 @@ List<MenuItem> bidderSideMenuItem = [
       ),
     ),
   ),
-  MenuItem(
+  SMenuItem(
     name: 'Logout',
     icon: Icons.logout,
     function: () => authController.signOut(),
@@ -88,28 +88,28 @@ List<MenuItem> bidderSideMenuItem = [
 ];
 
 //Admin Side Menu Options
-List<MenuItem> adminSideMenuItem = [
-  MenuItem(
+List<SMenuItem> adminSideMenuItem = [
+  SMenuItem(
     name: 'Dashboard',
     icon: Icons.dashboard,
     function: () => Get.offAll(() => const AdminHome()),
   ),
-  MenuItem(
+  SMenuItem(
     name: 'Open Auctions',
     iconPath: 'assets/icons/icon_raise.png',
     function: () => Get.offAll(() => const OpenAuctionScreen()),
   ),
-  MenuItem(
+  SMenuItem(
     name: 'Closed Auctions',
     icon: Icons.close_rounded,
     function: () => Get.offAll(() => const ClosedAuctionScreen()),
   ),
-  MenuItem(
+  SMenuItem(
     name: 'Sold Auctions',
     iconPath: 'assets/icons/icon_auction.png',
     function: () => Get.offAll(() => const SoldAuctionScreen()),
   ),
-  MenuItem(
+  SMenuItem(
     name: 'My Profile',
     icon: Icons.settings,
     function: () => Get.offAll(
@@ -118,7 +118,7 @@ List<MenuItem> adminSideMenuItem = [
       ),
     ),
   ),
-  MenuItem(
+  SMenuItem(
     name: 'Logout',
     icon: Icons.logout,
     function: () => authController.signOut(),
