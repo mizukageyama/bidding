@@ -2,20 +2,20 @@ import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 
 class InputField extends StatelessWidget {
-  const InputField(
-      {Key? key,
-      required this.controller,
-      required this.labelText,
-      this.validator,
-      this.textInputAction = TextInputAction.next,
-      this.keyboardType = TextInputType.text,
-      this.obscureText = false,
-      this.minLines = 1,
-      this.maxLines,
-      this.hideLabelTyping = false,
-      required this.onChanged,
-      required this.onSaved})
-      : super(key: key);
+  const InputField({
+    Key? key,
+    required this.controller,
+    required this.labelText,
+    this.validator,
+    this.textInputAction = TextInputAction.next,
+    this.keyboardType = TextInputType.text,
+    this.obscureText = false,
+    this.minLines = 1,
+    this.maxLines,
+    this.hideLabelTyping = false,
+    required this.onChanged,
+    required this.onSaved,
+  }) : super(key: key);
 
   final TextEditingController controller;
   final String labelText;

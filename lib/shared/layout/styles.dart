@@ -16,6 +16,7 @@ const Color blueColor = Color(0xFF291565);
 const Color lightgreyColor = Color(0xFDE7E4E7);
 const Color lightblueColor = Color(0xFF4D82F3);
 const Color pinkColor = Color(0xFFC3003A);
+const Color greenColor = Color(0xFF76B528);
 
 //Note:
 //Add our textStyles here

@@ -4,7 +4,6 @@ import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -15,13 +14,10 @@ class AuctionedItemListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawerEnableOpenDragGesture: false,
         drawer: SellerSideMenu(),
         body: ResponsiveView(
           _Content(),
-          MobileSliver(
-            title: 'Auctioned Items',
-            body: _Content(),
-          ),
           SellerSideMenu(),
         ),
       ),
@@ -42,31 +38,38 @@ class _Content extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          kIsWeb && Get.width >= 600
-              ? Container(
-                  color: maroonColor,
-                  height: 55,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Auctioned Items',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            color: whiteColor,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15),
-                      ),
-                      //searchBar()
-                    ],
+          Container(
+            color: maroonColor,
+            height: 55,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Visibility(
+                  visible: Get.width < 600,
+                  child: IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    icon: const Icon(
+                      Icons.menu,
+                      color: whiteColor,
+                    ),
                   ),
-                )
-              : const SizedBox(
-                  height: 0,
                 ),
+                const Text(
+                  'Auctioned Items',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: whiteColor,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),
+                ),
+              ],
+            ),
+          ),
           Expanded(child: Obx(() => showItems())),
         ],
       ),
@@ -104,7 +107,9 @@ class _Content extends StatelessWidget {
       child: SizedBox(
         width: 20,
         height: 20,
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          color: maroonColor,
+        ),
       ),
     );
   }

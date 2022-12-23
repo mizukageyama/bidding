@@ -25,12 +25,13 @@ class AuthController extends GetxController {
   Rxn<AdditionalInfo> info = Rxn<AdditionalInfo>();
 
   //Sign Up Screen
+  TextEditingController idNumberController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController confirmPassController = TextEditingController();
   TextEditingController currentPasswordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
-  TextEditingController idnumberController = TextEditingController();
+  TextEditingController contactController = TextEditingController();
   final RxString usertype = ''.obs;
 
   XFile? imgOfValidIDFile;
@@ -38,7 +39,6 @@ class AuthController extends GetxController {
   final RxString validIDImage = ''.obs;
   final RxString form1Image = ''.obs;
   TextEditingController confirmPwController = TextEditingController();
-  TextEditingController idNumberController = TextEditingController();
   final ImagePickerService picker = ImagePickerService();
   final RxString userType = ''.obs;
   final RxString idImage = ''.obs;
@@ -47,24 +47,18 @@ class AuthController extends GetxController {
   XFile? imgIdFile;
   XFile? imgForm1File;
 
-  //Change pw
-  TextEditingController currentPwController = TextEditingController();
-  TextEditingController newPwController = TextEditingController();
-
   RxBool? isObscureText = true.obs;
   RxBool? isObscureText2 = true.obs;
-  RxBool? isObscureCurrentPW = true.obs;
-  RxBool? isObscureNewPW = true.obs;
   RxBool isCheckboxChecked = false.obs;
 
   @override
   void onInit() {
     log.i('onInit | Auth Controller is ready');
     //delay to give splash screen 3 sec
-    Future.delayed(const Duration(seconds: 3), () {
-      ever(firebaseUser, _setInitialScreen);
-      firebaseUser.bindStream(user);
-    });
+    // Future.delayed(const Duration(seconds: 3), () {
+    ever(firebaseUser, _setInitialScreen);
+    firebaseUser.bindStream(user);
+    // });
     super.onInit();
   }
 
@@ -125,7 +119,7 @@ class AuthController extends GetxController {
   Stream<AdditionalInfo> getAdditionalInfo() {
     return firestore
         .collection('users')
-        .doc(firebaseUser.value!.uid)
+        .doc(auth.currentUser!.uid)
         .collection('additional_info')
         .doc('value')
         .snapshots()
@@ -192,9 +186,31 @@ class AuthController extends GetxController {
   }
 
   Future<void> _createUser(String _userID, BuildContext context) async {
-    await uploadPhotos(_userID);
-    log.i('done upload');
-    await firestore.collection('users').doc(_userID).set(<String, dynamic>{
+    RxBool successUpload = false.obs;
+    try {
+      await uploadPhotos(_userID);
+      log.i('done upload');
+      successUpload.value = true;
+    } catch (error) {
+      log.i(error);
+    }
+    if (successUpload.value) {
+      await createUserBatch(_userID, context);
+    } else {
+      dismissDialog();
+      Get.snackbar(
+        'Error creating account',
+        'Please try again later',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> createUserBatch(String _userID, BuildContext context) async {
+    final batch = firestore.batch();
+
+    final userRef = firestore.collection('users').doc(_userID);
+    Map<String, dynamic> userData = {
       'user_id': _userID,
       'email': emailController.text.trim(),
       'first_name': firstNameController.text.trim(),
@@ -203,21 +219,50 @@ class AuthController extends GetxController {
       'id_number': idNumberController.text.trim(),
       'form_1': form1Url.value,
       'um_id': umIdUrl.value,
-    }).then((value) async {
-      await addSubCollection(_userID);
-      dismissDialog();
-      await signInWithEmailAndPassword(context);
-      registrationSuccess();
-    });
-  }
+      'contact_number': contactController.text.trim(),
+    };
 
-  Future<void> addSubCollection(String _userID) async {
-    await firestore
+    batch.set(userRef, userData);
+
+    final addtionalRef = firestore
         .collection('users')
         .doc(_userID)
         .collection('additional_info')
-        .doc('value')
-        .set({'profile_photo': ''});
+        .doc('value');
+    Map<String, dynamic> additionalData = {
+      'profile_photo': '',
+      'notif_badge': 1
+    };
+
+    batch.set(addtionalRef, additionalData);
+
+    final notifRef = firestore
+        .collection('users')
+        .doc(_userID)
+        .collection('notifications')
+        .doc(_userID);
+
+    Map<String, dynamic> firstNotif = {
+      'title': 'Welcome, ${firstNameController.text.trim()}!',
+      'message':
+          'As a new user of our application, we welcome you with pleasure. '
+              'You may now start to explore our community bidding.',
+      'created_at': FieldValue.serverTimestamp(),
+    };
+
+    batch.set(notifRef, firstNotif);
+
+    batch.commit().then((value) async {
+      dismissDialog();
+      await signInWithEmailAndPassword(context);
+      registrationSuccess();
+    }).catchError((onError) {
+      dismissDialog();
+      showErrorDialog(
+          errorTitle: 'Something went wrong',
+          errorDescription: 'An error occured while creating your account');
+      log.i(onError);
+    });
   }
 
   Future<void> uploadPhotos(String id) async {
@@ -257,6 +302,7 @@ class AuthController extends GetxController {
     lastNameController.clear();
     confirmPwController.clear();
     idNumberController.clear();
+    contactController.clear();
     userType.value = '';
     idImage.value = '';
     form1Image.value = '';
@@ -264,7 +310,7 @@ class AuthController extends GetxController {
     umIdUrl.value = '';
   }
 
-  //Change Password and Forgot Password ---------------------------------
+  //Forgot Password ---------------------------------
   Future<void> sendPasswordResetEmail(BuildContext context) async {
     FocusScope.of(context).unfocus();
     try {
@@ -286,42 +332,5 @@ class AuthController extends GetxController {
         onTapFunc: () => dismissDialog(),
       );
     }
-  }
-
-  Future<void> changePassword(BuildContext context) async {
-    FocusScope.of(context).unfocus();
-    final user = FirebaseAuth.instance.currentUser;
-    final cred = EmailAuthProvider.credential(
-        email: user!.email!, password: currentPwController.text);
-    showLoading();
-    await user.reauthenticateWithCredential(cred).then((value) {
-      user.updatePassword(newPwController.text).then((_) {
-        dismissDialog();
-        _changePasswordSuccess();
-        Get.back();
-        Get.snackbar('Password Changed Successfully',
-            'You may now use your new password.',
-            snackPosition: SnackPosition.BOTTOM,
-            duration: const Duration(seconds: 3),
-            backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-            colorText: Get.theme.snackBarTheme.actionTextColor);
-      });
-    }).catchError((err) {
-      dismissDialog();
-      Get.snackbar('Password Change Failed',
-          'Your current password you have entered is not correct',
-          snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(seconds: 3),
-          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-          colorText: Get.theme.snackBarTheme.actionTextColor);
-    });
-  }
-
-  Future<void> _changePasswordSuccess() async {
-    log.i('_clearControllers | Change Password Success');
-    currentPwController.clear();
-    newPwController.clear();
-    isObscureCurrentPW!.value = true;
-    isObscureNewPW!.value = true;
   }
 }

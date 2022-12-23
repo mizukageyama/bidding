@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class SideMenuCard extends StatelessWidget {
   SideMenuCard({Key? key, required this.menu, required this.menuController})
       : super(key: key);
-  final MenuItem menu;
+  final SMenuItem menu;
   final RxBool onHover = false.obs;
   final dynamic menuController;
 

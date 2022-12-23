@@ -6,6 +6,7 @@ class CheckboxFormField extends FormField<bool> {
       Widget? title,
       FormFieldSetter<bool>? onSaved,
       FormFieldValidator<bool>? validator,
+      required Function() callback,
       bool initialValue = false})
       : super(
           key: key,
@@ -17,7 +18,12 @@ class CheckboxFormField extends FormField<bool> {
               dense: state.hasError,
               title: title,
               value: state.value,
-              onChanged: state.didChange,
+              onChanged: (value) {
+                state.didChange(value);
+                if (value!) {
+                  callback();
+                }
+              },
               subtitle: state.hasError
                   ? Builder(
                       builder: (BuildContext context) => Text(

@@ -1,9 +1,9 @@
 import 'package:bidding/components/_components.dart';
-import 'package:bidding/components/display_info_section.dart';
 import 'package:bidding/main/seller/controllers/manage_item.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
+import 'package:bidding/shared/services/dialogs.dart';
 import 'package:bidding/shared/services/format.dart';
 import 'package:bidding/shared/services/validator.dart';
 import 'package:flutter/material.dart';
@@ -31,51 +31,63 @@ class RightColumnContent extends StatelessWidget {
         children: [
           Visibility(
             visible: !isBidder,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
-                  onTap: () async {
-                    await ManageItem.edit(context, item);
-                  },
-                  child: const Icon(
-                    Icons.edit,
-                    color: blackColor,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      await ManageItem.edit(context, item);
+                    },
+                    child: const Icon(
+                      Icons.edit,
+                      color: blackColor,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                InkWell(
-                  onTap: () async {
-                    await ManageItem.delete(item.itemId);
-                  },
-                  child: const Icon(
-                    Icons.delete,
-                    color: blackColor,
+                  const SizedBox(
+                    width: 10,
                   ),
-                ),
-                Visibility(
-                  visible: (!isBidder &&
-                      DateTime.now().isAfter(item.endDate.toDate())),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      CustomButton(
-                        onTap: () async {
-                          await ManageItem.reOpen(context, item.itemId);
-                        },
-                        buttonColor: maroonColor,
-                        text: 'Reopen Item',
-                      ),
-                    ],
+                  InkWell(
+                    onTap: () async {
+                      showConfirmationDialog(
+                          dialogTitle:
+                              'Are you sure you want to delete this item?',
+                          dialogCaption:
+                              'Please select "yes" to delete this item. Otherwise, select "no"',
+                          onYesTap: () async {
+                            await ManageItem.deleteUsingBatch(item.itemId);
+                          },
+                          onNoTap: () => dismissDialog());
+                    },
+                    child: const Icon(
+                      Icons.delete,
+                      color: blackColor,
+                    ),
                   ),
-                ),
-              ],
+                  Visibility(
+                    visible: (!isBidder &&
+                        DateTime.now().isAfter(item.endDate.toDate()) &&
+                        item.winningBid == ''),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        CustomButton(
+                          onTap: () async {
+                            await ManageItem.reOpen(context, item.itemId);
+                          },
+                          buttonColor: maroonColor,
+                          text: 'Re-open Item',
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Text(
@@ -89,6 +101,10 @@ class RightColumnContent extends StatelessWidget {
             height: 15,
           ),
           DisplayInfo(title: 'Description', content: item.description),
+          const SizedBox(
+            height: 15,
+          ),
+          DisplayInfo(title: 'Condition', content: item.condition),
           const SizedBox(
             height: 15,
           ),
@@ -113,9 +129,11 @@ class RightColumnContent extends StatelessWidget {
             height: 15,
           ),
           DisplayPrice(
-              isBidder: isBidder,
-              bidsController: controller,
-              askingPrice: item.askingPrice),
+            isBidder: isBidder,
+            bidsController: controller,
+            askingPrice: item.askingPrice,
+            item: item,
+          ),
           Visibility(
             visible: isBidder,
             child: Column(
@@ -168,7 +186,8 @@ class RightColumnContent extends StatelessWidget {
                         child: CustomButton(
                           onTap: () async {
                             if (_formKey.currentState!.validate()) {
-                              await controller.submitBid(item.itemId);
+                              await controller.submitBid(
+                                  item.itemId, item.sellerId, item.title);
                             }
                           },
                           text: 'Submit Bid',
@@ -185,6 +204,18 @@ class RightColumnContent extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
+          Visibility(
+              visible: !isBidder,
+              child: DisplayInfo(
+                content: Format.date(item.datePosted),
+                title: 'Date Posted',
+              )),
+          Visibility(
+            visible: !isBidder,
+            child: const SizedBox(
+              height: 15,
+            ),
+          ),
           Text(
             'Item ${DateTime.now().isBefore(item.endDate.toDate()) ? 'will be' : 'was'} closed: ${Format.date(item.endDate)}',
             style: robotoRegular.copyWith(color: greyColor),
@@ -194,6 +225,7 @@ class RightColumnContent extends StatelessWidget {
             child: DisplayBids(
               bidsController: controller,
               isBidder: isBidder,
+              item: item,
             ),
           ),
         ],

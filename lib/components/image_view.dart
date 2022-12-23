@@ -7,18 +7,20 @@ class ImageView extends StatelessWidget {
     this.assetImage = 'assets/images/default_image.png',
     this.height = 50.0,
     this.width = 50.0,
+    this.isContained = true,
   }) : super(key: key);
 
   final String imageUrl;
   final String assetImage;
   final double height;
   final double width;
+  final bool isContained;
 
   @override
   Widget build(BuildContext context) {
     return Image.network(
       imageUrl,
-      fit: BoxFit.contain,
+      fit: isContained ? BoxFit.contain : BoxFit.cover,
       width: width,
       height: height,
       errorBuilder: (context, error, stackTrace) {

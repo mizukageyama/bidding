@@ -11,6 +11,7 @@ class BidTile extends StatelessWidget {
       {Key? key,
       required this.bid,
       this.showAll = false,
+      required this.item,
       required this.isBidder})
       : super(key: key);
 
@@ -18,6 +19,7 @@ class BidTile extends StatelessWidget {
   final Bid bid;
   final bool showAll;
   final bool isBidder;
+  final Item item;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class BidTile extends StatelessWidget {
         future: bid.getBidderInfo(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return showAll ? longTile(bid) : shortTile(bid);
+            return showAll ? longTile(bid, context) : shortTile(bid);
           }
           return const SizedBox(
             height: 0,
@@ -56,38 +58,72 @@ class BidTile extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: 30,
-            child: Visibility(
-              visible: !isBidder,
-              child: bid.isApproved
-                  ? const Icon(
-                      Icons.check_circle_rounded,
-                      color: orangeColor,
-                      size: 18,
-                    )
-                  : const SizedBox(
-                      height: 0,
-                      width: 0,
-                    ),
-            ),
+            width: 40,
+            child: bid.isApproved || item.winningBid.isNotEmpty
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Visibility(
+                        visible: bid.isApproved,
+                        child: const Icon(
+                          Icons.check_circle_rounded,
+                          color: orangeColor,
+                          size: 18,
+                        ),
+                      ),
+                      Visibility(
+                        visible: !isBidder && bid.bidId == item.winningBid,
+                        child: const Icon(
+                          Icons.emoji_events,
+                          color: Colors.yellow,
+                          size: 18,
+                        ),
+                      ),
+                    ],
+                  )
+                : const SizedBox(
+                    height: 0,
+                    width: 0,
+                  ),
           )
         ],
       ),
     );
   }
 
-  Widget longTile(Bid bid) {
+  Widget longTile(Bid bid, BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            flex: kIsWeb ? 2 : 1,
-            child: Text(
-              '${bid.bidderInfo!.firstName} ${bid.bidderInfo!.lastName}',
-              style: robotoRegular.copyWith(color: greyColor),
+          Visibility(
+            visible: bid.bidId == item.winningBid,
+            child: Expanded(
+              flex: kIsWeb && Get.width >= 600 ? 2 : 1,
+              child: InkWell(
+                onTap: () => showDialog(
+                  context: context,
+                  builder: (context) => winnerInfoDialog(context, bid),
+                ),
+                child: Text(
+                  '${bid.bidderInfo!.firstName} ${bid.bidderInfo!.lastName}',
+                  style: robotoRegular.copyWith(
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: bid.bidId != item.winningBid,
+            child: Expanded(
+              flex: kIsWeb && Get.width >= 600 ? 2 : 1,
+              child: Text(
+                '${bid.bidderInfo!.firstName} ${bid.bidderInfo!.lastName}',
+                style: robotoRegular.copyWith(color: greyColor),
+              ),
             ),
           ),
           const SizedBox(
@@ -100,30 +136,69 @@ class BidTile extends StatelessWidget {
               style: robotoRegular.copyWith(color: greyColor),
             ),
           ),
-          const SizedBox(
-            width: 3,
-          ),
-          Expanded(
-            flex: kIsWeb ? 3 : 2,
-            child: Text(
-              Format.date(bid.bidDate),
-              style: robotoRegular.copyWith(color: greyColor),
-            ),
-          ),
+          Get.width >= 600
+              ? Flexible(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        width: 3,
+                      ),
+                      Expanded(
+                        flex: kIsWeb ? 3 : 2,
+                        child: Text(
+                          Format.date(bid.bidDate),
+                          style: robotoRegular.copyWith(color: greyColor),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox(
+                  width: 0,
+                  height: 0,
+                ),
           const SizedBox(
             width: 5,
           ),
           SizedBox(
             width: 70,
-            child: bid.isApproved
-                ? const Icon(
-                    Icons.check_circle_rounded,
-                    color: orangeColor,
-                    size: 18,
-                  )
-                : InkWell(
+            child: Column(
+              children: [
+                bid.isApproved || item.winningBid.isNotEmpty
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Visibility(
+                            visible: bid.isApproved,
+                            child: const Icon(
+                              Icons.check_circle_rounded,
+                              color: orangeColor,
+                              size: 18,
+                            ),
+                          ),
+                          Visibility(
+                            visible: bid.bidId == item.winningBid,
+                            child: const Icon(
+                              Icons.emoji_events,
+                              color: Colors.yellow,
+                              size: 18,
+                            ),
+                          ),
+                        ],
+                      )
+                    : const SizedBox(
+                        height: 0,
+                        width: 0,
+                      ),
+                Visibility(
+                  visible: !bid.isApproved &&
+                      !(bid.bidId == item.winningBid) &&
+                      DateTime.now().isBefore(item.endDate.toDate()),
+                  child: InkWell(
                     onTap: () async {
-                      await bidsController.approveBid(bid.bidId);
+                      await bidsController.approveBid(bid, item);
                     },
                     child: Text(
                       'Approve',
@@ -132,9 +207,65 @@ class BidTile extends StatelessWidget {
                       ),
                     ),
                   ),
+                ),
+                Visibility(
+                  visible: !isBidder &&
+                      DateTime.now().isAfter(item.endDate.toDate()) &&
+                      bid.bidId != item.winningBid &&
+                      item.winningBid == '',
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: InkWell(
+                      onTap: () async {
+                        await bidsController.setWinningBid(item, bid);
+                      },
+                      child: Text(
+                        'Set winner',
+                        style: robotoRegular.copyWith(
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           )
         ],
       ),
+    );
+  }
+
+  Widget winnerInfoDialog(BuildContext context, Bid bid) {
+    return SimpleDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      contentPadding: const EdgeInsets.symmetric(
+        vertical: 20,
+        horizontal: 40,
+      ),
+      children: [
+        Text(
+          'Contact Information',
+          style: robotoBold.copyWith(
+            color: greyColor,
+            fontSize: 17,
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(bid.bidderInfo!.fullName),
+        const SizedBox(
+          height: 5,
+        ),
+        Text(bid.bidderInfo!.email),
+        const SizedBox(
+          height: 5,
+        ),
+        Text(bid.bidderInfo!.contactNumber),
+      ],
     );
   }
 }

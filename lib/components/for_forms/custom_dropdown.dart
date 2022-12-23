@@ -10,8 +10,8 @@ class CustomDropdown extends StatefulWidget {
     required this.onSaved,
     required this.validator,
   }) : super(key: key);
-  final String? hintText;
 
+  final String? hintText;
   final List<String>? dropdownItems;
   final void Function(String?)? onChanged;
   final void Function(String?)? onSaved;

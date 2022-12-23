@@ -1,29 +1,27 @@
 import 'package:bidding/components/_components.dart';
+import 'package:bidding/main/seller/controllers/auctioned_items_controller.dart';
 import 'package:bidding/models/_models.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ItemInfoScreen extends StatelessWidget {
-  const ItemInfoScreen({Key? key, required Item item})
+  const ItemInfoScreen({Key? key, required Item item, required this.id})
       : _item = item,
         super(key: key);
   final Item _item;
+  final String id;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawerEnableOpenDragGesture: false,
         body: ResponsiveView(
-          _Content(item: _item),
-          MobileSliver(
-            title: 'Auctioned Items > ${_item.title}',
-            body: _Content(item: _item),
-          ),
+          _Content(item: _item, id: id),
           SellerSideMenu(),
         ),
       ),
@@ -31,11 +29,23 @@ class ItemInfoScreen extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class _Content extends StatelessWidget {
-  _Content({Key? key, required this.item}) : super(key: key);
-
-  final Item item;
+  _Content({
+    Key? key,
+    required this.item,
+    required this.id,
+  }) : super(key: key);
+  Item item;
+  final String id;
   final BidsController bidsController = Get.put(BidsController());
+  final AuctionedItemController aController = Get.find();
+
+  Item getItem() {
+    item = aController.itemList
+        .firstWhere((val) => val.itemId == item.itemId, orElse: () => item);
+    return item;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,45 +58,41 @@ class _Content extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          kIsWeb && Get.width >= 600
-              ? Container(
-                  color: maroonColor,
-                  height: 55,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () => Get.back(),
-                        child: const Icon(
-                          Icons.arrow_back_outlined,
-                          color: whiteColor,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Flexible(
-                        child: Text(
-                          'Auctioned Items > ${item.title}',
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(
-                            color: whiteColor,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                    ],
+          Container(
+            color: maroonColor,
+            height: 55,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () => Get.back(),
+                  child: const Icon(
+                    Icons.arrow_back_outlined,
+                    color: whiteColor,
                   ),
-                )
-              : const SizedBox(
-                  height: 0,
                 ),
-          kIsWeb
+                const SizedBox(
+                  width: 15,
+                ),
+                Flexible(
+                  child: Text(
+                    'Auctioned Items > ${item.title}',
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(
+                      color: whiteColor,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          kIsWeb && Get.width >= 600
               ? Expanded(
                   child: ListView(
                     shrinkWrap: true,
@@ -101,10 +107,12 @@ class _Content extends StatelessWidget {
                             ),
                           ),
                           Expanded(
-                            child: RightColumn(
-                                item: item,
-                                controller: bidsController,
-                                isBidder: false),
+                            child: Obx(
+                              () => RightColumn(
+                                  item: getItem(),
+                                  controller: bidsController,
+                                  isBidder: false),
+                            ),
                           ),
                         ],
                       ),
@@ -119,10 +127,12 @@ class _Content extends StatelessWidget {
                       LeftColumn(
                         images: item.images,
                       ),
-                      RightColumn(
-                          item: item,
-                          controller: bidsController,
-                          isBidder: false)
+                      Obx(
+                        () => RightColumn(
+                            item: getItem(),
+                            controller: bidsController,
+                            isBidder: false),
+                      )
                     ],
                   ),
                 ),

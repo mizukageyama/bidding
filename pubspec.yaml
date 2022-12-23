@@ -40,17 +40,37 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^1.0.0
-  get: ^4.6.1
+  get: ^4.6.5
   firebase_core: ^1.16.0
   firebase_auth: ^3.3.17
   cloud_firestore: ^3.1.14
   firebase_storage: ^10.2.15
+  cloud_functions: ^3.2.16
   logger: ^1.0.0
   image_picker: ^0.8.5
   flutter_layout_grid: ^2.0.0
   flutter_countdown_timer: ^4.1.0
   carousel_slider: ^4.1.1
   uuid: ^3.0.6
+  data_table_2: ^2.2.1
+  dropdown_button2: ^1.6.3
+  pdf: ^3.8.1
+  path_provider: ^2.0.11
+  open_file: ^3.2.1
+  dio: ^4.0.6
+  printing: ^5.9.1
+  expandable: ^5.0.1
+  badges: ^2.0.3
+  universal_html: ^2.0.8
+  flutter_launcher_icons: ^0.9.3
+  blurrycontainer: ^1.0.2
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/um_logo.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/images/um_logo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

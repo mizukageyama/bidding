@@ -7,7 +7,9 @@ import 'package:bidding/shared/layout/styles.dart';
 void showLoading() {
   Get.defaultDialog(
       title: 'Loading...',
-      content: const CircularProgressIndicator(),
+      content: const CircularProgressIndicator(
+        color: maroonColor,
+      ),
       barrierDismissible: false);
 }
 
@@ -233,7 +235,7 @@ void showConfirmationDialog({
                     style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
-                        color: neutralColor),
+                        color: greyColor),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -247,7 +249,7 @@ void showConfirmationDialog({
                     children: [
                       Expanded(
                         child: DialogButton(
-                          buttonText: 'dialogbtn1'.tr,
+                          buttonText: 'Yes',
                           onTap: onYesTap,
                         ),
                       ),
@@ -256,7 +258,7 @@ void showConfirmationDialog({
                       ),
                       Expanded(
                         child: DialogButton(
-                          buttonText: 'dialogbtn01'.tr,
+                          buttonText: 'No',
                           onTap: onNoTap,
                         ),
                       ),
@@ -278,7 +280,7 @@ void showConfirmationDialog({
                   backgroundColor: Color(0xFFE3E6E8),
                   child: Icon(
                     Icons.close,
-                    color: neutralColor,
+                    color: greyColor,
                     size: 16,
                   ),
                 ),

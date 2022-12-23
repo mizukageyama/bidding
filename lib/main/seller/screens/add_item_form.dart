@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'package:bidding/components/_components.dart';
+import 'package:bidding/components/for_forms/custom_dropdown2.dart';
+import 'package:bidding/components/for_forms/multi_select_category_dp.dart';
 import 'package:bidding/main/seller/controllers/add_item_controller.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/constants/app_items.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/seller/side_menu.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:bidding/shared/services/_services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,13 +19,10 @@ class AddItemForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawerEnableOpenDragGesture: false,
         drawer: SellerSideMenu(),
         body: ResponsiveView(
           _Content(),
-          MobileSliver(
-            title: 'Add Item',
-            body: _Content(),
-          ),
           SellerSideMenu(),
         ),
       ),
@@ -34,9 +32,7 @@ class AddItemForm extends StatelessWidget {
 
 class _Content extends StatelessWidget {
   _Content({Key? key}) : super(key: key);
-
   final AddItemController addItemController = Get.put(AddItemController());
-  final _addItemFormkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -46,31 +42,39 @@ class _Content extends StatelessWidget {
       color: whiteColor,
       child: Column(
         children: [
-          kIsWeb && Get.width >= 600
-              ? Container(
-                  color: maroonColor,
-                  height: 50,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Add Item',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          color: whiteColor,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ],
+          Container(
+            color: maroonColor,
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Visibility(
+                  visible: Get.width < 600,
+                  child: IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    icon: const Icon(
+                      Icons.menu,
+                      color: whiteColor,
+                    ),
                   ),
-                )
-              : const SizedBox(
-                  height: 0,
                 ),
+                const Text(
+                  'Add Item',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    color: whiteColor,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15,
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             child: Center(
               child: ListView(
@@ -110,7 +114,7 @@ class _Content extends StatelessWidget {
                               ),
                             ),
                             Form(
-                              key: _addItemFormkey,
+                              key: addItemController.addItemFormKey,
                               child: Wrap(
                                 children: [
                                   Container(
@@ -226,7 +230,7 @@ class _Content extends StatelessWidget {
                                             ),
                                             Expanded(
                                               flex: 2,
-                                              child: CustomDropdown(
+                                              child: CustomDropdown2(
                                                 hintText: 'Condition',
                                                 dropdownItems: condition,
                                                 onChanged: (item) =>
@@ -250,26 +254,30 @@ class _Content extends StatelessWidget {
                                         const SizedBox(
                                           height: 15,
                                         ),
-                                        SizedBox(
-                                          child: CategoryDropdown(
-                                            hintText: 'Category',
-                                            dropdownItems: category,
-                                            onChanged: (item) {
-                                              if (item ==
+                                        Obx(
+                                          () => MultiCategoryDropdown(
+                                            selectedItems: List<String>.from(
+                                                addItemController.category),
+                                            items: category,
+                                            onChanged: (value, selected) {
+                                              if (value ==
                                                   'Add Custom Category') {
                                                 showDialog(
+                                                    barrierDismissible: true,
                                                     context: context,
                                                     builder: (context) =>
                                                         addItemController
                                                             .inputDialog());
                                               } else {
-                                                addItemController.category
-                                                    .add(item!);
+                                                if (selected) {
+                                                  addItemController.category
+                                                      .remove(value);
+                                                } else {
+                                                  addItemController.category
+                                                      .add(value);
+                                                }
                                               }
                                             },
-                                            onSaved: (item) => addItemController
-                                                .category
-                                                .add(item!),
                                             validator: (value) {
                                               if (addItemController
                                                   .category.isEmpty) {
@@ -302,6 +310,7 @@ class _Content extends StatelessWidget {
                                           children: [
                                             Expanded(
                                               child: Container(
+                                                height: 50,
                                                 decoration: BoxDecoration(
                                                   border: Border.all(
                                                       color: greyColor),
@@ -323,9 +332,14 @@ class _Content extends StatelessWidget {
                                               width: 15,
                                             ),
                                             Expanded(
-                                              child: Obx(() => Text(
-                                                  addItemController
-                                                      .date.value)),
+                                              child: Obx(
+                                                () => Text(addItemController
+                                                            .date.value ==
+                                                        ''
+                                                    ? 'Select Date'
+                                                    : addItemController
+                                                        .date.value),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -336,6 +350,7 @@ class _Content extends StatelessWidget {
                                           children: [
                                             Expanded(
                                               child: Container(
+                                                height: 50,
                                                 decoration: BoxDecoration(
                                                   border: Border.all(
                                                       color: greyColor),
@@ -357,9 +372,14 @@ class _Content extends StatelessWidget {
                                               width: 15,
                                             ),
                                             Expanded(
-                                              child: Obx(() => Text(
-                                                  addItemController
-                                                      .time.value)),
+                                              child: Obx(
+                                                () => Text(addItemController
+                                                            .time.value ==
+                                                        ''
+                                                    ? 'Select Time'
+                                                    : addItemController
+                                                        .time.value),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -371,10 +391,11 @@ class _Content extends StatelessWidget {
                                           width: 110,
                                           child: CustomButton(
                                             onTap: () async {
-                                              if (_addItemFormkey.currentState!
+                                              if (addItemController
+                                                  .addItemFormKey.currentState!
                                                   .validate()) {
                                                 await addItemController
-                                                    .postItem(_addItemFormkey);
+                                                    .postItem();
                                               }
                                             },
                                             text: 'Post Item',
@@ -603,7 +624,7 @@ class DeletableCategoryChip extends StatelessWidget {
             onDeleted: () {
               controller.category.remove(data);
             },
-            useDeleteButtonTooltip: true,
+            deleteButtonTooltipMessage: 'Remove',
             backgroundColor: blackColor,
             label: Text(
               data,

@@ -1,5 +1,6 @@
 import 'package:bidding/components/display_info_section.dart';
 import 'package:bidding/main/seller/screens/_seller_screens.dart';
+import 'package:bidding/models/item_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
@@ -8,10 +9,14 @@ import 'package:flutter/material.dart';
 
 class DisplayPriceSeller extends StatelessWidget {
   const DisplayPriceSeller(
-      {Key? key, required this.bidsController, required this.askingPrice})
+      {Key? key,
+      required this.bidsController,
+      required this.askingPrice,
+      required this.item})
       : super(key: key);
   final BidsController bidsController;
   final double askingPrice;
+  final Item item;
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +38,22 @@ class DisplayPriceSeller extends StatelessWidget {
               const SizedBox(
                 width: 30,
               ),
-              InkWell(
-                onTap: () {
-                  Get.to(() => const BidListScreen(),
-                      transition: Transition.noTransition);
-                },
-                child: Text(
-                  'View Bids',
-                  style: robotoMedium.copyWith(
-                      color: maroonColor,
-                      decoration: TextDecoration.underline,
-                      fontSize: 16),
+              Flexible(
+                child: InkWell(
+                  onTap: () {
+                    Get.to(
+                      () => BidListScreen(
+                        item: item,
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'View Bids',
+                    style: robotoMedium.copyWith(
+                        color: maroonColor,
+                        decoration: TextDecoration.underline,
+                        fontSize: 16),
+                  ),
                 ),
               )
             ],
@@ -61,17 +71,22 @@ class DisplayPriceSeller extends StatelessWidget {
             const SizedBox(
               width: 30,
             ),
-            InkWell(
-              onTap: () {
-                Get.to(() => const BidListScreen(),
-                    transition: Transition.noTransition);
-              },
-              child: Text(
-                'View Bids',
-                style: robotoMedium.copyWith(
-                    color: maroonColor,
-                    decoration: TextDecoration.underline,
-                    fontSize: 16),
+            Flexible(
+              child: InkWell(
+                onTap: () {
+                  Get.to(
+                    () => BidListScreen(
+                      item: item,
+                    ),
+                  );
+                },
+                child: Text(
+                  'View Bids',
+                  style: robotoMedium.copyWith(
+                      color: maroonColor,
+                      decoration: TextDecoration.underline,
+                      fontSize: 16),
+                ),
               ),
             )
           ],
@@ -87,7 +102,9 @@ class DisplayPriceSeller extends StatelessWidget {
       return const SizedBox(
         width: 20,
         height: 20,
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          color: maroonColor,
+        ),
       );
     });
   }

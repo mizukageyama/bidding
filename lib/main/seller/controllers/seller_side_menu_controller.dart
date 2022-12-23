@@ -3,6 +3,7 @@ import 'package:bidding/main/seller/controllers/sold_items_controller.dart';
 import 'package:bidding/models/user_model.dart';
 import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/auth_controller.dart';
+import 'package:bidding/shared/controllers/notif_controller.dart';
 import 'package:bidding/shared/layout/styles.dart';
 import 'package:flutter/material.dart';
 
@@ -15,12 +16,15 @@ class SellerSideMenuController extends GetxController {
       Get.put(AuctionedItemController(), permanent: true);
   final SoldItemsController soldItemsController =
       Get.put(SoldItemsController(), permanent: true);
+  final NotifController notifController =
+      Get.put(NotifController(), permanent: true);
 
   @override
   void dispose() {
     Get.delete<SellerSideMenuController>(force: true);
     Get.delete<AuctionedItemController>(force: true);
     Get.delete<SoldItemsController>(force: true);
+    Get.delete<NotifController>(force: true);
     super.dispose();
   }
 

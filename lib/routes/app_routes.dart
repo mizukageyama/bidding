@@ -5,7 +5,6 @@ part of 'app_pages.dart';
 abstract class Routes {
   Routes._();
 
-  static const SPLASH = '/';
   static const LOGIN = _Paths.LOGIN;
   static const SIGNUP = _Paths.SIGNUP;
   static const SELLER_HOME = _Paths.SELLER_HOME;
@@ -15,10 +14,14 @@ abstract class Routes {
   static const TERMS_AND_CONDITION = _Paths.TERMS_AND_CONDITION;
   static const SOLD_ITEM_LIST = _Paths.SOLD_ITEM_LIST;
   static const SOLD_ITEM_INFO = _Paths.SOLD_ITEM_INFO;
+  static const PROFILE = _Paths.PROFILE;
+  static const OPEN_AUCTIONS = _Paths.OPEN_AUCTIONS;
+  static const CLOSED_AUCTIONS = _Paths.CLOSED_AUCTIONS;
+  static const SOLD_AUCTIONS = _Paths.SOLD_AUCTIONS;
+  static const OPEN_TEST = _Paths.OPEN_TEST;
 }
 
 abstract class _Paths {
-  static const SPLASH = '/';
   static const LOGIN = '/login';
   static const SIGNUP = '/signup';
   static const SELLER_HOME = '/seller-home';
@@ -28,4 +31,9 @@ abstract class _Paths {
   static const TERMS_AND_CONDITION = '/terms-and-condition';
   static const SOLD_ITEM_LIST = '/sold-item-list';
   static const SOLD_ITEM_INFO = '/sold-item-info';
+  static const PROFILE = '/profile';
+  static const OPEN_AUCTIONS = '/open_auctions';
+  static const CLOSED_AUCTIONS = '/closed_auctions';
+  static const SOLD_AUCTIONS = '/sold_auctions';
+  static const OPEN_TEST = '/open_test';
 }

@@ -13,12 +13,15 @@ class SoldItem {
   final List<String> category;
   final String condition;
   final String brand;
+  final Timestamp datePosted;
   final Timestamp endDate;
   final Timestamp dateSold;
   final List<String> images;
   UserModel? buyer;
+  UserModel? sellerInfo;
 
   SoldItem({
+    required this.datePosted,
     required this.itemId,
     required this.sellerId,
     required this.buyerId,
@@ -46,6 +49,7 @@ class SoldItem {
         category: List<String>.from(json['category'] ?? []),
         condition: json['condition'] as String,
         brand: json['brand'] as String,
+        datePosted: json['date_posted'] as Timestamp,
         endDate: json['end_date'] as Timestamp,
         dateSold: json['date_sold'] as Timestamp,
         images: List<String>.from(json['images'] ?? []),
@@ -55,6 +59,14 @@ class SoldItem {
     buyer = await firestore
         .collection('users')
         .doc(buyerId)
+        .get()
+        .then((doc) => UserModel.fromJson(doc.data()!));
+  }
+
+  Future<void> getSellerInfo() async {
+    sellerInfo = await firestore
+        .collection('users')
+        .doc(sellerId)
         .get()
         .then((doc) => UserModel.fromJson(doc.data()!));
   }

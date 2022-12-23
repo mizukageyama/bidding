@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MenuItem {
-  MenuItem(
+class SMenuItem {
+  SMenuItem(
       {required this.name,
       this.icon = Icons.dashboard,
       this.iconPath = '',

@@ -4,7 +4,6 @@ import 'package:bidding/shared/_packages_imports.dart';
 import 'package:bidding/shared/controllers/_controllers.dart';
 import 'package:bidding/shared/layout/_layout.dart';
 import 'package:bidding/main/bidder/side_menu.dart';
-import 'package:bidding/shared/layout/mobile_body_sliver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -22,12 +21,6 @@ class OngoingAuctionInfoScreen extends StatelessWidget {
           _Content(
             item: _item,
           ),
-          MobileSliver(
-            title: 'Ongoing Auctions > ${_item.title}',
-            body: _Content(
-              item: _item,
-            ),
-          ),
           BidderSideMenu(),
         ),
       ),
@@ -37,7 +30,6 @@ class OngoingAuctionInfoScreen extends StatelessWidget {
 
 class _Content extends StatelessWidget {
   _Content({Key? key, required this.item}) : super(key: key);
-
   final Item item;
   final BidsController bidsController = Get.put(BidsController());
 
@@ -52,42 +44,38 @@ class _Content extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          kIsWeb && Get.width >= 600
-              ? Container(
-                  color: maroonColor,
-                  height: 55,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () => Get.back(),
-                        child: const Icon(
-                          Icons.arrow_back_outlined,
-                          color: whiteColor,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Text(
-                        'Ongoing Auctions > ${item.title}',
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(
-                            color: whiteColor,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15),
-                      ),
-                    ],
+          Container(
+            color: maroonColor,
+            height: 55,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () => Get.back(),
+                  child: const Icon(
+                    Icons.arrow_back_outlined,
+                    color: whiteColor,
                   ),
-                )
-              : const SizedBox(
-                  height: 0,
                 ),
-          kIsWeb
+                const SizedBox(
+                  width: 15,
+                ),
+                Text(
+                  'Ongoing Auctions > ${item.title}',
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(
+                      color: whiteColor,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),
+                ),
+              ],
+            ),
+          ),
+          kIsWeb && Get.width >= 600
               ? Expanded(
                   child: ListView(
                     shrinkWrap: true,
