@@ -1,4 +1,6 @@
 # Bidding App
 Developers:
-Emmalyn C. Nabiamos
-Hanna Alondra Demegillo
+
+-Emmalyn C. Nabiamos
+
+-Hanna Alondra Demegillo
