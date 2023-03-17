@@ -2,9 +2,9 @@
 A cross-platform application built with Flutter framework with Firebase Firestore. 
 
 ## 3 Types of Users
-* Seller - who auctions items 
-* Bidder - who bids
-* Admin - who oversee the application.
+* Seller - auctions items 
+* Bidder
+* Admin - oversees the application
 
 ## User Interface of Bidding App
 
