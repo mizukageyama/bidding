@@ -9,6 +9,7 @@ A cross-platform application built with Flutter framework with Firebase Firestor
 ## User Interface of Bidding App
 
 ![Bidding App](https://user-images.githubusercontent.com/63276829/225882598-4a9f9b42-eb2a-43a6-809f-bf8669a521f6.png)
+Web Application [Access](https://bidding-7c695.web.app/)
 
 ## Developed by:
 * [Emmalyn C. Nabiamos](https://github.com/mizukageyama) (used proj-account during development)
